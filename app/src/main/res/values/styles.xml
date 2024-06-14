@@ -6,5 +6,4 @@
         <item name="android:textSize">16dp</item>
         <item name="background">@drawable/primary_button</item>
     </style>
-
 </resources>
