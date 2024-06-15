@@ -13,4 +13,6 @@
     <color name="red">#F44336</color>
     <color name="text">#5a5e68  </color>
     <color name="purple">#8692f7</color>
+    <color name="email_error_color">#E10505</color>
+    <color name="email_error_background_color">#AE0909</color>
 </resources>

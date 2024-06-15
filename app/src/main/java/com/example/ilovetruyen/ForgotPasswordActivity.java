@@ -1,47 +1,43 @@
 package com.example.ilovetruyen;
 
-import android.content.Intent;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
+import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-public class LoginActivity extends AppCompatActivity {
+public class ForgotPasswordActivity extends AppCompatActivity {
     private TextInputLayout mEmail;
-    private MaterialButton btn_Login;
-    private TextInputLayout mPass;
+    private MaterialButton btnSendMail;
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        TextView signup_now = findViewById(R.id.signupText);
-        TextView forgot = findViewById(R.id.forgot_password);
         EdgeToEdge.enable(this);
-        signup_now.setOnClickListener(v -> {
-            Intent intent = new Intent(this, RegisterActivity.class);
-            startActivity(intent);
-        });
-        forgot.setOnClickListener(v ->{
-            Intent intent = new Intent(this, ForgotPasswordActivity.class);
-            startActivity(intent);
-        });
+        setContentView(R.layout.activity_forgot_password);
         mEmail = findViewById(R.id.input_layout_edit_email);
-        btn_Login = findViewById(R.id.buttonLogin);
-        mPass = findViewById(R.id.input_layout_password);
         TextInputEditText emailValidate = findViewById(R.id.et_input_edit_email);
-        btn_Login.setOnClickListener(v -> {
+        btnSendMail = findViewById(R.id.buttonSendMail);
+        btnSendMail.setOnClickListener(v -> {
             emailValidator(emailValidate);
         });
+        ImageView backBtn = findViewById(R.id.backBtn);
+        backBtn.setOnClickListener(v->{
+            this.finish();
+        });
+
     }
     public void emailValidator(TextInputEditText etMail) {
 
