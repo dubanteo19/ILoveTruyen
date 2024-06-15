@@ -15,7 +15,6 @@ import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.adapter.ComicAdapter;
 import com.example.ilovetruyen.databinding.FragmentHomeBinding;
 import com.example.ilovetruyen.model.Comic;
-import com.example.ilovetruyen.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +24,7 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private RecyclerView recyclerView;
     private ComicAdapter comicAdapter;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         HomeViewModel homeViewModel =
@@ -43,9 +43,9 @@ public class HomeFragment extends Fragment {
 
     private List<Comic> getHotComics() {
         var hotComics = new ArrayList<Comic>();
-        var comic1 = new Comic("One Piece",R.drawable.one_piece);
-        var comic2 = new Comic("Thanh Guong diet quy",R.drawable.thanh_guom_diet_quy);
-        var comic3 = new Comic("One Punchman",R.drawable.one_puch_man);
+        var comic1 = new Comic("One Piece", R.drawable.one_piece);
+        var comic2 = new Comic("Thanh Guong diet quy", R.drawable.thanh_guom_diet_quy);
+        var comic3 = new Comic("One Punchman", R.drawable.one_puch_man);
         hotComics.add(comic1);
         hotComics.add(comic2);
         hotComics.add(comic3);
