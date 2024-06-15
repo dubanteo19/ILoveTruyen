@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Đăng ký ILoveTruyen"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="24dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnPhoneEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sử dụng số điện thoại hoặc email"
+        android:layout_below="@id/tvTitle"
+        android:layout_marginTop="16dp"
+
+        app:iconGravity="textStart"
+        app:iconPadding="8dp"
+        android:backgroundTint="@color/primary"
+        android:textColor="@color/white" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnFacebook"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tiếp tục với Facebook"
+        android:layout_below="@id/btnPhoneEmail"
+        android:layout_marginTop="16dp"
+        app:icon="@drawable/"
+        app:iconGravity="textStart"
+        app:iconPadding="8dp"
+        android:backgroundTint="@color/primary"
+        android:textColor="@color/white" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnGoogle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tiếp tục với Google"
+        android:layout_below="@id/btnFacebook"
+        android:layout_marginTop="16dp"
+        app:icon="@drawable/"
+        app:iconGravity="textStart"
+        app:iconPadding="8dp"
+        android:backgroundTint="@color/primary"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/tvTerms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bằng cách tiếp tục, bạn đồng ý với Điều khoản Sử dụng của ILoveTruyen và xác nhận rằng bạn đã đọc hiểu Chính sách Quyền riêng tư của ILoveTruyen."
+        android:layout_below="@id/btnGoogle"
+        android:layout_marginTop="16dp"
+        android:textSize="12sp"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>
