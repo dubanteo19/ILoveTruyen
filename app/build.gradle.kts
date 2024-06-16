@@ -45,6 +45,7 @@ dependencies {
     implementation("de.hdodenhof:circleimageview:3.1.0")
     implementation(libs.cardview)
     implementation(libs.navigation.ui)
+    implementation(libs.activity)
     implementation("com.github.IslamKhSh:CardSlider:1.0.1")
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
