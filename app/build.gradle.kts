@@ -29,6 +29,7 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
 }
 
 dependencies {
@@ -45,7 +46,9 @@ dependencies {
     implementation(libs.cardview)
     implementation(libs.navigation.ui)
     implementation(libs.activity)
+    implementation("com.github.IslamKhSh:CardSlider:1.0.1")
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
 }

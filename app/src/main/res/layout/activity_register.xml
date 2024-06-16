@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:text="@string/register"
-                android:textColor="@color/purple"
+                android:textColor="@color/primary"
                 android:textSize="27sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -139,7 +139,6 @@
                     android:backgroundTint="@color/background"
                     android:drawableLeft="@drawable/ic_facebook"
                     android:text="@string/facebook"
-                    android:textColor="@color/black"
                     android:textSize="12dp" />
 
                 <com.google.android.material.button.MaterialButton
@@ -151,7 +150,6 @@
                     android:backgroundTint="@color/background"
                     android:drawableLeft="@drawable/google_icon"
                     android:text="@string/google"
-                    android:textColor="@android:color/background_dark"
                     android:textSize="12dp" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -165,7 +163,7 @@
         android:padding="8dp"
         android:text="@string/login_now"
         android:textAlignment="center"
-        android:textColor="@color/purple"
+        android:textColor="@color/primary"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
