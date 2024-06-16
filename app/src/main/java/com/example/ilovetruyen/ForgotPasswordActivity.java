@@ -29,14 +29,15 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_forgot_password);
         mEmail = findViewById(R.id.input_layout_edit_email);
         TextInputEditText emailValidate = findViewById(R.id.et_input_edit_email);
-        btnSendMail = findViewById(R.id.buttonSendMail);
-        btnSendMail.setOnClickListener(v -> {
-            emailValidator(emailValidate);
-        });
         ImageView backBtn = findViewById(R.id.backBtn);
         backBtn.setOnClickListener(v->{
             this.finish();
         });
+        btnSendMail = findViewById(R.id.buttonSendMail);
+        btnSendMail.setOnClickListener(v -> {
+            emailValidator(emailValidate);
+        });
+
 
     }
     public void emailValidator(TextInputEditText etMail) {
@@ -46,7 +47,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         if (!emailToText.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(emailToText).matches()) {
             Toast.makeText(this, "Email valid !", Toast.LENGTH_SHORT).show();
         } else {
-//            Toast.makeText(this, "Entered valid Email address !", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Entered valid Email address !", Toast.LENGTH_SHORT).show();
             etMail.setError("Entered valid Email address !");
         }
     }
