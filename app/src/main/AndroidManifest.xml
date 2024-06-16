@@ -16,10 +16,20 @@
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name">
+<!--            Test xong nho xoa comment cho nay nha-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
+
+        <activity android:name=".TestActivity"
+            android:exported="true"
+            android:label="TestComment">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
     </application>

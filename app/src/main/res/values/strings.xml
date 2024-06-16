@@ -3,4 +3,10 @@
     <string name="title_home" translatable="false">Truyện tranh</string>
     <string name="title_dashboard" translatable="false">Dashboard</string>
     <string name="title_notifications" translatable="false">Notifications</string>
+
+    <string name="enter_comment">Enter your comment</string>
+    <string name="send_comment">Send</string>
+    <string name="user_avatar">User Avatar</string>
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
