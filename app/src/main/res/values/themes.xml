@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.ILoveTruyen" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Base.Theme.ILoveTruyen" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryVariant">@color/teal_700</item>
@@ -12,11 +12,8 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/primary</item>
         <!-- Customize your theme here. -->
-        <item name="buttonBarButtonStyle">@style/button</item>
+<!--        <item name="buttonBarStyle"-->
+        <item name="materialButtonStyle">@style/button</item>
     </style>
-     Base application theme.
-    <style name="Base.Theme.ILoveTruyen" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-    </style>
+
 </resources>

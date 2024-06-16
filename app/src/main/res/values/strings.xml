@@ -58,4 +58,6 @@
     <string name="lbl_forgot_password">Lấy lại mật khẩu</string>
     <string name="sendMail">Gửi mail</string>
     <string name="text_forgot_password">Vui lòng điền địa chỉ email của bạn. Bạn sẽ nhận được một email với hướng dẫn mật khẩu.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

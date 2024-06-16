@@ -29,10 +29,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_forgot_password);
         mEmail = findViewById(R.id.input_layout_edit_email);
         TextInputEditText emailValidate = findViewById(R.id.et_input_edit_email);
-        ImageView backBtn = findViewById(R.id.backBtn);
-        backBtn.setOnClickListener(v->{
-            this.finish();
-        });
         btnSendMail = findViewById(R.id.buttonSendMail);
         btnSendMail.setOnClickListener(v -> {
             emailValidator(emailValidate);

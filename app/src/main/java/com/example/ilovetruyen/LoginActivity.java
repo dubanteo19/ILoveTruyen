@@ -43,10 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         btn_Login.setOnClickListener(v -> {
             emailValidator(emailValidate);
         });
-        ImageView backBtn = findViewById(R.id.backBtn);
-        backBtn.setOnClickListener(v->{
-            this.finish();
-        });
+       
     }
     public void emailValidator(TextInputEditText etMail) {
 
