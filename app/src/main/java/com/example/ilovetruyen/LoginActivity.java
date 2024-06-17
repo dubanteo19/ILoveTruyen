@@ -3,6 +3,7 @@ package com.example.ilovetruyen;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         btn_Login.setOnClickListener(v -> {
             emailValidator(emailValidate);
         });
+       
     }
     public void emailValidator(TextInputEditText etMail) {
 
