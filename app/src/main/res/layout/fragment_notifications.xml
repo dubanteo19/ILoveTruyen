@@ -470,32 +470,38 @@
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
-        <TextView
-            android:id="@+id/summary_of_goals_and_contact_information"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:padding="8dp"
-            android:text="@string/summary_of_goals_and_contact_information"
-            android:textAlignment="center"
-            android:textColor="@color/gray"
-            android:textSize="14sp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout3" />
+            app:layout_constraintTop_toBottomOf="@id/layout3" >
+            <TextView
+                android:id="@+id/summary_of_goals_and_contact_information"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"git 
+                android:text="@string/summary_of_goals_and_contact_information"
+                android:textAlignment="center"
+                android:textColor="@color/gray"
+                android:textSize="14sp"
+               />
 
-        <TextView
-            android:id="@+id/email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ngannguyen16122003@gmail.com"
-            android:textAlignment="center"
-            android:textColor="@color/gray"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/summary_of_goals_and_contact_information" />
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ngannguyen16122003@gmail.com"
+                android:textAlignment="center"
+                android:textColor="@color/gray"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/summary_of_goals_and_contact_information" />
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

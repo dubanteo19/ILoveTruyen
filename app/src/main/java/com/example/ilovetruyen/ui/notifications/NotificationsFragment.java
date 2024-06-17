@@ -12,6 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.ilovetruyen.ListOfStoryDownloadsActivity;
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.ReadingHistoryActivity;
 import com.example.ilovetruyen.databinding.FragmentNotificationsBinding;
@@ -35,6 +36,11 @@ public class NotificationsFragment extends Fragment {
         ConstraintLayout featureHisLayout = root.findViewById(R.id.feature_his);
         featureHisLayout.setOnClickListener(v ->{
             Intent intent = new Intent(root.getContext(), ReadingHistoryActivity.class);
+            startActivity(intent);
+        });
+        ConstraintLayout feature_list = root.findViewById(R.id.feature_list);
+        feature_list.setOnClickListener(v ->{
+            Intent intent = new Intent(root.getContext(), ListOfStoryDownloadsActivity.class);
             startActivity(intent);
         });
         return root;
