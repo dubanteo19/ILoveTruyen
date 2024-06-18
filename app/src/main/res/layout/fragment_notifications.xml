@@ -2,6 +2,7 @@
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/gray"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -22,37 +23,6 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             app:tint="@color/red" />
-        <LinearLayout
-            android:id="@+id/layou1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:padding="16dp"
-            app:layout_constraintTop_toBottomOf="@id/logoutbtn"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginBottom="10dp"
-                android:src="@drawable/tout" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ngân Nguyễn"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:paddingTop="8dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ngannguyen16122003@gmail.com"
-                android:textSize="14sp" />
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/layou2"
@@ -62,7 +32,36 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layou1">
+            app:layout_constraintTop_toBottomOf="@id/logoutbtn">
+
+            <LinearLayout
+                android:id="@+id/layou1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginBottom="10dp"
+                    android:src="@drawable/tout" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:text="Ngân Nguyễn"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ngannguyen16122003@gmail.com"
+                    android:textSize="14sp" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/header_text_feature"
@@ -81,7 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:background="@color/gray"
+                android:background="@color/white"
                 android:layout_marginBottom="1dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -91,7 +90,8 @@
                     android:id="@+id/icon_sync"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/ic_facebook"
+                    android:src="@drawable/icon_sync"
+                    android:background="@drawable/custom_edittext"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -111,7 +111,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/stnc"
                         android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:textColor="@color/black"/>
 
                     <TextView
                         android:id="@+id/text_sync_description"
@@ -127,7 +127,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:background="@color/gray"
+                android:background="@color/white"
                 android:layout_marginBottom="1dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -137,7 +137,7 @@
                     android:id="@+id/icon_ads"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/ic_facebook"
+                    android:src="@drawable/icon_remove_ads"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -158,7 +158,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/ads"
                         android:textSize="16sp"
-                        android:textStyle="bold"
+                        android:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/icon_ads"
@@ -170,7 +170,7 @@
                 android:id="@+id/feature_his"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/gray"
+                android:background="@color/white"
                 android:layout_marginBottom="1dp"
                 android:padding="8dp">
 
@@ -178,7 +178,7 @@
                     android:id="@+id/icon_his"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/ic_facebook"
+                    android:src="@drawable/icon_time_machine"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -199,7 +199,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/histoty"
                         android:textSize="16sp"
-                        android:textStyle="bold"/>
+                        android:textColor="@color/black"/>
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -207,7 +207,7 @@
                 android:id="@+id/feature_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/gray"
+                android:background="@color/white"
                 android:layout_marginBottom="1dp"
                 android:padding="8dp">
 
@@ -215,7 +215,7 @@
                     android:id="@+id/icon_list"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/ic_facebook"
+                    android:src="@drawable/iconsdownload"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -236,7 +236,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/list"
                         android:textSize="16sp"
-                        android:textStyle="bold"/>
+                        android:textColor="@color/black"/>
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
@@ -268,7 +268,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:background="@color/gray"
+                android:background="@color/white"
                 android:layout_marginBottom="1dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -278,7 +278,7 @@
                     android:id="@+id/icon_mail"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/ic_facebook"
+                    android:src="@drawable/icons_send_mail"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -299,7 +299,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/sendmail"
                         android:textSize="16sp"
-                        android:textStyle="bold"
+                        android:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/icon_mail"
@@ -312,7 +312,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:background="@color/gray"
+                android:background="@color/white"
                 android:layout_marginBottom="1dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -343,7 +343,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/fanpage_facebook"
                         android:textSize="16sp"
-                        android:textStyle="bold"
+                        android:textColor="@color/black"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/icon_fanpage"
@@ -355,7 +355,7 @@
                 android:id="@+id/contact_share"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/gray"
+                android:background="@color/white"
                 android:layout_marginBottom="1dp"
                 android:padding="8dp">
 
@@ -363,7 +363,7 @@
                     android:id="@+id/icon_share"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/ic_facebook"
+                    android:src="@drawable/icon_share"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -384,7 +384,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/share"
                         android:textSize="16sp"
-                        android:textStyle="bold"/>
+                        android:textColor="@color/black"/>
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -392,7 +392,7 @@
                 android:id="@+id/feature_rating"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/gray"
+                android:background="@color/white"
                 android:layout_marginBottom="1dp"
                 android:padding="8dp">
 
@@ -400,7 +400,7 @@
                     android:id="@+id/icon_rating"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/ic_facebook"
+                    android:src="@drawable/icons_rating"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -421,7 +421,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/rating"
                         android:textSize="16sp"
-                        android:textStyle="bold"/>
+                        android:textColor="@color/black"/>
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -429,7 +429,7 @@
                 android:id="@+id/feature_delete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/gray"
+                android:background="@color/white"
                 android:layout_marginBottom="1dp"
                 android:padding="8dp">
 
@@ -437,7 +437,7 @@
                     android:id="@+id/icon_delete"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/ic_facebook"
+                    android:src="@drawable/icons_remove_account"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -457,8 +457,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/red"
                         android:text="@string/delete"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/text_contact_description"
@@ -483,10 +482,10 @@
                 android:id="@+id/summary_of_goals_and_contact_information"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="8dp"git 
+                android:padding="8dp"
                 android:text="@string/summary_of_goals_and_contact_information"
                 android:textAlignment="center"
-                android:textColor="@color/gray"
+                android:textColor="@color/text"
                 android:textSize="14sp"
                />
 
@@ -496,7 +495,7 @@
                 android:layout_height="wrap_content"
                 android:text="ngannguyen16122003@gmail.com"
                 android:textAlignment="center"
-                android:textColor="@color/gray"
+                android:textColor="@color/text"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
