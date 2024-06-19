@@ -50,5 +50,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-
+    //gslide dependency
+    implementation( "com.github.bumptech.glide:glide:3.7.0")
+    //NOTE : không sử dụng pack android:support v7 design, pallet,... --> lỗi version
 }
