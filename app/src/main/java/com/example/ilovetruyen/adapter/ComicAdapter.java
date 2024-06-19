@@ -1,6 +1,8 @@
 package com.example.ilovetruyen.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.model.Comic;
+import com.example.ilovetruyen.ui.comicDetail.ComicDetailActivity;
 
 import java.util.List;
 
@@ -39,6 +42,13 @@ public class ComicAdapter extends RecyclerView.Adapter<ComicAdapter.ComicViewHol
         if (comic == null) return;
         holder.comicThumbImage.setImageResource(comic.thumb());
         holder.comicNameView.setText(comic.name());
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, ComicDetailActivity.class);
+            Bundle myBundle = new Bundle();
+            myBundle.putBundle("comic", comic);
+            context.startActivity(intent);
+        });
     }
 
     @Override
