@@ -2,7 +2,6 @@ package com.example.ilovetruyen.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,9 +44,8 @@ public class ComicAdapter extends RecyclerView.Adapter<ComicAdapter.ComicViewHol
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ComicDetailActivity.class);
-            Bundle myBundle = new Bundle();
-            myBundle.putBundle("comic", comic);
             context.startActivity(intent);
+
         });
     }
 

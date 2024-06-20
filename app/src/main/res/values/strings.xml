@@ -61,4 +61,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="back_button_description">Nút quay lại</string>
+    <string name="see_more">Xem thêm</string>
+    <string name="see_less">Ẩn bớt</string>
+    <string name="text_description_comic">ViewMore TextView allows you to use a TextView by hiding the content of the text by a number of established lines and to display all the content expanding the TextView by a collapsing/expanding animation. It\'s possibile use an ellipses text or a foreground color gradient or both to hide the content.</string>
 </resources>
