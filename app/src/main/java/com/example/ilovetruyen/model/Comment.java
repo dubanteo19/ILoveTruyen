@@ -1,4 +1,8 @@
 package com.example.ilovetruyen.model;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 // Comment.java
 public class Comment {
     private String userName;
@@ -11,6 +15,13 @@ public class Comment {
         this.commentText = commentText;
         this.time = time;
         this.userImage = userImage;
+    }
+
+    public Comment(String userName, String commentText, int userImage) {
+        this.userName = userName;
+        this.commentText = commentText;
+        this.userImage = userImage;
+        this.time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
     }
 
     public String getUserName() {
