@@ -40,6 +40,10 @@
             android:name=".ui.comicDetail.ChapterListActivity"
             android:exported="false"
             android:label="@string/app_name"></activity>
+        <activity
+            android:name=".ui.search.SearchActivity"
+            android:exported="false"
+            android:label="@string/app_name"></activity>
     </application>
 
 </manifest>

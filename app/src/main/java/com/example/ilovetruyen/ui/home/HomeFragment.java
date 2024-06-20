@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -14,8 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
+
 import com.example.ilovetruyen.LoginActivity;
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.adapter.CarouselAdapter;
@@ -24,6 +24,7 @@ import com.example.ilovetruyen.adapter.HotComicsAdatper;
 import com.example.ilovetruyen.adapter.NewComicAdapter;
 import com.example.ilovetruyen.databinding.FragmentHomeBinding;
 import com.example.ilovetruyen.model.Comic;
+import com.example.ilovetruyen.ui.search.SearchActivity;
 import com.github.islamkhsh.CardSliderViewPager;
 
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class HomeFragment extends Fragment {
     private ComicAdapter comicAdapter;
     private HotComicsAdatper hotComicsAdatper;
     private NewComicAdapter newComicAdapter;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         HomeViewModel homeViewModel =
@@ -46,6 +48,11 @@ public class HomeFragment extends Fragment {
         Button home_login_btn = root.findViewById(R.id.home_login_btn);
         home_login_btn.setOnClickListener(v -> {
             Intent intent = new Intent(root.getContext(), LoginActivity.class);
+            startActivity(intent);
+        });
+        SearchView searchView = root.findViewById(R.id.home_search_view);
+        searchView.setOnClickListener(v -> {
+            Intent intent = new Intent(root.getContext(), SearchActivity.class);
             startActivity(intent);
         });
         renderCarousel(root);
