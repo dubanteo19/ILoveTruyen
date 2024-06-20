@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn ="navigation_view">
+    <group
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="Trang chủ" />
+        <item
+            android:id="@+id/nav_history"
+            android:icon="@drawable/ic_history_24px"
+            android:title="Lịch sử đọc truyện" />
+        <item
+            android:id="@+id/nav_map"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="Bản đồ" />
+        <item
+            android:id="@+id/nav_aboutus"
+            android:icon="@drawable/ic_about_us"
+            android:title="Về chúng tôi" />
+        <item
+            android:id="@+id/nav_support"
+            android:icon="@drawable/ic_support"
+            android:title="Fanpage hỗ trợ" />
+
+        <item
+            android:id="@+id/nav_share"
+            android:icon="@drawable/ic_share"
+            android:title="Chia sẻ với bạn bè" />
+
+        <item
+            android:id="@+id/nav_rating"
+            android:icon="@drawable/star"
+            android:title="Đánh giá ứng dụng" />
+
+
+
+    </group>
+
+</menu>
