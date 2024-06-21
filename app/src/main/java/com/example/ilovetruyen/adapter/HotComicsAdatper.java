@@ -4,14 +4,17 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.model.Comic;
+import com.example.ilovetruyen.util.TimeDifference;
 
 import java.util.List;
 
@@ -26,6 +29,7 @@ public class HotComicsAdatper extends RecyclerView.Adapter<HotComicsAdatper.HotC
 
     public void setData(List<Comic> comics) {
         this.comicList = comics;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -41,10 +45,10 @@ public class HotComicsAdatper extends RecyclerView.Adapter<HotComicsAdatper.HotC
     public void onBindViewHolder(@NonNull HotComicsViewHolder holder, int position) {
         Comic comic = comicList.get(position);
         if (comic ==null) return;
-        holder.thumb.setBackgroundResource(comic.thumb());
+        Glide.with(holder.itemView).load(comic.thumbUrl()).into(holder.thumb);
         holder.comicNameTv.setText(comic.name());
-        holder.comicChapterTv.setText(comic.chapter());
-        holder.comicCreatedDateTv.setText(comic.createdDate().toString());
+        holder.comicChapterTv.setText("Chương "+comic.latestChapter());
+        holder.comicCreatedDateTv.setText(TimeDifference.getTimeDifference(comic.createdDate()));
     }
 
     @Override
@@ -53,7 +57,7 @@ public class HotComicsAdatper extends RecyclerView.Adapter<HotComicsAdatper.HotC
     }
 
     public class HotComicsViewHolder extends RecyclerView.ViewHolder {
-        private LinearLayout thumb;
+        private ImageView thumb;
         private TextView comicNameTv, comicChapterTv, comicCreatedDateTv;
 
         public HotComicsViewHolder(@NonNull View itemView) {
