@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,6 +28,7 @@ import com.example.ilovetruyen.adapter.NewComicAdapter;
 import com.example.ilovetruyen.api.ComicAPI;
 import com.example.ilovetruyen.databinding.FragmentHomeBinding;
 import com.example.ilovetruyen.model.Comic;
+import com.example.ilovetruyen.ui.search.SearchActivity;
 import com.example.ilovetruyen.retrofit.RetrofitService;
 import com.github.islamkhsh.CardSliderViewPager;
 
@@ -57,6 +59,11 @@ public class HomeFragment extends Fragment {
         Button home_login_btn = root.findViewById(R.id.home_login_btn);
         home_login_btn.setOnClickListener(v -> {
             Intent intent = new Intent(root.getContext(), LoginActivity.class);
+            startActivity(intent);
+        });
+        SearchView searchView = root.findViewById(R.id.home_search_view);
+        searchView.setOnClickListener(v -> {
+            Intent intent = new Intent(root.getContext(), SearchActivity.class);
             startActivity(intent);
         });
         renderCarousel(root);
