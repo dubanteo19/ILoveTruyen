@@ -13,7 +13,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.ilovetruyen.ui.notifications.NotificationsFragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -51,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
             String pass = String.valueOf(password.getText());
             if(email.equals("ngan@gmail.com") && pass.equals("123")){
                 Toast.makeText(this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, NotificationsFragment.class);
+                Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
             }
             else{
