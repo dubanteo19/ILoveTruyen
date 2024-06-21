@@ -5,11 +5,9 @@
     android:layout_height="wrap_content"
     android:layout_marginEnd="10dp"
     app:cardCornerRadius="10dp">
-
     <LinearLayout
         android:layout_width="120dp"
         android:layout_height="200dp"
-        android:background="@color/background"
         android:orientation="vertical">
 
         <ImageView
@@ -17,12 +15,10 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:scaleType="centerCrop" />
-
         <TextView
             android:id="@+id/comic_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="hello"
             android:textSize="16dp" />
 
     </LinearLayout>

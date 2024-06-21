@@ -10,8 +10,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.model.Comic;
+import com.example.ilovetruyen.util.TimeDifference;
 
 import java.util.List;
 
@@ -20,11 +22,11 @@ public class NewComicAdapter extends RecyclerView.Adapter<NewComicAdapter.NewCom
     private Context context;
     private List<Comic> comics;
 
-    public NewComicAdapter(Context context) {
+    public NewComicAdapter(Context context){
         this.context = context;
     }
     public void setData(List<Comic> comics){
-        this.comics = comics;
+        this.comics = comics;notifyDataSetChanged();
     }
     @NonNull
     @Override
@@ -39,9 +41,9 @@ public class NewComicAdapter extends RecyclerView.Adapter<NewComicAdapter.NewCom
         var comic = comics.get(position);
         if(comic==null) return;
         holder.nameTv.setText(comic.name());
-        holder.thumbIv.setImageResource(comic.thumb());
-//        holder.chapterTv.setText(comic.chapter());
-//        holder.createdDateTv.setText(comic.createdDate().toString());
+        Glide.with(holder.itemView).load(comic.thumbUrl()).into(holder.thumbIv);
+        holder.chapterTv.setText("Ch. "+comic.latestChapter());
+        holder.createdDateTv.setText(TimeDifference.getTimeDifference(comic.createdDate()));
     }
 
     @Override
