@@ -8,6 +8,17 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:name="com.example.ilovetruyen.ArrowBackFragment"
+        />
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view"
         android:layout_width="match_parent"
@@ -87,6 +98,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
+                android:backgroundTint="@color/purple"
                 android:text="@string/login"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -124,17 +136,17 @@
                     android:id="@+id/buttonLoginFacebook"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="2dp"
+                    android:layout_marginEnd="5dp"
                     android:layout_weight="1"
                     android:drawableLeft="@drawable/ic_facebook"
                     android:text="@string/facebook"
-                    android:textSize="12dp"/>
+                    android:textSize="12dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/buttonLoginGoogle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
+                    android:layout_marginStart="5dp"
                     android:layout_weight="1"
                     android:drawableLeft="@drawable/google_icon"
                     android:text="@string/google"

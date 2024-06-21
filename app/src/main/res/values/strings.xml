@@ -64,4 +64,22 @@
     <string name="see_more">Xem thêm</string>
     <string name="see_less">Ẩn bớt</string>
     <string name="text_description_comic">ViewMore TextView allows you to use a TextView by hiding the content of the text by a number of established lines and to display all the content expanding the TextView by a collapsing/expanding animation. It\'s possibile use an ellipses text or a foreground color gradient or both to hide the content.</string>
+    <string name="similar_categories">Cùng thể loại:</string>
+    <string name="chapter_list">Danh sách chương</string>
+    <string name="see_all">Xem tất cả</string>
+    <string name="updating">Đang cập nhật</string>
+    <string name="processing">Đang tiến hành</string>
+    <string name="list">Danh sách tải truyện tranh</string>
+    <string name="histoty">Lịch sử đọc truyện tranh</string>
+    <string name="ads">Loại bỏ quảng cáo</string>
+    <string name="stnc">Đồng bộ đám mây</string>
+    <string name="sync_detail">Đồng bộ lần cuối: Ngay bây giờ</string>
+    <string name="contact">Liên hệ và hỗ trợ</string>
+    <string name="sendmail">Gửi mail đến hỗ trợ</string>
+    <string name="fanpage_facebook">Fanpage Facebook</string>
+    <string name="share">Chia sẻ với bạn bè</string>
+    <string name="rating">Đánh giá ứng dụng này</string>
+    <string name="delete_res">Xóa tài khoản của bạn</string>
+    <string name="delete">Xóa tài khoản</string>
+    <string name="summary_of_goals_and_contact_information">I Love Truyện là một ứng dụng chia sẻ các thể loại truyện tranh được thu thập từ nhiều nguồn trên internet, với mục tiêu giúp cộng đồng thỏa mãn đam mê đọc truyện mọi lúc, mọi nơi. Nếu có vấn đề về bản quyền hoặc bất kỳ yêu cầu nào, vui lòng liên hệ với chúng tôi qua địa chỉ email:</string>
 </resources>

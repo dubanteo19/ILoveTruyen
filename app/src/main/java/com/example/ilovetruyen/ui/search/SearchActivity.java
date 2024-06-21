@@ -60,20 +60,20 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private List<Comic> getHotComics() {
-        var hotComics = new ArrayList<Comic>();
-        var comic1 = new Comic("One Piece", R.drawable.one_piece);
-        var comic2 = new Comic("Thanh Guong diet quy", R.drawable.thanh_guom_diet_quy);
-        var comic3 = new Comic("One Punchman", R.drawable.one_puch_man);
-        hotComics.add(comic1);
-        hotComics.add(comic2);
-        hotComics.add(comic3);
-        hotComics.add(comic1);
-        hotComics.add(comic2);
-        hotComics.add(comic3);
-        hotComics.add(comic1);
-        hotComics.add(comic2);
-        hotComics.add(comic3);
-        return hotComics;
+//        var hotComics = new ArrayList<Comic>();
+//        var comic1 = new Comic("One Piece", R.drawable.one_piece);
+//        var comic2 = new Comic("Thanh Guong diet quy", R.drawable.thanh_guom_diet_quy);
+//        var comic3 = new Comic("One Punchman", R.drawable.one_puch_man);
+//        hotComics.add(comic1);
+//        hotComics.add(comic2);
+//        hotComics.add(comic3);
+//        hotComics.add(comic1);
+//        hotComics.add(comic2);
+//        hotComics.add(comic3);
+//        hotComics.add(comic1);
+//        hotComics.add(comic2);
+//        hotComics.add(comic3);
+//        return hotComics;
     }
 
 }
