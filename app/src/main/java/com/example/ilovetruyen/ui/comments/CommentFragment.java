@@ -47,11 +47,11 @@ public class CommentFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         commentList = new ArrayList<>();
-        commentList.add(new Comment("Courtney Henry", "Consequat velit qui adipisicing sunt do rependerit ad laborum tempor ullamco exercitation. Ullamco tempor adipisicing et voluptate duis sit esse aliqua esse ex.", "5 mins ago", R.drawable.hihi));
-        commentList.add(new Comment("Cameron Williamson", "Consequat velit qui adipisicing sunt do rependerit ad laborum tempor ullamco.", "5 mins ago", R.drawable.hihi));
-        commentList.add(new Comment("Jane Cooper", "Ullamco tempor adipisicing et voluptate duis sit esse aliqua esse ex.", "10 mins ago", R.drawable.hihi));
-        commentList.add(new Comment("Alice Smith", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", "15 mins ago", R.drawable.hihi));
-        commentList.add(new Comment("Bob Johnson", "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.", "20 mins ago", R.drawable.hihi));
+        commentList.add(new Comment("Courtney Henry", "Consequat velit qui adipisicing sunt do rependerit ad laborum tempor ullamco exercitation. Ullamco tempor adipisicing et voluptate duis sit esse aliqua esse ex.", "5 mins ago", R.drawable.thanh_guom_diet_quy));
+        commentList.add(new Comment("Cameron Williamson", "Consequat velit qui adipisicing sunt do rependerit ad laborum tempor ullamco.", "5 mins ago", R.drawable.thanh_guom_diet_quy));
+        commentList.add(new Comment("Jane Cooper", "Ullamco tempor adipisicing et voluptate duis sit esse aliqua esse ex.", "10 mins ago", R.drawable.thanh_guom_diet_quy));
+        commentList.add(new Comment("Alice Smith", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", "15 mins ago", R.drawable.thanh_guom_diet_quy));
+        commentList.add(new Comment("Bob Johnson", "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.", "20 mins ago", R.drawable.thanh_guom_diet_quy));
 
         // nay giong nhu 1 callback, khi click vào 1 comment thi no se lay comment do
         // truyen nguoc ra ngoai de ben ngoai co the xu ly voi noi dung comment
@@ -80,10 +80,12 @@ public class CommentFragment extends Fragment {
                 commentList.get(commentEditPosition.get()).setCommentText(commentText);
                 commentEditPosition.set(-1);
                 // TODO: cap nhat comment moi vao db
+                Toast.makeText(getContext(), "Cập nhật comment thành công", Toast.LENGTH_LONG).show();
 
             } else {
                 commentList.add(new Comment(loginUser.getName(), commentText, loginUser.getResouceImage()));
                 // TODO: luu comment moi vao db
+                Toast.makeText(getContext(), "Gửi comment thành công", Toast.LENGTH_LONG).show();
             }
             adapter.notifyDataSetChanged();
 
