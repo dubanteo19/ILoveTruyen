@@ -1,4 +1,9 @@
 package com.example.ilovetruyen.model;
 
-public record Comic(String name, int thumb) {
+import java.util.Date;
+import java.time.LocalDateTime;
+
+public record Comic(
+        String name, String thumbUrl, int latestChapter, int views, int likes, LocalDateTime createdDate
+) {
 }

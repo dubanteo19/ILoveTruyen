@@ -1,5 +1,6 @@
 package com.example.ilovetruyen.ui.categorySearch;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.bumptech.glide.Glide;
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.model.Comic;
 
@@ -56,12 +58,7 @@ public class CategoryResultActivity extends AppCompatActivity {
 
 
         List<Comic> comics = new ArrayList<>();
-        Comic comic1 = new Comic("One Piece", R.drawable.one_piece);
-        Comic comic2 = new Comic("Thanh Guong diet quy", R.drawable.thanh_guom_diet_quy);
-        Comic comic3 = new Comic("One Punchman", R.drawable.one_piece);
-        comics.add(comic1);
-        comics.add(comic2);
-        comics.add(comic3);
+
 
         GridLayout gridLayout = findViewById(R.id.grid_layout_category_result);
 
@@ -73,7 +70,7 @@ public class CategoryResultActivity extends AppCompatActivity {
             TextView comicName = viewGroup.findViewById(R.id.comic_name_category_result);
             comicName.setText(comic.name());
             ImageView comicThumb = viewGroup.findViewById(R.id.comic_thumb_category_result);
-            comicThumb.setImageResource(comic.thumb());
+            Glide.with(viewGroup).load(comic.thumbUrl()).into(comicThumb);
 
             GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams();
             layoutParams.columnSpec = GridLayout.spec(i % 3, 1f);

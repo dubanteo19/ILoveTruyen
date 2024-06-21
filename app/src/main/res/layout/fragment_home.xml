@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+>
+<androidx.constraintlayout.widget.ConstraintLayout
+android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
     tools:context=".ui.home.HomeFragment">
@@ -10,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+        <!--Header section-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,52 +34,101 @@
                 android:drawableLeft="@drawable/login_icon"
                 />
         </LinearLayout>
+        <!--Comic search bar section-->
         <SearchView
             android:id="@+id/home_search_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
-            android:background="@drawable/border_round"
+            android:background="@drawable/border_strike_round"
             android:iconifiedByDefault="false"
-            android:queryHint="Tìm truyện tranh"></SearchView>
+            android:queryHint="Tìm truyện tranh"
+            android:inputType="none"
+            >
+        </SearchView>
+        <!--Carousel section-->
+        <com.github.islamkhsh.CardSliderViewPager
+            android:id="@+id/home_carousel"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="10dp"
+            app:auto_slide_time="3"
+            app:cardSlider_indicator="@+id/home_carousel_indicator"
+            />
+        <com.github.islamkhsh.CardSliderIndicator
+            android:id="@+id/home_carousel_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
+            app:indicatorsToShow="5"/>
+        <!--Recently read comic section-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:orientation="vertical"
+            >
+            <FrameLayout
+                android:id="@+id/home_fragment_recentLyReadComicsTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <FrameLayout
+                android:id="@+id/home_fragment_reacently_read_comics"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+        </LinearLayout>
+        <!--Recommend comics section-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="10dp">
-            <LinearLayout
+            <FrameLayout
+                android:id="@+id/home_fragment_recommendComicsTitle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginEnd="10dp"
-                    android:src="@drawable/category_icon"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Hot nhất mọi thời đại"
-                    android:textSize="22dp"
-                    android:textStyle="bold" />
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    />
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/right_arrow_icon"
-                    />
-                
-            </LinearLayout>
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+<!--Hot comics section-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="320dp"
+            android:orientation="vertical"
+            android:padding="10dp">
+            <FrameLayout
+                android:id="@+id/home_fragment_hotComicsTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/hot_comics"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recommend_comics"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" />
+        </LinearLayout>
+        <!--New comics section-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:orientation="vertical"
+            android:padding="10dp">
+            <FrameLayout
+                android:id="@+id/home_fragment_newComicsTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/new_comics"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

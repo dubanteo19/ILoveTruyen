@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -10,34 +11,48 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.ILoveTruyen"
         tools:targetApi="31">
         <activity
-            android:name=".ui.categorySearch.CategoryResultActivity"
+            android:name=".ListOfStoryDownloadsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ReadingHistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ForgotPasswordActivity"
+            android:exported="false"
+            android:theme="@style/Theme.ILoveTruyen" />
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false"
+            android:theme="@style/Theme.ILoveTruyen" />
+        <activity
+            android:name=".LoginActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name">
-
-            <!-- Test xong nho xoa comment cho nay nha -->
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-        </activity>
-        <activity
-            android:name=".TestActivity"
-            android:exported="true"
-            android:label="TestComment">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.comicDetail.ComicDetailActivity"
+            android:exported="false"
+            android:label="@string/app_name"></activity>
+        <activity
+            android:name=".ui.comicDetail.ChapterListActivity"
+            android:exported="false"
+            android:label="@string/app_name"></activity>
+        <activity
+            android:name=".ui.search.SearchActivity"
+            android:exported="false"
+            android:label="@string/app_name"></activity>
     </application>
 
 </manifest>
