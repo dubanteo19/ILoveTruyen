@@ -7,17 +7,18 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.ilovetruyen.ui.categorySearch.CategoryFragment;
 import com.example.ilovetruyen.ui.comments.CommentFragment;
 
 public class TestActivity extends AppCompatActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.test_activity);
+        setContentView(R.layout.activity_test);
 
-        CommentFragment fragmentComment = new CommentFragment();
+        CategoryFragment categoryFragment = new CategoryFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.fragment_frame, fragmentComment);
+        transaction.add(R.id.fragment_frame, categoryFragment);
         transaction.commit();
 
 
