@@ -62,10 +62,10 @@ public class ExpandableTextView extends LinearLayout {
     private void updateView() {
         if (isExpanded) {
             tvContent.setMaxLines(Integer.MAX_VALUE);
-            summaryToggleBtn.setText("See Less");
+            summaryToggleBtn.setText(R.string.see_less);
         } else {
             tvContent.setMaxLines(MAX_COLLAPSED_LINES);
-            summaryToggleBtn.setText("See More");
+            summaryToggleBtn.setText(R.string.see_more);
         }
     }
 

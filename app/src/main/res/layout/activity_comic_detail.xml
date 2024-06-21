@@ -7,11 +7,12 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     android:paddingHorizontal="15dp">
-    <include layout="@layout/navigation_top_back_button"
+
+    <include
+        layout="@layout/navigation_top_back_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
         android:id="@+id/layout_scroll_view_detail"
@@ -81,7 +82,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="Trạng thái"
-                        android:text="Đang cập nhật"
+                        android:text="@string/updating"
                         app:drawableStartCompat="@drawable/ic_user_detail"
                         tools:ignore="HardcodedText" />
 
@@ -129,7 +130,7 @@
                     android:layout_marginEnd="20dp"
                     android:drawableTop="@drawable/ic_play_detail"
                     android:drawablePadding="5dp"
-                    android:text="Đang tiến hành" />
+                    android:text="@string/processing" />
 
                 <View
                     android:layout_width="1dp"
@@ -148,31 +149,16 @@
 
 
             <com.google.android.material.chip.ChipGroup
-                android:id="@+id/layout_keyword_search"
+                android:id="@+id/detail_keyword_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                app:chipSpacing="8dp"
+                app:chipSpacingHorizontal="10dp"
+                app:chipSpacingVertical="-10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/layout_status_comic"
-                app:singleSelection="false">
-
-                <include layout="@layout/button_keyword" />
-
-                <include layout="@layout/button_keyword" />
-
-                <include layout="@layout/button_keyword" />
-
-                <include layout="@layout/button_keyword" />
-
-                <include layout="@layout/button_keyword" />
-
-                <include layout="@layout/button_keyword" />
-
-
-            </com.google.android.material.chip.ChipGroup>
-
+                app:singleSelection="false"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -192,6 +178,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:orientation="vertical">
+
                 <LinearLayout
                     android:id="@+id/layout_description_comic"
                     android:layout_width="match_parent"
@@ -202,7 +189,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Danh sách chương"
+                        android:text="@string/chapter_list"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_normal"
                         android:textStyle="bold" />
@@ -217,21 +204,38 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@color/transparent"
-                        android:text="Xem tất cả"
+                        android:text="@string/see_all"
                         android:textAllCaps="false"
                         android:textColor="@color/primary"
                         android:textSize="14sp" />
                 </LinearLayout>
-
+                <!--Chapter list-->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/detail_chapters"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
-                    />
+            <!--Similar comic categories -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/similar_categories"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_normal"
+                    android:textStyle="bold" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/detail_similar_categories"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp" />
             </LinearLayout>
         </LinearLayout>
-
 
     </ScrollView>
 
@@ -274,10 +278,23 @@
                 android:textSize="12sp" />
 
         </LinearLayout>
-
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/detail_heartBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="15dp"
+            android:contentDescription="Heart button"
+            android:background="@drawable/border_round"
+            android:layout_marginRight="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/detail_saveBtn"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+        <ImageButton
+            android:id="@+id/detail_saveBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:background="@drawable/border_round"
             android:contentDescription="save your favorite"
             android:paddingHorizontal="15dp"
