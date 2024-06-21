@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.appbar.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_app_bar_comic"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/background"
+    android:paddingVertical="7dp">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background"
+        app:titleTextColor="@android:color/white">
+
+        <ImageButton
+            android:id="@+id/back_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:contentDescription="@string/back_button_description"
+            android:src="@drawable/arrow_back" />
+        <TextView
+            android:id="@+id/nav_top_title_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Title name"
+            android:textSize="@dimen/text_normal"
+            android:textStyle="bold"
+            android:contentDescription="Title name"
+            android:paddingLeft="20dp"
+            />
+    </androidx.appcompat.widget.Toolbar>
+
+
+</com.google.android.material.appbar.AppBarLayout>

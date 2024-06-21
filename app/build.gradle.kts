@@ -46,9 +46,11 @@ dependencies {
     implementation(libs.cardview)
     implementation(libs.navigation.ui)
     implementation(libs.activity)
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
     implementation("com.github.IslamKhSh:CardSlider:1.0.1")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-
 }

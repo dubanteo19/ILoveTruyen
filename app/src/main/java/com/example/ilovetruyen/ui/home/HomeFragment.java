@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -16,31 +18,42 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+
 import com.example.ilovetruyen.LoginActivity;
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.adapter.CarouselAdapter;
 import com.example.ilovetruyen.adapter.ComicAdapter;
 import com.example.ilovetruyen.adapter.HotComicsAdatper;
 import com.example.ilovetruyen.adapter.NewComicAdapter;
+import com.example.ilovetruyen.api.ComicAPI;
 import com.example.ilovetruyen.databinding.FragmentHomeBinding;
 import com.example.ilovetruyen.model.Comic;
+import com.example.ilovetruyen.ui.search.SearchActivity;
+import com.example.ilovetruyen.retrofit.RetrofitService;
 import com.github.islamkhsh.CardSliderViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
-    private RecyclerView recyclerView;
     private ComicAdapter comicAdapter;
     private HotComicsAdatper hotComicsAdatper;
     private NewComicAdapter newComicAdapter;
+    RetrofitService retrofitService;
+    ComicAPI comicAPI;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         HomeViewModel homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
-
+        retrofitService = new RetrofitService();
+        comicAPI = retrofitService.getRetrofit().create(ComicAPI.class);
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         Button home_login_btn = root.findViewById(R.id.home_login_btn);
@@ -48,40 +61,96 @@ public class HomeFragment extends Fragment {
             Intent intent = new Intent(root.getContext(), LoginActivity.class);
             startActivity(intent);
         });
+        SearchView searchView = root.findViewById(R.id.home_search_view);
+        searchView.setOnClickListener(v -> {
+            Intent intent = new Intent(root.getContext(), SearchActivity.class);
+            startActivity(intent);
+        });
         renderCarousel(root);
         renderTitle();
         renderReadingSection(root);
         renderRecommendComicsSection(root);
-        renderHotComicsSection(root);
         renderNewComicsSection(root);
+        renderHotComicsSection(root);
+
         return root;
     }
 
+    private void showError() {
+        Toast.makeText(requireContext(), "Failed to load data", Toast.LENGTH_SHORT).show();
+    }
+
     private void renderNewComicsSection(View root) {
-        recyclerView  = root.findViewById(R.id.new_comics);
+        RecyclerView recyclerView = root.findViewById(R.id.new_comics);
         newComicAdapter = new NewComicAdapter(requireContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(newComicAdapter);
-        newComicAdapter.setData(getHotComics());
+        comicAPI.getAllNewComics().enqueue(new Callback<List<Comic>>() {
+            @Override
+            public void onResponse(Call<List<Comic>> call, Response<List<Comic>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    recyclerView.setAdapter(newComicAdapter);
+                    newComicAdapter.setData(response.body());
+                } else {
+                    showError();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Comic>> call, Throwable throwable) {
+
+            }
+        });
     }
 
     private void renderHotComicsSection(View root) {
-        recyclerView = root.findViewById(R.id.hot_comics);
+        RecyclerView recyclerView = root.findViewById(R.id.hot_comics);
         hotComicsAdatper = new HotComicsAdatper(requireContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(hotComicsAdatper);
-        hotComicsAdatper.setData(getHotComics());
+        comicAPI.getAllHotComics().enqueue(new Callback<List<Comic>>() {
+            @Override
+            public void onResponse(Call<List<Comic>> call, Response<List<Comic>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    recyclerView.setAdapter(hotComicsAdatper);
+                    hotComicsAdatper.setData(response.body());
+
+                } else {
+                    showError();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Comic>> call, Throwable throwable) {
+            }
+        });
     }
 
     private void renderRecommendComicsSection(View root) {
-        recyclerView = root.findViewById(R.id.recommend_comics);
+        RecyclerView recyclerView = root.findViewById(R.id.recommend_comics);
         comicAdapter = new ComicAdapter(requireContext());
+        setupRecycleview(recyclerView, comicAdapter);
+        comicAPI.getAllRecommendationsComics().enqueue(new Callback<List<Comic>>() {
+            @Override
+            public void onResponse(Call<List<Comic>> call, Response<List<Comic>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    recyclerView.setAdapter(comicAdapter);
+                    comicAdapter.setData(response.body());
+                } else {
+                    showError();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Comic>> call, Throwable throwable) {
+                showError();
+            }
+        });
+    }
+
+    private void setupRecycleview(RecyclerView recyclerView, RecyclerView.Adapter<?> adapter) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(comicAdapter);
-        comicAdapter.setData(getHotComics());
     }
 
     private void renderReadingSection(View root) {
@@ -110,30 +179,25 @@ public class HomeFragment extends Fragment {
     }
 
     private void renderCarousel(View root) {
-        var comics = getHotComics();
-        CardSliderViewPager cardSliderViewPager = root.findViewById(R.id.home_carousel);
-        cardSliderViewPager.setAdapter(new CarouselAdapter(comics));
-    }
-        private List<Comic> getHotComics () {
-            var hotComics = new ArrayList<Comic>();
-            var comic1 = new Comic("One Piece", R.drawable.one_piece);
-            var comic2 = new Comic("Thanh Guong diet quy", R.drawable.thanh_guom_diet_quy);
-            var comic3 = new Comic("One Punchman", R.drawable.one_puch_man);
-            hotComics.add(comic1);
-            hotComics.add(comic2);
-            hotComics.add(comic3);
-            hotComics.add(comic1);
-            hotComics.add(comic2);
-            hotComics.add(comic3);
-            hotComics.add(comic1);
-            hotComics.add(comic2);
-            hotComics.add(comic3);
-            return hotComics;
-        }
+        comicAPI.getAllComics().enqueue(new Callback<List<Comic>>() {
+            @Override
+            public void onResponse(Call<List<Comic>> call, Response<List<Comic>> response) {
+                CardSliderViewPager cardSliderViewPager = root.findViewById(R.id.home_carousel);
+                cardSliderViewPager.setAdapter(new CarouselAdapter(response.body()));
+                System.out.println(response.body());
+            }
 
-        @Override
-        public void onDestroyView () {
-            super.onDestroyView();
-            binding = null;
-        }
+            @Override
+            public void onFailure(Call<List<Comic>> call, Throwable throwable) {
+                showError();
+            }
+        });
+
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+}

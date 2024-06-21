@@ -60,6 +60,15 @@
     <string name="text_forgot_password">Vui lòng điền địa chỉ email của bạn. Bạn sẽ nhận được một email với hướng dẫn mật khẩu.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="back_button_description">Nút quay lại</string>
+    <string name="see_more">Xem thêm</string>
+    <string name="see_less">Ẩn bớt</string>
+    <string name="text_description_comic">ViewMore TextView allows you to use a TextView by hiding the content of the text by a number of established lines and to display all the content expanding the TextView by a collapsing/expanding animation. It\'s possibile use an ellipses text or a foreground color gradient or both to hide the content.</string>
+    <string name="similar_categories">Cùng thể loại:</string>
+    <string name="chapter_list">Danh sách chương</string>
+    <string name="see_all">Xem tất cả</string>
+    <string name="updating">Đang cập nhật</string>
+    <string name="processing">Đang tiến hành</string>
     <string name="list">Danh sách tải truyện tranh</string>
     <string name="histoty">Lịch sử đọc truyện tranh</string>
     <string name="ads">Loại bỏ quảng cáo</string>

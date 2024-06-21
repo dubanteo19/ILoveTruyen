@@ -42,7 +42,9 @@ android:layout_width="match_parent"
             android:layout_marginHorizontal="10dp"
             android:background="@drawable/border_strike_round"
             android:iconifiedByDefault="false"
-            android:queryHint="Tìm truyện tranh">
+            android:queryHint="Tìm truyện tranh"
+            android:inputType="none"
+            >
         </SearchView>
         <!--Carousel section-->
         <com.github.islamkhsh.CardSliderViewPager
