@@ -16,5 +16,6 @@
     <color name="purple">#8692f7</color>
     <color name="email_error_color">#E10505</color>
     <color name="email_error_background_color">#AE0909</color>
+    <color name="transparent">#00000000</color>
     <color name="background_icon">#6AB1C6</color>
 </resources>
