@@ -60,4 +60,17 @@
     <string name="text_forgot_password">Vui lòng điền địa chỉ email của bạn. Bạn sẽ nhận được một email với hướng dẫn mật khẩu.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="list">Danh sách tải truyện tranh</string>
+    <string name="histoty">Lịch sử đọc truyện tranh</string>
+    <string name="ads">Loại bỏ quảng cáo</string>
+    <string name="stnc">Đồng bộ đám mây</string>
+    <string name="sync_detail">Đồng bộ lần cuối: Ngay bây giờ</string>
+    <string name="contact">Liên hệ và hỗ trợ</string>
+    <string name="sendmail">Gửi mail đến hỗ trợ</string>
+    <string name="fanpage_facebook">Fanpage Facebook</string>
+    <string name="share">Chia sẻ với bạn bè</string>
+    <string name="rating">Đánh giá ứng dụng này</string>
+    <string name="delete_res">Xóa tài khoản của bạn</string>
+    <string name="delete">Xóa tài khoản</string>
+    <string name="summary_of_goals_and_contact_information">I Love Truyện là một ứng dụng chia sẻ các thể loại truyện tranh được thu thập từ nhiều nguồn trên internet, với mục tiêu giúp cộng đồng thỏa mãn đam mê đọc truyện mọi lúc, mọi nơi. Nếu có vấn đề về bản quyền hoặc bất kỳ yêu cầu nào, vui lòng liên hệ với chúng tôi qua địa chỉ email:</string>
 </resources>
