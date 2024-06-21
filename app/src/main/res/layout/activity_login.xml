@@ -48,6 +48,15 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewTitle"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_layout_edit_email"
@@ -60,7 +69,7 @@
                 app:errorTextAppearance="@style/EmailErrorAppearance"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textViewTitle">
+                app:layout_constraintTop_toBottomOf="@id/message">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_input_edit_email"
