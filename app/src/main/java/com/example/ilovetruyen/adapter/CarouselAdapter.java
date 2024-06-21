@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.model.Comic;
 import com.github.islamkhsh.CardSliderAdapter;
@@ -28,7 +29,8 @@ public class CarouselAdapter extends CardSliderAdapter<CarouselAdapter.CarouselV
     @Override
     public void bindVH(@NonNull CarouselViewHolder carouselViewHolder, int i) {
         var comic = comics.get(i);
-        carouselViewHolder.comicThumb.setImageResource(comic.thumb());
+//        carouselViewHolder.comicThumb.setImageResource(comic.thumb());
+        Glide.with(carouselViewHolder.itemView).load(comic.thumbUrl()).into(carouselViewHolder.comicThumb);
         carouselViewHolder.comicTitle.setText(comic.name());
     }
 

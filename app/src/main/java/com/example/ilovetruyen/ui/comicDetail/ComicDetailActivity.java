@@ -101,12 +101,12 @@ public class ComicDetailActivity extends AppCompatActivity {
     }
     private void renderSimilarComics() {
 
-        recyclerView = findViewById(R.id.detail_similar_categories);
-        comicAdapter = new ComicAdapter(this);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(comicAdapter);
-        comicAdapter.setData(getHotComics());
+//        recyclerView = findViewById(R.id.detail_similar_categories);
+//        comicAdapter = new ComicAdapter(this);
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
+//        recyclerView.setLayoutManager(linearLayoutManager);
+//        recyclerView.setAdapter(comicAdapter);
+//        comicAdapter.setData(getHotComics());
     }
 
     private void heartEvent(){
@@ -127,24 +127,6 @@ public class ComicDetailActivity extends AppCompatActivity {
             }
         });
     }
-
-    private List<Comic> getHotComics () {
-        var hotComics = new ArrayList<Comic>();
-        var comic1 = new Comic("One Piece", R.drawable.one_piece);
-        var comic2 = new Comic("Thanh Guong diet quy", R.drawable.thanh_guom_diet_quy);
-        var comic3 = new Comic("One Punchman", R.drawable.one_puch_man);
-        hotComics.add(comic1);
-        hotComics.add(comic2);
-        hotComics.add(comic3);
-        hotComics.add(comic1);
-        hotComics.add(comic2);
-        hotComics.add(comic3);
-        hotComics.add(comic1);
-        hotComics.add(comic2);
-        hotComics.add(comic3);
-        return hotComics;
-    }
-
     public static List<Chapter> getChapters () {
         var chapterList = new ArrayList<Chapter>();
         Chapter chapter1 = new Chapter("Chuong 1", new Date());
