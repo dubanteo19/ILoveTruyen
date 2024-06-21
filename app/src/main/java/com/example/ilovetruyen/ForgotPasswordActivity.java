@@ -41,10 +41,10 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         String emailToText = String.valueOf(etMail.getText());
         System.out.println(emailToText);
         if (!emailToText.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(emailToText).matches()) {
-            Toast.makeText(this, "Email valid !", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Email hợp lệ !", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "Entered valid Email address !", Toast.LENGTH_SHORT).show();
-            etMail.setError("Entered valid Email address !");
+            Toast.makeText(this, "Vui lòng nhập đúng định dạng email !", Toast.LENGTH_SHORT).show();
+            etMail.setError("Vui lòng nhập đúng định dạng email !");
         }
     }
 }
