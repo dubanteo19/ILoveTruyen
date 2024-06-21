@@ -40,26 +40,26 @@ public class SearchActivity extends AppCompatActivity {
 
     private void renderResult() {
 
-        searchBtn.setOnClickListener(v -> {
-            List<Comic> results = getHotComics();//Danh sach kết quả tìm kiếm
-            if (results != null) {
-                recyclerView = findViewById(R.id.search_result_comics);
-                comicAdapter = new ComicAdapter(getApplicationContext());
-                GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 3);
-                recyclerView.setLayoutManager(gridLayoutManager);
-                recyclerView.setAdapter(comicAdapter);
-                comicAdapter.setData(results);
-                recyclerView.setVisibility(View.VISIBLE);
-                layoutNotFound.setVisibility(View.GONE);
-            }else{
-                recyclerView.setVisibility(View.GONE);
-                layoutNotFound.setVisibility(View.VISIBLE);
-            }
-        });
+//        searchBtn.setOnClickListener(v -> {
+////            List<Comic> results = getHotComics();//Danh sach kết quả tìm kiếm
+//            if (results != null) {
+//                recyclerView = findViewById(R.id.search_result_comics);
+//                comicAdapter = new ComicAdapter(getApplicationContext());
+//                GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 3);
+//                recyclerView.setLayoutManager(gridLayoutManager);
+//                recyclerView.setAdapter(comicAdapter);
+//                comicAdapter.setData(results);
+//                recyclerView.setVisibility(View.VISIBLE);
+//                layoutNotFound.setVisibility(View.GONE);
+//            }else{
+//                recyclerView.setVisibility(View.GONE);
+//                layoutNotFound.setVisibility(View.VISIBLE);
+//            }
+//        });
 
     }
 
-    private List<Comic> getHotComics() {
+//    private List<Comic> getHotComics() {
 //        var hotComics = new ArrayList<Comic>();
 //        var comic1 = new Comic("One Piece", R.drawable.one_piece);
 //        var comic2 = new Comic("Thanh Guong diet quy", R.drawable.thanh_guom_diet_quy);
@@ -74,6 +74,6 @@ public class SearchActivity extends AppCompatActivity {
 //        hotComics.add(comic2);
 //        hotComics.add(comic3);
 //        return hotComics;
-    }
+//    }
 
 }
