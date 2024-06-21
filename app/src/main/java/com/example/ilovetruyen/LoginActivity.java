@@ -47,9 +47,6 @@ public class LoginActivity extends AppCompatActivity {
         TextInputEditText password = findViewById(R.id.et_input_edit_pasword);
         btn_Login.setOnClickListener(v -> {
             emailValidator(emailValidate);
-            if (!passwordValidator(password)) {
-                return;
-            }
             String email = String.valueOf(emailValidate.getText());
             String pass = String.valueOf(password.getText());
             if(email.equals("ngan@gmail.com") && pass.equals("123")){
@@ -73,13 +70,5 @@ public class LoginActivity extends AppCompatActivity {
             etMail.setError("Vui lòng nhập đúng định dạng email !");
         }
     }
-    public boolean passwordValidator(TextInputEditText etPassword){
-        String passwordToText = String.valueOf(etPassword.getText());
-        if (passwordToText.length() < 6) {
-            Toast.makeText(this, "Mật khẩu phải có ít nhất 6 ký tự!", Toast.LENGTH_SHORT).show();
-            etPassword.setError("Mật khẩu phải có ít nhất 6 ký tự!");
-            return false;
-        }
-        return true;
-    }
+
 }
