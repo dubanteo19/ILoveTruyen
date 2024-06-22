@@ -69,7 +69,7 @@ public class HomeFragment extends Fragment {
         renderCarousel(root);
         renderTitle();
         renderReadingSection(root);
-        renderRecommendComicsSection(root);
+//        renderRecommendComicsSection(root);
         renderNewComicsSection(root);
         renderHotComicsSection(root);
 

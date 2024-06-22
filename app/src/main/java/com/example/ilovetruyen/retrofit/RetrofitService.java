@@ -13,7 +13,7 @@ public class RetrofitService {
     }
 
     private void initializeRetrofit() {
-        final String url = "http://172.16.3.205:8080";
+        final String url = "https://ilovetruyenserver-production.up.railway.app";
         Gson gson = GsonConfig.createGson();
         retrofit = new Retrofit
                 .Builder()
