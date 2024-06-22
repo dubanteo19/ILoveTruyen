@@ -19,7 +19,7 @@
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:title="Adventure"
-            android:background="@color/white"
+            android:background="@color/background"
             app:navigationIcon="@drawable/baseline_keyboard_arrow_left_24" />
 
     </com.google.android.material.appbar.AppBarLayout>
