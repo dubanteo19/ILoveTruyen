@@ -1,4 +1,5 @@
 package com.example.ilovetruyen.adapter;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,21 +11,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.model.Category;
+import com.example.ilovetruyen.util.GradientHelper;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
 
 public class CategoryItemAdapter extends RecyclerView.Adapter<CategoryItemAdapter.CategoryItemViewHolder> {
-    public interface OnCategoryItemClickListener {
-        void onCategoryItemClick(int position);
+    private  List<Category> categoryList;
+    private Context context;
+    public CategoryItemAdapter(Context context) {
+        this.context = context;
     }
-
-    private final List<Category> categoryList;
-    private final OnCategoryItemClickListener onCategoryItemClickListener;
-
-    public CategoryItemAdapter(List<Category> categoryList, OnCategoryItemClickListener onCategoryItemClickListener) {
-        this.categoryList = categoryList;
-        this.onCategoryItemClickListener = onCategoryItemClickListener;
+    public void setData(List<Category> categoryList){
+        this.categoryList=categoryList;
+        notifyDataSetChanged();
     }
     @Override
     public CategoryItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -35,16 +35,16 @@ public class CategoryItemAdapter extends RecyclerView.Adapter<CategoryItemAdapte
 
     @Override
     public void onBindViewHolder(@NonNull CategoryItemViewHolder holder, int position) {
-        Category category = this.categoryList.get(position);
-        holder.txtCategoryName.setText(category.getName());
-        holder.txtCategoryDescription.setText(category.getDescription());
-        holder.cardView.setBackgroundResource(category.getBackground());
-        holder.cardView.setOnClickListener(v -> {
-            int currentPosition = holder.getBindingAdapterPosition();
-            if (currentPosition != RecyclerView.NO_POSITION) {
-                onCategoryItemClickListener.onCategoryItemClick(currentPosition);
-            }
-        });
+        Category category = categoryList.get(position);
+        holder.txtCategoryName.setText(category.name());
+//        holder.txtCategoryDescription.setText(category.getDescription());
+        holder.cardView.setBackgroundResource(GradientHelper.getColor(category.id()));
+//        holder.cardView.setOnClickListener(v -> {
+//            int currentPosition = holder.getBindingAdapterPosition();
+//            if (currentPosition != RecyclerView.NO_POSITION) {
+//                onCategoryItemClickListener.onCategoryItemClick(currentPosition);
+//            }
+//        });
     }
 
     @Override
