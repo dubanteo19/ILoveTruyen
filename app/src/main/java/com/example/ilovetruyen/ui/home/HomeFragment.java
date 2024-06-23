@@ -22,11 +22,14 @@ import androidx.navigation.Navigation;
 import com.example.ilovetruyen.LoginActivity;
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.adapter.CarouselAdapter;
+import com.example.ilovetruyen.adapter.CategoryItemAdapter;
 import com.example.ilovetruyen.adapter.ComicAdapter;
 import com.example.ilovetruyen.adapter.HotComicsAdatper;
 import com.example.ilovetruyen.adapter.NewComicAdapter;
+import com.example.ilovetruyen.api.CategoryAPI;
 import com.example.ilovetruyen.api.ComicAPI;
 import com.example.ilovetruyen.databinding.FragmentHomeBinding;
+import com.example.ilovetruyen.model.Category;
 import com.example.ilovetruyen.model.Comic;
 import com.example.ilovetruyen.ui.search.SearchActivity;
 import com.example.ilovetruyen.retrofit.RetrofitService;
@@ -45,6 +48,7 @@ public class HomeFragment extends Fragment {
     private ComicAdapter comicAdapter;
     private HotComicsAdatper hotComicsAdatper;
     private NewComicAdapter newComicAdapter;
+    private CategoryItemAdapter categoryItemAdapter;
     RetrofitService retrofitService;
     ComicAPI comicAPI;
 
@@ -72,9 +76,32 @@ public class HomeFragment extends Fragment {
         renderRecommendComicsSection(root);
         renderNewComicsSection(root);
         renderHotComicsSection(root);
-
+        renderCategoriesSection(root);
         return root;
     }
+
+    private void renderCategoriesSection(View root) {
+        RecyclerView recyclerView = root.findViewById(R.id.categoies);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        categoryItemAdapter = new CategoryItemAdapter(requireContext());
+        CategoryAPI categoryAPI = retrofitService.getRetrofit().create(CategoryAPI.class);
+        categoryAPI.findAllCategories().enqueue(new Callback<List<Category>>() {
+            @Override
+            public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
+                if(response.isSuccessful()){
+                    recyclerView.setAdapter(categoryItemAdapter);
+                    categoryItemAdapter.setData(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Category>> call, Throwable throwable) {
+
+            }
+        });
+    }
+
 
     private void showError() {
         Toast.makeText(requireContext(), "Failed to load data", Toast.LENGTH_SHORT).show();
@@ -172,7 +199,11 @@ public class HomeFragment extends Fragment {
         fragmentTransaction
                 .replace(R.id.home_fragment_newComicsTitle, HomeSectionTitleFragment
                         .newInstance("Truyện tranh mới", "", R.drawable.category_icon));
+        fragmentTransaction
+                .replace(R.id.home_fragment_categoryTitle, HomeSectionTitleFragment
+                        .newInstance("Thể loại", "", R.drawable.category_icon));
         fragmentTransaction.commit();
+
     }
 
     private void renderCarousel(View root) {
