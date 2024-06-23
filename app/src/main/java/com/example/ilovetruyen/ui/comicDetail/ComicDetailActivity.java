@@ -53,16 +53,12 @@ public class ComicDetailActivity extends AppCompatActivity {
     private ComicDetail comicDetail;
     private Comic comic;
     private List<Chapter> chapterList;
-    private int comicId = 1;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comic_detail);
-
         // Khoi tai dich vu retrofit
-        fetchComicDetail(comicId);
-
+        fetchComicDetail(getIntent().getIntExtra("comicId",1));
         heartEvent();
 
     }
@@ -182,7 +178,7 @@ public class ComicDetailActivity extends AppCompatActivity {
         detailSeeChaptersBtn = findViewById(R.id.detail_see_chapters_btn);
         detailSeeChaptersBtn.setOnClickListener(v->{
             Intent intent = new Intent(this, ChapterListActivity.class);
-            intent.putExtra("comicId", comicId);
+            intent.putExtra("comicId", comic.id());
             startActivity(intent);
         });
     }
