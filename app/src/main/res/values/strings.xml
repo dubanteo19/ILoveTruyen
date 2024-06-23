@@ -84,5 +84,6 @@
     <string name="summary_of_goals_and_contact_information">I Love Truyện là một ứng dụng chia sẻ các thể loại truyện tranh được thu thập từ nhiều nguồn trên internet, với mục tiêu giúp cộng đồng thỏa mãn đam mê đọc truyện mọi lúc, mọi nơi. Nếu có vấn đề về bản quyền hoặc bất kỳ yêu cầu nào, vui lòng liên hệ với chúng tôi qua địa chỉ email:</string>
     <string name="tag"> Hãy tham gia cùng chúng tôi và \n xây dựng mối quan hệ của bạn với những người khác.</string>
     <string name="comic_history">Lịch sử truyện đã đọc</string>
+    <string name="update_info">Cập nhật thông tin</string>
 
 </resources>

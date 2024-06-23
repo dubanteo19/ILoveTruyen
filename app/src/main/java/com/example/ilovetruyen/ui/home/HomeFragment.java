@@ -1,12 +1,18 @@
 package com.example.ilovetruyen.ui.home;
 
+import static android.content.Context.MODE_PRIVATE;
+import static android.content.Intent.getIntent;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,6 +34,7 @@ import com.example.ilovetruyen.adapter.NewComicAdapter;
 import com.example.ilovetruyen.api.ComicAPI;
 import com.example.ilovetruyen.databinding.FragmentHomeBinding;
 import com.example.ilovetruyen.model.Comic;
+import com.example.ilovetruyen.model.User;
 import com.example.ilovetruyen.ui.search.SearchActivity;
 import com.example.ilovetruyen.retrofit.RetrofitService;
 import com.github.islamkhsh.CardSliderViewPager;
@@ -57,6 +64,26 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         Button home_login_btn = root.findViewById(R.id.home_login_btn);
+        TextView userName = root.findViewById(R.id.userName);
+        TextView wellcome = root.findViewById(R.id.wellcome);
+        ImageView iconsStar  = root.findViewById(R.id.iconsStar);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_prefs", MODE_PRIVATE);
+        boolean isLoggedIn = sharedPreferences.getBoolean("is_logged_in", false);
+        if (isLoggedIn) {
+            home_login_btn.setVisibility(View.GONE);
+            userName.setVisibility(View.VISIBLE);
+            wellcome.setVisibility(View.VISIBLE);
+            iconsStar.setVisibility(View.VISIBLE);
+            String fullName = sharedPreferences.getString("user_name", "User");
+            userName.setText("Hi " + fullName + "!");
+            wellcome.setText("Chào mừng bạn trở lại");
+
+        } else {
+            home_login_btn.setVisibility(View.VISIBLE);
+            userName.setVisibility(View.GONE);
+            iconsStar.setVisibility(View.GONE);
+            wellcome.setVisibility(View.GONE);
+        }
         home_login_btn.setOnClickListener(v -> {
             Intent intent = new Intent(root.getContext(), LoginActivity.class);
             startActivity(intent);
