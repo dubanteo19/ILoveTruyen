@@ -59,7 +59,6 @@
     <string name="sendMail">Gửi mail</string>
     <string name="text_forgot_password">Vui lòng điền địa chỉ email của bạn. Bạn sẽ nhận được một email với hướng dẫn mật khẩu.</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="back_button_description">Nút quay lại</string>
     <string name="see_more">Xem thêm</string>
     <string name="see_less">Ẩn bớt</string>
@@ -89,5 +88,6 @@
     <string name="enter_comment">Nhập bình luận</string>
     <string name="send_comment">Gửi</string>
     <string name="loading">Đang tải...</string>
-
+    <string name="introduction">ILoveTruyen là một dự án chia sẻ đa dạng các thể loại truyện tranh, được thu thập từ nhiều nguồn khác nhau trên internet. Với mục tiêu mang đến những tác phẩm truyện tranh hấp dẫn và mới nhất cho cộng đồng, ILoveTruyen mong muốn lan tỏa văn hóa đọc truyện đến mọi người dân Việt Nam.</string>
+    <string name="version">Phiên bản 1.0.1</string>
 </resources>
