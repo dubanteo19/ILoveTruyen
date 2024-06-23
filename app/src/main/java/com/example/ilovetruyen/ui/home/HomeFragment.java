@@ -69,7 +69,7 @@ public class HomeFragment extends Fragment {
         renderCarousel(root);
         renderTitle();
         renderReadingSection(root);
-//        renderRecommendComicsSection(root);
+        renderRecommendComicsSection(root);
         renderNewComicsSection(root);
         renderHotComicsSection(root);
 
@@ -127,14 +127,15 @@ public class HomeFragment extends Fragment {
     }
 
     private void renderRecommendComicsSection(View root) {
-        RecyclerView recyclerView = root.findViewById(R.id.recommend_comics);
+        RecyclerView recyclerView2 = root.findViewById(R.id.recommend_comics);
         comicAdapter = new ComicAdapter(requireContext());
-        setupRecycleview(recyclerView, comicAdapter);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false);
+        recyclerView2.setLayoutManager(linearLayoutManager);
         comicAPI.getAllRecommendationsComics().enqueue(new Callback<List<Comic>>() {
             @Override
             public void onResponse(Call<List<Comic>> call, Response<List<Comic>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    recyclerView.setAdapter(comicAdapter);
+                    recyclerView2.setAdapter(comicAdapter);
                     comicAdapter.setData(response.body());
                 } else {
                     showError();
@@ -148,10 +149,6 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void setupRecycleview(RecyclerView recyclerView, RecyclerView.Adapter<?> adapter) {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false);
-        recyclerView.setLayoutManager(linearLayoutManager);
-    }
 
     private void renderReadingSection(View root) {
         FragmentManager fm = getActivity().getSupportFragmentManager();
