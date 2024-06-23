@@ -46,7 +46,7 @@
                     app:cardCornerRadius="20dp">
 
                     <ImageView
-                        android:id="@+id/comic_thumb_detail"
+                        android:id="@+id/detail_comic_thumb"
                         android:layout_width="130dp"
                         android:layout_height="180dp"
                         android:layout_gravity="top"
@@ -62,22 +62,17 @@
                     android:paddingHorizontal="10dp">
 
                     <TextView
-                        android:id="@+id/comic_name_detail"
+                        android:id="@+id/detail_name_comic"
+                        style="@style/infomationDetail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="One Piece"
+                        android:text="Đang tải..."
                         android:textAllCaps="false"
                         android:textSize="22sp"
                         tools:ignore="HardcodedText" />
 
                     <TextView
-                        style="@style/infomationDetail"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Vui Hải Tặc; Đảo Hải tặc; OnePiece"
-                        android:textSize="12sp" />
-
-                    <TextView
+                        android:id="@+id/detail_author_name"
                         style="@style/infomationDetail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -87,29 +82,32 @@
                         tools:ignore="HardcodedText" />
 
                     <TextView
+                        android:id="@+id/detail_likes"
                         style="@style/infomationDetail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="Lượt thích"
-                        android:text="325.515"
+                        android:text="@string/loading"
                         app:drawableStartCompat="@drawable/ic_heart_detail"
                         tools:ignore="HardcodedText" />
 
                     <TextView
+                        android:id="@+id/detail_views"
                         style="@style/infomationDetail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="Lượt xem"
                         android:drawableStart="@drawable/ic_eye_detail"
-                        android:text="166.972.101" />
+                        android:text="@string/loading" />
 
                     <TextView
+                        android:id="@+id/detail_created_at"
                         style="@style/infomationDetail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="Thời gian"
                         android:drawableStart="@drawable/ic_clock_detail"
-                        android:text="31/03/2003 12:39" />
+                        android:text="@string/loading" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -125,12 +123,13 @@
                 app:layout_constraintTop_toBottomOf="@id/layout_title_comic">
 
                 <TextView
+                    android:id="@+id/detail_processing"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="20dp"
                     android:drawableTop="@drawable/ic_play_detail"
                     android:drawablePadding="5dp"
-                    android:text="@string/processing" />
+                    android:text="@string/loading" />
 
                 <View
                     android:layout_width="1dp"
@@ -138,13 +137,14 @@
                     android:background="@android:color/darker_gray" />
 
                 <TextView
+                    android:id="@+id/detail_chapterLength"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:drawableTop="@drawable/ic_book_detail"
                     android:drawablePadding="5dp"
                     android:gravity="center"
-                    android:text="218 chương" />
+                    android:text="@string/loading" />
             </LinearLayout>
 
 

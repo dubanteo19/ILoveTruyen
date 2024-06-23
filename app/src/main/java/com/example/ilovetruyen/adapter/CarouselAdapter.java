@@ -1,8 +1,10 @@
 package com.example.ilovetruyen.adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.model.Comic;
+import com.example.ilovetruyen.ui.comicDetail.ComicDetailActivity;
 import com.github.islamkhsh.CardSliderAdapter;
 
 import java.util.List;
@@ -51,10 +54,16 @@ public class CarouselAdapter extends CardSliderAdapter<CarouselAdapter.CarouselV
     public class CarouselViewHolder extends RecyclerView.ViewHolder {
         private TextView comicTitle;
         private ImageView comicThumb;
+        private Button readNowBtn;
         public CarouselViewHolder(@NonNull View itemView) {
             super(itemView);
             comicTitle = itemView.findViewById(R.id.home_carousel_comic_title);
             comicThumb = itemView.findViewById(R.id.home_carousel_comic_thumb);
+            readNowBtn = itemView.findViewById(R.id.home_carousel_btn);
+            readNowBtn.setOnClickListener(v -> {
+                Intent intent = new Intent(itemView.getContext(), ComicDetailActivity.class);
+                itemView.getContext().startActivity(intent);
+            });
         }
     }
 }
