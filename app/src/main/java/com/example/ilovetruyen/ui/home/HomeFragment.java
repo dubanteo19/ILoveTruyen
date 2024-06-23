@@ -16,9 +16,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-
 import com.example.ilovetruyen.LoginActivity;
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.adapter.CarouselAdapter;
@@ -35,7 +32,6 @@ import com.example.ilovetruyen.ui.search.SearchActivity;
 import com.example.ilovetruyen.retrofit.RetrofitService;
 import com.github.islamkhsh.CardSliderViewPager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -73,11 +69,20 @@ public class HomeFragment extends Fragment {
         renderCarousel(root);
         renderTitle();
         renderReadingSection(root);
-//        renderRecommendComicsSection(root);
+        renderRecommendComicsSection(root);
         renderNewComicsSection(root);
         renderHotComicsSection(root);
         renderCategoriesSection(root);
+        renderFooter();
         return root;
+    }
+
+    private void renderFooter() {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        fragmentTransaction
+                .replace(R.id.home_fragment_footer, FooterFragment.newInstance());
+        fragmentTransaction.commit();
     }
 
     private void renderCategoriesSection(View root) {
@@ -89,7 +94,7 @@ public class HomeFragment extends Fragment {
         categoryAPI.findAllCategories().enqueue(new Callback<List<Category>>() {
             @Override
             public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     recyclerView.setAdapter(categoryItemAdapter);
                     categoryItemAdapter.setData(response.body());
                 }
@@ -154,14 +159,15 @@ public class HomeFragment extends Fragment {
     }
 
     private void renderRecommendComicsSection(View root) {
-        RecyclerView recyclerView = root.findViewById(R.id.recommend_comics);
+        RecyclerView recyclerView2 = root.findViewById(R.id.recommend_comics);
         comicAdapter = new ComicAdapter(requireContext());
-        setupRecycleview(recyclerView, comicAdapter);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false);
+        recyclerView2.setLayoutManager(linearLayoutManager);
         comicAPI.getAllRecommendationsComics().enqueue(new Callback<List<Comic>>() {
             @Override
             public void onResponse(Call<List<Comic>> call, Response<List<Comic>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    recyclerView.setAdapter(comicAdapter);
+                    recyclerView2.setAdapter(comicAdapter);
                     comicAdapter.setData(response.body());
                 } else {
                     showError();
@@ -175,10 +181,6 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void setupRecycleview(RecyclerView recyclerView, RecyclerView.Adapter<?> adapter) {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false);
-        recyclerView.setLayoutManager(linearLayoutManager);
-    }
 
     private void renderReadingSection(View root) {
         FragmentManager fm = getActivity().getSupportFragmentManager();

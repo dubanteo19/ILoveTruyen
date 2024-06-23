@@ -11,7 +11,8 @@
     <color name="primary">#04a6ea </color>
     <color name="secondary">#da5c36</color>
     <color name="red">#F44336</color>
-    <color name="text">#5a5e68  </color>
+    <color name="text">#5a5e68 </color>
+    <color name="textz">#71747B</color>
     <color name="gray">#E2E8ED</color>
     <color name="purple">#8692f7</color>
     <color name="email_error_color">#E10505</color>
