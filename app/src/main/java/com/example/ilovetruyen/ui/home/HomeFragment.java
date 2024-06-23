@@ -27,7 +27,7 @@ import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.adapter.CarouselAdapter;
 import com.example.ilovetruyen.adapter.CategoryItemAdapter;
 import com.example.ilovetruyen.adapter.ComicAdapter;
-import com.example.ilovetruyen.adapter.HotComicsAdatper;
+import com.example.ilovetruyen.adapter.HotComicsAdapter;
 import com.example.ilovetruyen.adapter.NewComicAdapter;
 import com.example.ilovetruyen.api.CategoryAPI;
 import com.example.ilovetruyen.api.ComicAPI;
@@ -49,7 +49,7 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
     private ComicAdapter comicAdapter;
-    private HotComicsAdatper hotComicsAdatper;
+    private HotComicsAdapter hotComicsAdatper;
     private NewComicAdapter newComicAdapter;
     private CategoryItemAdapter categoryItemAdapter;
     RetrofitService retrofitService;
@@ -164,7 +164,7 @@ public class HomeFragment extends Fragment {
 
     private void renderHotComicsSection(View root) {
         RecyclerView recyclerView = root.findViewById(R.id.hot_comics);
-        hotComicsAdatper = new HotComicsAdatper(requireContext());
+        hotComicsAdatper = new HotComicsAdapter(requireContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         comicAPI.getAllHotComics().enqueue(new Callback<List<Comic>>() {
@@ -243,7 +243,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Comic>> call, Response<List<Comic>> response) {
                 CardSliderViewPager cardSliderViewPager = root.findViewById(R.id.home_carousel);
-                cardSliderViewPager.setAdapter(new CarouselAdapter(response.body()));
+                cardSliderViewPager.setAdapter(new CarouselAdapter(response.body(),root.getContext()));
                 System.out.println(response.body());
             }
 

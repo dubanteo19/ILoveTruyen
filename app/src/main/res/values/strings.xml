@@ -68,6 +68,8 @@
     <string name="see_all">Xem tất cả</string>
     <string name="updating">Đang cập nhật</string>
     <string name="processing">Đang tiến hành</string>
+    <string name="inactive">Không hoạt động</string>
+    <string name="finshed">Hoàn thành</string>
     <string name="list">Danh sách tải truyện tranh</string>
     <string name="histoty">Lịch sử đọc truyện tranh</string>
     <string name="ads">Loại bỏ quảng cáo</string>
@@ -87,6 +89,7 @@
 
     <string name="enter_comment">Nhập bình luận</string>
     <string name="send_comment">Gửi</string>
+    <string name="loading">Đang tải...</string>
     <string name="introduction">ILoveTruyen là một dự án chia sẻ đa dạng các thể loại truyện tranh, được thu thập từ nhiều nguồn khác nhau trên internet. Với mục tiêu mang đến những tác phẩm truyện tranh hấp dẫn và mới nhất cho cộng đồng, ILoveTruyen mong muốn lan tỏa văn hóa đọc truyện đến mọi người dân Việt Nam.</string>
     <string name="version">Phiên bản 1.0.1</string>
 </resources>
