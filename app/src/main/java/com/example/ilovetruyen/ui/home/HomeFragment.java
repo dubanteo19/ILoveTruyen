@@ -16,9 +16,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-
 import com.example.ilovetruyen.LoginActivity;
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.adapter.CarouselAdapter;
@@ -35,7 +32,6 @@ import com.example.ilovetruyen.ui.search.SearchActivity;
 import com.example.ilovetruyen.retrofit.RetrofitService;
 import com.github.islamkhsh.CardSliderViewPager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -77,7 +73,16 @@ public class HomeFragment extends Fragment {
         renderNewComicsSection(root);
         renderHotComicsSection(root);
         renderCategoriesSection(root);
+        renderFooter();
         return root;
+    }
+
+    private void renderFooter() {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        fragmentTransaction
+                .replace(R.id.home_fragment_footer, FooterFragment.newInstance());
+        fragmentTransaction.commit();
     }
 
     private void renderCategoriesSection(View root) {
@@ -89,7 +94,7 @@ public class HomeFragment extends Fragment {
         categoryAPI.findAllCategories().enqueue(new Callback<List<Category>>() {
             @Override
             public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     recyclerView.setAdapter(categoryItemAdapter);
                     categoryItemAdapter.setData(response.body());
                 }
