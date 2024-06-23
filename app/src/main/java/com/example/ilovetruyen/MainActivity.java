@@ -2,9 +2,12 @@ package com.example.ilovetruyen;
 
 import android.os.Bundle;
 
+import com.example.ilovetruyen.databinding.FragmentCommentBinding;
+import com.example.ilovetruyen.ui.comments.CommentFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
