@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="10dp"
+    app:cardCornerRadius="10dp">
+
+    <LinearLayout
+        android:layout_width="120dp"
+        android:layout_height="190dp"
+        android:background="@color/background"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            >
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cardCornerRadius="20dp">
+                <ImageView
+                    android:id="@+id/favorite_comic_thumb"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/thanh_guom_diet_quy" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/hot_lable"
+                        android:layout_width="30dp"
+                        android:layout_height="20dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+
+                        android:layout_alignParentLeft="true"
+                        android:text="Hot"
+                        android:textSize="10dp"
+                        android:textColor="@color/white"
+                        android:textAlignment="center"
+                        android:gravity="center"
+                        android:background="@drawable/border_red_padding"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp">
+
+                    </TextView>
+                    <ImageButton
+                        android:id="@+id/detail_saveBtn"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/border_left_side_round"
+                        android:contentDescription="remove your favorite"
+                        android:src="@drawable/bookmark_remove"
+                        android:layout_alignParentRight="true">
+                    </ImageButton>
+
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/marquee_comic_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Kimetsu No Yaiba"
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:scrollHorizontally="true"
+            android:marqueeRepeatLimit="marquee_forever"/>
+        <TextView
+            android:id="@+id/favorite_comic_currentChap"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Đang xem chapter 1"
+            android:textSize="10dp"
+            android:textAlignment="center"/>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

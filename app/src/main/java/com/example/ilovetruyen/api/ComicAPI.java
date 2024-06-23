@@ -16,4 +16,6 @@ public interface ComicAPI {
     Call<List<Comic>> getAllHotComics();
     @GET("/api/v1/comics/latest")
     Call<List<Comic>> getAllNewComics();
+    @GET("/api/v1/comics/favorite")
+    Call<List<Comic>> getFavoriteComics();
 }
