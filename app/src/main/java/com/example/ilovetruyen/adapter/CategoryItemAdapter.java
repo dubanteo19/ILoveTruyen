@@ -1,5 +1,6 @@
 package com.example.ilovetruyen.adapter;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.model.Category;
+import com.example.ilovetruyen.ui.search.SearchResultActivity;
 import com.example.ilovetruyen.util.GradientHelper;
 import com.google.android.material.card.MaterialCardView;
 
@@ -39,12 +41,12 @@ public class CategoryItemAdapter extends RecyclerView.Adapter<CategoryItemAdapte
         holder.txtCategoryName.setText(category.name());
 //        holder.txtCategoryDescription.setText(category.getDescription());
         holder.cardView.setBackgroundResource(GradientHelper.getColor(category.id()));
-//        holder.cardView.setOnClickListener(v -> {
-//            int currentPosition = holder.getBindingAdapterPosition();
-//            if (currentPosition != RecyclerView.NO_POSITION) {
-//                onCategoryItemClickListener.onCategoryItemClick(currentPosition);
-//            }
-//        });
+        holder.cardView.setOnClickListener(v -> {
+             Intent intent = new Intent(context, SearchResultActivity.class);
+            intent.putExtra("title",category.name());
+            intent.putExtra("categoryId",category.id());
+            context.startActivity(intent);
+        });
     }
 
     @Override

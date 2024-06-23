@@ -34,16 +34,14 @@ public class SearchActivity extends AppCompatActivity {
         backBtn = findViewById(R.id.search_back_icon);
         layoutNotFound = findViewById(R.id.search_layout_not_found);
         backBtn.setOnClickListener(v -> finish());
-
         renderResult();
     }
 
     private void renderResult() {
-
 //        searchBtn.setOnClickListener(v -> {
 ////            List<Comic> results = getHotComics();//Danh sach kết quả tìm kiếm
 //            if (results != null) {
-//                recyclerView = findViewById(R.id.search_result_comics);
+                recyclerView = findViewById(R.id.search_result_comics);
 //                comicAdapter = new ComicAdapter(getApplicationContext());
 //                GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 3);
 //                recyclerView.setLayoutManager(gridLayoutManager);
