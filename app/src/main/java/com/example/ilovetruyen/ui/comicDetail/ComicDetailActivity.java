@@ -53,17 +53,16 @@ public class ComicDetailActivity extends AppCompatActivity {
     private ComicDetail comicDetail;
     private Comic comic;
     private List<Chapter> chapterList;
-    private int comicId = 1;
     private boolean isChecked;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comic_detail);
-
         // Khoi tai dich vu retrofit
-        fetchComicDetail(comicId);
-        heartEvent();
+        fetchComicDetail(1);
+        fetchComicDetail(getIntent().getIntExtra("comicId",1));
+//        heartEvent();
 
     }
 
@@ -181,7 +180,7 @@ public class ComicDetailActivity extends AppCompatActivity {
         detailSeeChaptersBtn = findViewById(R.id.detail_see_chapters_btn);
         detailSeeChaptersBtn.setOnClickListener(v -> {
             Intent intent = new Intent(this, ChapterListActivity.class);
-            intent.putExtra("comicId", comicId);
+            intent.putExtra("comicId", comic.id());
             startActivity(intent);
         });
     }
@@ -212,7 +211,7 @@ public class ComicDetailActivity extends AppCompatActivity {
         likes = findViewById(R.id.detail_likes);
         Drawable drawable = button.getDrawable();
         if (isChecked) {
-            comicDetailAPI.like(comicId).enqueue(new Callback<Integer>() {
+            comicDetailAPI.like(comic.id()).enqueue(new Callback<Integer>() {
                 @Override
                 public void onResponse(Call<Integer> call, Response<Integer> response) {
                     if(response.isSuccessful()){
@@ -228,7 +227,7 @@ public class ComicDetailActivity extends AppCompatActivity {
                 }
             });
         } else {
-            comicDetailAPI.like(comicId).enqueue(new Callback<Integer>() {
+            comicDetailAPI.like(comic.id()).enqueue(new Callback<Integer>() {
                 @Override
                 public void onResponse(Call<Integer> call, Response<Integer> response) {
                     if(response.isSuccessful()){

@@ -51,7 +51,8 @@
                         android:layout_height="180dp"
                         android:layout_gravity="top"
                         android:contentDescription="main image"
-                        android:src="@drawable/one_piece"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/image_place_holder"
                         tools:ignore="HardcodedText" />
                 </androidx.cardview.widget.CardView>
 
