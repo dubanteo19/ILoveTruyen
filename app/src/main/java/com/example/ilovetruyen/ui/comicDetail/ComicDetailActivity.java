@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,6 +28,7 @@ import com.example.ilovetruyen.model.Comic;
 import com.example.ilovetruyen.model.ComicDetail;
 import com.example.ilovetruyen.retrofit.RetrofitService;
 import com.example.ilovetruyen.ui.StatusHelper;
+import com.example.ilovetruyen.ui.comments.CommentFragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -54,14 +56,14 @@ public class ComicDetailActivity extends AppCompatActivity {
     private Comic comic;
     private List<Chapter> chapterList;
     private boolean isChecked;
+    private CommentFragment commentFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comic_detail);
-        // Khoi tai dich vu retrofit
-        fetchComicDetail(1);
         fetchComicDetail(getIntent().getIntExtra("comicId",1));
+
 //        heartEvent();
 
     }
@@ -106,6 +108,7 @@ public class ComicDetailActivity extends AppCompatActivity {
         renderInfomation();
         renderKeywords();
         renderSummaryComic();
+        renderComments();
         renderSimilarComics();
 
     }
@@ -149,9 +152,16 @@ public class ComicDetailActivity extends AppCompatActivity {
     }
 
     /* Summary comic*/
+
     private void renderSummaryComic() {
         ExpandableTextView expandableTextView = findViewById(R.id.expandable_text_view);
         expandableTextView.setText(comicDetail.description());
+    }
+    private void renderComments() {
+        commentFragment = new CommentFragment();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.add(R.id.detail_comments, commentFragment);
+        transaction.commit();
     }
 
     /* category keywords*/

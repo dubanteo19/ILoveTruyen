@@ -5,20 +5,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.ilovetruyen.R;
-import com.example.ilovetruyen.model.Comment;
+import com.example.ilovetruyen.model.Commentzz;
 import com.example.ilovetruyen.ui.comments.OnEditCommentListener;
 
 import java.util.List;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
 
-    private List<Comment> commentList;
+    private List<Commentzz> commentList;
     private OnEditCommentListener onEditCommentListener;
 
-    public CommentAdapter(List<Comment> commentList, OnEditCommentListener onEditCommentListener) {
+    public CommentAdapter(List<Commentzz> commentList, OnEditCommentListener onEditCommentListener) {
         this.commentList = commentList;
         this.onEditCommentListener = onEditCommentListener;
     }
@@ -32,13 +33,18 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
     @Override
     public void onBindViewHolder(CommentViewHolder holder, int position) {
-        Comment comment = commentList.get(position);
-        holder.userName.setText(comment.getUserName());
-        holder.commentText.setText(comment.getCommentText());
-        holder.commentTime.setText(comment.getTime());
-        holder.userImage.setImageResource(comment.getUserImage());
+
+        Commentzz comment = commentList.get(position);
+        holder.userName.setText(comment.user().fullName());
+        holder.commentText.setText(comment.text());
+//        holder.commentTime.setText(comment.createdDate().toString());
+//        holder.userImage.setImageResource(comment.);
 
         holder.editComment.setOnClickListener(v -> onEditCommentListener.onEditComment(position));
+    }
+    public void setData(List<Commentzz> commentList){
+        this.commentList = commentList;
+        notifyDataSetChanged();
     }
 
     @Override
