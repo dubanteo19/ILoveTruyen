@@ -19,4 +19,7 @@ public interface ComicAPI {
     Call<List<Comic>> getAllNewComics();
     @GET("/api/v1/comics/category/{id}")
     Call<List<Comic>> getAllComicsByCategoryId(@Path("id") Integer categoryIds);
+    @GET("/api/v1/comics/search/{name}")
+    Call<List<Comic>> searchComicsByName(@Path("name") String searchValue);
+
 }
