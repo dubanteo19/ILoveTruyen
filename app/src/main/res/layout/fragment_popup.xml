@@ -37,33 +37,33 @@
 
             <TextView
                 android:id="@+id/message"
+                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:textColor="@color/red"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textViewTitle"
-                android:layout_marginTop="10dp"/>
+                app:layout_constraintTop_toBottomOf="@id/textViewTitle" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_layout_edit_email"
+                android:id="@+id/input_layout_edit_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 app:errorEnabled="true"
-                android:hint="@string/email"
+                android:hint="@string/password"
                 app:errorTextAppearance="@style/EmailErrorAppearance"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/message">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_input_edit_email_update"
+                    android:id="@+id/et_input_edit_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
-                    android:inputType="textEmailAddress" />
+                    android:inputType="textPassword" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -77,7 +77,7 @@
                 app:errorTextAppearance="@style/EmailErrorAppearance"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/input_layout_edit_email">
+                app:layout_constraintTop_toBottomOf="@id/input_layout_edit_password">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_input_edit_fullName_update"
