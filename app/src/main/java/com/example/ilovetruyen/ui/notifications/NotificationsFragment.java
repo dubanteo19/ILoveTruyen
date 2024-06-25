@@ -3,6 +3,7 @@ package com.example.ilovetruyen.ui.notifications;
 import static android.content.Context.MODE_PRIVATE;
 
 import static com.example.ilovetruyen.util.UserStateHelper.logoutStatus;
+import static com.example.ilovetruyen.util.UserStateHelper.saveLoginStatus;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -79,10 +80,7 @@ public class NotificationsFragment extends Fragment {
             startActivity(intent);
         });
         ConstraintLayout featureUpdateLayout = root.findViewById(R.id.feature_update);
-
-        featureUpdateLayout.setOnClickListener(v -> {
-            showPopup(v);
-        });
+        featureUpdateLayout.setOnClickListener(this::showPopup);
 
         Button user_login_btn = root.findViewById(R.id.user_login_btn);
         TextView email = root.findViewById(R.id.email_user);
@@ -149,23 +147,30 @@ public class NotificationsFragment extends Fragment {
         popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
         popupWindow.setOutsideTouchable(true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#80000000")));
-
         TextInputEditText emailValidate = popupView.findViewById(R.id.et_input_edit_email_update);
         TextInputEditText fullName = popupView.findViewById(R.id.et_input_edit_fullName_update);
-        String email = String.valueOf(emailValidate.getText());
-        String name = String.valueOf(fullName.getText());
         sharedPreferences = getActivity().getSharedPreferences("user_prefs", MODE_PRIVATE);
         int user_id = sharedPreferences.getInt("userId", 0);
         String username = sharedPreferences.getString("user_name", "User");
         String email_user = sharedPreferences.getString("email", "User");
+        String password = sharedPreferences.getString("password", "User");
+        emailValidate.setText(email_user);
+        fullName.setText(username);
         message = popupView.findViewById(R.id.message);
+        //cập nhật
         Button buttonUpdate = popupView.findViewById(R.id.buttonUpdate);
         buttonUpdate.setOnClickListener(v -> {
+            String updatedEmail = emailValidate.getText() != null ? emailValidate.getText().toString() : "";
+            String updatedName = fullName.getText() != null ? fullName.getText().toString() : "";
             if (emailValidator(emailValidate)) {
-                update(user_id, email, "", name);
-                popupWindow.dismiss();
+               return;
             }
-
+            update(user_id, updatedEmail, password, updatedName);
+            TextView emailTextView = requireView().findViewById(R.id.email_user);
+            TextView fullNameTextView = requireView().findViewById(R.id.fullName);
+            emailTextView.setText(updatedEmail);
+            fullNameTextView.setText(updatedName);
+            popupWindow.dismiss();
         });
         Button btnClosePopup = popupView.findViewById(R.id.btnClosePopup);
         btnClosePopup.setOnClickListener(v -> {
@@ -179,18 +184,24 @@ public class NotificationsFragment extends Fragment {
         popupWindow.showAtLocation(anchorView, Gravity.NO_GRAVITY, location[0] + offsetX, location[1] + offsetY);
     }
 
-    public void update(Integer id, String email, String password, String fullName) {
+    public void update(int id, String email, String password, String fullName) {
+        Context context = requireContext();
+        View popupView = LayoutInflater.from(context).inflate(R.layout.fragment_popup, null);
+        message = popupView.findViewById(R.id.message);
         retrofitService = new RetrofitService();
         userAPI = retrofitService.getRetrofit().create(UserAPI.class);
         UserUpdate userUpdate = new UserUpdate(id, email, password, fullName);
-
-        userAPI.update(userUpdate).enqueue(new Callback<User>() {
+        userAPI.update(id,userUpdate).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Context context = requireContext();
                     View popupView = LayoutInflater.from(context).inflate(R.layout.fragment_popup, null);
                     message = popupView.findViewById(R.id.message);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("email", email);
+                    editor.putString("user_name", fullName);
+                    editor.apply();
                     message.setText("Cập nhật thành công!");
                 } else {
                     message.setText("Cập nhật thất bại!");

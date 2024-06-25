@@ -52,6 +52,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 app:errorEnabled="true"
+                android:hint="@string/email"
                 app:errorTextAppearance="@style/EmailErrorAppearance"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -61,7 +62,7 @@
                     android:id="@+id/et_input_edit_email_update"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/email"
+
                     android:inputType="textEmailAddress" />
 
             </com.google.android.material.textfield.TextInputLayout>
