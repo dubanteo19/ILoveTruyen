@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.adapter.ChapterApdapter;
-import com.example.ilovetruyen.adapter.ComicAdapter;
 import com.example.ilovetruyen.api.ComicDetailAPI;
 import com.example.ilovetruyen.model.Category;
 import com.example.ilovetruyen.model.Chapter;
@@ -44,12 +43,10 @@ public class ComicDetailActivity extends AppCompatActivity {
     private ImageButton backBtn, heartBtn, saveBtn;
     private TextView titleNavTV, comicName, authorName, likes, views, createdAt, status, chapterLength;
     private ImageView thumb;
-    private ExpandableTextView expandTV;
     private RecyclerView recyclerView;
     private ChipGroup keywordSearch;
     private MaterialButton detailSeeChaptersBtn;
     private ChapterApdapter chapterApdapter;
-    private ComicAdapter comicAdapter;
     private ComicDetailAPI comicDetailAPI;
     private RetrofitService retrofitService;
     private ComicDetail comicDetail;
@@ -63,8 +60,6 @@ public class ComicDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comic_detail);
         fetchComicDetail(getIntent().getIntExtra("comicId",1));
-
-//        heartEvent();
 
     }
 
@@ -110,7 +105,7 @@ public class ComicDetailActivity extends AppCompatActivity {
         renderSummaryComic();
         renderComments();
         renderSimilarComics();
-
+        heartEvent();
     }
 
 
@@ -207,25 +202,34 @@ public class ComicDetailActivity extends AppCompatActivity {
 
     private void heartEvent() {
         heartBtn = findViewById(R.id.detail_heartBtn);
-        updateHeartButton(heartBtn); // Cập nhật trạng thái ban đầu của nút
+        Drawable drawable = heartBtn.getDrawable();
+
+        // Cap nhat trang thai ban dau cua nut
+        updateColorButton(drawable);
 
         // event
         heartBtn.setOnClickListener(v -> {
             System.out.println("check --------------------------------");
             isChecked = !isChecked; // Thay đổi trạng thái
-            updateHeartButton(heartBtn); // Cập nhật nút dựa trên trạng thái mới
+            updateHeartButtonOnClick(); // Cập nhật nút dựa trên trạng thái mới
+            updateColorButton(drawable);
         });
     }
+    private void updateColorButton(Drawable drawable){
+        if (isChecked) {
+            drawable.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.secondary), PorterDuff.Mode.SRC_IN);
+        } else {
+            drawable.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.text), PorterDuff.Mode.SRC_IN);
+        }
+    }
 
-    private void updateHeartButton(ImageButton button) {
+    private void updateHeartButtonOnClick() {
         likes = findViewById(R.id.detail_likes);
-        Drawable drawable = button.getDrawable();
         if (isChecked) {
             comicDetailAPI.like(comic.id()).enqueue(new Callback<Integer>() {
                 @Override
                 public void onResponse(Call<Integer> call, Response<Integer> response) {
                     if(response.isSuccessful()){
-                        drawable.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.secondary), PorterDuff.Mode.SRC_IN);
                         likes.setText(String.valueOf(response.body()));
                         System.out.println("check --------------------------------true "+response.body());
                     }
@@ -241,7 +245,6 @@ public class ComicDetailActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<Integer> call, Response<Integer> response) {
                     if(response.isSuccessful()){
-                        drawable.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.text), PorterDuff.Mode.SRC_IN);
                         likes.setText(String.valueOf(response.body()));
                         System.out.println("check --------------------------------false"+response.body());
                     }

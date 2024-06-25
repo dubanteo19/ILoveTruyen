@@ -52,7 +52,6 @@
                         android:layout_gravity="top"
                         android:contentDescription="main image"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/image_place_holder"
                         tools:ignore="HardcodedText" />
                 </androidx.cardview.widget.CardView>
 
@@ -243,7 +242,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="10dp">
+                >
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -308,6 +307,7 @@
             android:paddingVertical="15dp"
             android:contentDescription="Heart button"
             android:background="@drawable/border_round"
+            android:backgroundTint="@color/gray"
             android:src="@drawable/ic_heart_detail"
             android:layout_marginRight="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -323,6 +323,7 @@
             android:paddingHorizontal="15dp"
             android:paddingVertical="15dp"
             android:src="@drawable/ic_save"
+            android:backgroundTint="@color/gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
