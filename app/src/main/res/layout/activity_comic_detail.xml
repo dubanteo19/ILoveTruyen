@@ -6,10 +6,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    android:paddingHorizontal="15dp">
-
-    <include
-        layout="@layout/navigation_top_back_button"
+    android:paddingHorizontal="15dp"
+    >
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/layout_app_bar_comic"
+        android:name="com.example.ilovetruyen.ArrowBackFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginVertical="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -18,6 +23,7 @@
         android:id="@+id/layout_scroll_view_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_app_bar_comic"
@@ -52,7 +58,6 @@
                         android:layout_gravity="top"
                         android:contentDescription="main image"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/image_place_holder"
                         tools:ignore="HardcodedText" />
                 </androidx.cardview.widget.CardView>
 
@@ -177,14 +182,14 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:id="@+id/layout_description_comic"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="10dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -217,12 +222,34 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
+            <!--Review comic-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginVertical="10dp"
+               >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đánh giá truyện"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_normal"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="10dp"
+                    />
+                <FrameLayout
+                    android:id="@+id/detail_comments"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
             <!--Similar comic categories -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="10dp">
+                >
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -237,7 +264,6 @@
                     android:layout_marginTop="10dp" />
             </LinearLayout>
         </LinearLayout>
-
     </ScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -287,6 +313,8 @@
             android:paddingVertical="15dp"
             android:contentDescription="Heart button"
             android:background="@drawable/border_round"
+            android:backgroundTint="@color/gray"
+            android:src="@drawable/ic_heart_detail"
             android:layout_marginRight="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/detail_saveBtn"
@@ -301,6 +329,7 @@
             android:paddingHorizontal="15dp"
             android:paddingVertical="15dp"
             android:src="@drawable/ic_save"
+            android:backgroundTint="@color/gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

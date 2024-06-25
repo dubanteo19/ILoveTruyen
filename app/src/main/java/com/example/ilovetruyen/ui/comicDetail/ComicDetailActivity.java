@@ -13,25 +13,27 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.adapter.ChapterApdapter;
-import com.example.ilovetruyen.adapter.ComicAdapter;
 import com.example.ilovetruyen.api.ComicDetailAPI;
+import com.example.ilovetruyen.model.Category;
 import com.example.ilovetruyen.model.Chapter;
 import com.example.ilovetruyen.model.Comic;
 import com.example.ilovetruyen.model.ComicDetail;
 import com.example.ilovetruyen.retrofit.RetrofitService;
 import com.example.ilovetruyen.ui.StatusHelper;
+import com.example.ilovetruyen.ui.search.SearchResultActivity;
+import com.example.ilovetruyen.util.TimeDifference;
 import com.example.ilovetruyen.util.UserStateHelper;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,17 +45,17 @@ public class ComicDetailActivity extends AppCompatActivity {
     private ImageButton backBtn, heartBtn, saveBtn;
     private TextView titleNavTV, comicName, authorName, likes, views, createdAt, status, chapterLength;
     private ImageView thumb;
-    private ExpandableTextView  expandTV;
     private RecyclerView recyclerView;
     private ChipGroup keywordSearch;
     private MaterialButton detailSeeChaptersBtn;
     private ChapterApdapter chapterApdapter;
-    private ComicAdapter comicAdapter;
     private ComicDetailAPI comicDetailAPI;
     private RetrofitService retrofitService;
     private ComicDetail comicDetail;
     private Comic comic;
     private List<Chapter> chapterList;
+    private boolean isChecked;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,33 +63,31 @@ public class ComicDetailActivity extends AppCompatActivity {
         // Khoi tai dich vu retrofit
         UserStateHelper.saveReadComicId(getApplicationContext(),getIntent().getIntExtra("comicId",1));
         fetchComicDetail(getIntent().getIntExtra("comicId",1));
-        heartEvent();
-
     }
+
     private void fetchComicDetail(int comicId) {
         retrofitService = new RetrofitService();
         comicDetailAPI = retrofitService.getRetrofit().create(ComicDetailAPI.class);
         comicDetailAPI.getComicDetailById(comicId).enqueue(new Callback<ComicDetail>() {
             @Override
             public void onResponse(Call<ComicDetail> call, Response<ComicDetail> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     comicDetail = response.body();
                     comic = comicDetail.comic();
 
                     renderComicDetail();
-
                 }
             }
 
             @Override
             public void onFailure(Call<ComicDetail> call, Throwable throwable) {
-                Toast.makeText(getApplicationContext(),"Failed to fetch data",Toast.LENGTH_SHORT);
+                Toast.makeText(getApplicationContext(), "Failed to fetch data", Toast.LENGTH_SHORT);
             }
         });
         comicDetailAPI.getAllChapterById(comicId).enqueue(new Callback<List<Chapter>>() {
             @Override
             public void onResponse(Call<List<Chapter>> call, Response<List<Chapter>> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     chapterList = response.body();
                     renderChapter();
                     renderChapterList();
@@ -96,7 +96,7 @@ public class ComicDetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<Chapter>> call, Throwable throwable) {
-                Toast.makeText(getApplicationContext(), "Failed to fetch data",Toast.LENGTH_SHORT);
+                Toast.makeText(getApplicationContext(), "Failed to fetch data", Toast.LENGTH_SHORT);
             }
         });
     }
@@ -106,12 +106,12 @@ public class ComicDetailActivity extends AppCompatActivity {
         renderInfomation();
         renderKeywords();
         renderSummaryComic();
-
+        renderComments();
         renderSimilarComics();
-
+        heartEvent();
     }
 
-
+    // Hien thi thong tin chinh cua truyen
     private void renderInfomation() {
         // set thumb
         thumb = findViewById(R.id.detail_comic_thumb);
@@ -133,7 +133,7 @@ public class ComicDetailActivity extends AppCompatActivity {
 
         // set date
         createdAt = findViewById(R.id.detail_created_at);
-        createdAt.setText(comic.createdDate().toString());
+        createdAt.setText(TimeDifference.getTimeDifference(comic.createdDate()));
 
         // set status
         status = findViewById(R.id.detail_processing);
@@ -142,33 +142,42 @@ public class ComicDetailActivity extends AppCompatActivity {
     }
 
 
-    private void renderNavTop(){
-        titleNavTV = findViewById(R.id.nav_top_title_name);
-        titleNavTV.setText("");
-        backBtn = findViewById(R.id.back_btn);
-        backBtn.setOnClickListener(v->finish());
+    private void renderNavTop() {
+//        titleNavTV = findViewById(R.id.nav_top_title_name);
+//        titleNavTV.setText("");
+//        backBtn = findViewById(R.id.back_btn);
+//        backBtn.setOnClickListener(v -> finish());
     }
 
     /* Summary comic*/
-    private void renderSummaryComic(){
+
+    private void renderSummaryComic() {
         ExpandableTextView expandableTextView = findViewById(R.id.expandable_text_view);
-        expandableTextView.setText("AppBarLayout also requires a separate scrolling sibling in order to know when to scroll. The binding is done through the AppBarLayout.ScrollingViewBehavior behavior class, meaning that you should set your scrolling view's behavior to be an instance of AppBarLayout.ScrollingViewBehavior. A string resource containing the full class name is available.");
+        expandableTextView.setText(comicDetail.description());
+    }
+    private void renderComments() {
     }
 
     /* category keywords*/
-    public void renderKeywords(){
+    public void renderKeywords() {
         keywordSearch = findViewById(R.id.detail_keyword_search);
-        for (String key:getStrings()) {
+        for (Category category : comicDetail.categories()) {
             Chip chip = (Chip) LayoutInflater.from(this).inflate(R.layout.button_keyword, keywordSearch, false);
-            chip.setText(key);
+            chip.setText(category.name());
             keywordSearch.addView(chip);
+            chip.setOnClickListener(v -> {
+                Intent intent = new Intent(getApplicationContext(), SearchResultActivity.class);
+                intent.putExtra("title",category.name());
+                intent.putExtra("categoryId",category.id());
+                startActivity(intent);
+            });
         }
     }
 
-    private void renderChapter(){
+    private void renderChapter() {
         chapterLength = findViewById(R.id.detail_chapterLength);
-        chapterLength.setText(String.valueOf(chapterList.size()));
-        final int MAX_CHAPTER = 2;
+        chapterLength.setText(String.valueOf(chapterList.size())+ " chương");
+        final int MAX_CHAPTER = 5;
         recyclerView = findViewById(R.id.detail_chapters);
         chapterApdapter = new ChapterApdapter(getApplicationContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, true);
@@ -177,14 +186,15 @@ public class ComicDetailActivity extends AppCompatActivity {
         chapterApdapter.setData(chapterList.stream().limit(MAX_CHAPTER).collect(Collectors.toList()));
     }
 
-    public void renderChapterList(){
+    public void renderChapterList() {
         detailSeeChaptersBtn = findViewById(R.id.detail_see_chapters_btn);
-        detailSeeChaptersBtn.setOnClickListener(v->{
+        detailSeeChaptersBtn.setOnClickListener(v -> {
             Intent intent = new Intent(this, ChapterListActivity.class);
             intent.putExtra("comicId", comic.id());
             startActivity(intent);
         });
     }
+
     private void renderSimilarComics() {
 
 //        recyclerView = findViewById(R.id.detail_similar_categories);
@@ -195,32 +205,62 @@ public class ComicDetailActivity extends AppCompatActivity {
 //        comicAdapter.setData(getHotComics());
     }
 
-    private void heartEvent(){
+    private void heartEvent() {
         heartBtn = findViewById(R.id.detail_heartBtn);
-        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_heart_detail);
-        if (drawable != null) {
-            int width = 120; // Chiều rộng mong muốn
-            int height = 120; // Chiều cao mong muốn
-            System.out.println("Thay doi icon");
-            drawable.setBounds(0, 0, width, height);
-            heartBtn.setImageDrawable(drawable);
-        }
+        Drawable drawable = heartBtn.getDrawable();
+
+        // Cap nhat trang thai ban dau cua nut
+        updateColorButton(drawable);
+
         // event
         heartBtn.setOnClickListener(v -> {
-            Drawable currentDrawable = heartBtn.getDrawable();
-            if (currentDrawable != null) {
-                currentDrawable.setColorFilter(ContextCompat.getColor(this, R.color.secondary), PorterDuff.Mode.SRC_IN);
-            }
+            System.out.println("check --------------------------------");
+            isChecked = !isChecked; // Thay đổi trạng thái
+            updateHeartButtonOnClick(); // Cập nhật nút dựa trên trạng thái mới
+            updateColorButton(drawable);
         });
     }
-
-    private List<String> getStrings(){
-        var categoryList = new ArrayList<String>();
-        categoryList.add("Mangan");
-        categoryList.add("Manhua");
-        categoryList.add("Drama");
-        categoryList.add("Action");
-        categoryList.add("Anime");
-        return categoryList;
+    private void updateColorButton(Drawable drawable){
+        if (isChecked) {
+            drawable.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.secondary), PorterDuff.Mode.SRC_IN);
+        } else {
+            drawable.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.text), PorterDuff.Mode.SRC_IN);
+        }
     }
+
+    private void updateHeartButtonOnClick() {
+        likes = findViewById(R.id.detail_likes);
+        if (isChecked) {
+            comicDetailAPI.like(comic.id()).enqueue(new Callback<Integer>() {
+                @Override
+                public void onResponse(Call<Integer> call, Response<Integer> response) {
+                    if(response.isSuccessful()){
+                        likes.setText(String.valueOf(response.body()));
+                        System.out.println("check --------------------------------true "+response.body());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Integer> call, Throwable throwable) {
+                    Toast.makeText(getApplicationContext(), "Failed to like", Toast.LENGTH_SHORT);
+                }
+            });
+        } else {
+            comicDetailAPI.like(comic.id()).enqueue(new Callback<Integer>() {
+                @Override
+                public void onResponse(Call<Integer> call, Response<Integer> response) {
+                    if(response.isSuccessful()){
+                        likes.setText(String.valueOf(response.body()));
+                        System.out.println("check --------------------------------false"+response.body());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Integer> call, Throwable throwable) {
+                    Toast.makeText(getApplicationContext(), "Failed to unlike", Toast.LENGTH_SHORT);
+                }
+            });
+        }
+    }
+
 }

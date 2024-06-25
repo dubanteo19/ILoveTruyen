@@ -12,7 +12,7 @@ import com.google.android.material.button.MaterialButton;
 
 public class ExpandableTextView extends LinearLayout {
 
-    private static final int MAX_COLLAPSED_LINES = 3;
+    private static final int MAX_COLLAPSED_LINES = 1;
 
     private TextView tvContent;
     private MaterialButton summaryToggleBtn;
@@ -51,9 +51,9 @@ public class ExpandableTextView extends LinearLayout {
                 updateView();
             }
         });
-
-        // Thiết lập văn bản mẫu
-        setText("AppBarLayout also requires a separate scrolling sibling...");
+//
+//        // Thiết lập văn bản mẫu
+//        setText("AppBarLayout also requires a separate scrolling sibling...");
 
         // Cập nhật trạng thái ban đầu
         updateView();
