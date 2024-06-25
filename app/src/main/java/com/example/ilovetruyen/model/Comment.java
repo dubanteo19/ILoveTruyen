@@ -7,7 +7,4 @@ public record Comment ( Integer id,
                         User user,
                         ComicDetail comicDetail,
                         LocalDateTime createdDate){
-
-
-
 }
