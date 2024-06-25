@@ -1,65 +1,96 @@
 package com.example.ilovetruyen;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.ilovetruyen.adapter.ComicAdapter;
-import com.example.ilovetruyen.api.ComicAPI;
+import com.example.ilovetruyen.adapter.HistoryAdapter;
+import com.example.ilovetruyen.api.ComicDetailAPI;
 import com.example.ilovetruyen.model.Comic;
+import com.example.ilovetruyen.model.ComicDetail;
 import com.example.ilovetruyen.retrofit.RetrofitService;
-import com.example.ilovetruyen.ui.home.RecentlyReadFragment;
+import com.example.ilovetruyen.util.UserStateHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ReadingHistoryActivity extends AppCompatActivity {
-    private Context context;
+    private RecyclerView recyclerView;
+    private HistoryAdapter historyAdapter;
     private List<Comic> comicList;
-    RetrofitService retrofitService;
-    ComicAPI comicAPI;
-    public void setData(List<Comic> comics) {
-        this.comicList = comics;
-
-    }
-
+    private ComicDetail comicDetail;
+    private RetrofitService retrofitService;
+    private ComicDetailAPI comicDetailAPI;
+    private Comic comic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_reading_history);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-        renderRecommendComicsSection();
-    }
-    private void renderRecommendComicsSection() {
-//        recyclerView = findViewById(R.id.history_reading);
-//        comicAdapter = new ComicAdapter(getApplicationContext());
-//        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 3);
-//        recyclerView.setLayoutManager(gridLayoutManager);
-//        recyclerView.setAdapter(comicAdapter);
-//        comicAdapter.setData(getHotComics());
+        retrofitService = new RetrofitService();
+        comicDetailAPI = retrofitService.getRetrofit().create(ComicDetailAPI.class);
+        renderReadComics();
     }
 
-    private void renderReadingSection(View root) {
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fm.beginTransaction();
-        fragmentTransaction.replace(R.id.history_fragment_read_comics, RecentlyReadFragment.newInstance());
-        fragmentTransaction.commit();
+    private void renderReadComics() {
+        var readComicIdList = UserStateHelper.getReadComics(this);
+        recyclerView = findViewById(R.id.history_reading);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        historyAdapter = new HistoryAdapter(this);
+         comicList=   new ArrayList<>();
+        CountDownLatch countDownLatch = new CountDownLatch(readComicIdList.size());
+        for (int comicId:readComicIdList){
+            fetchHistoryData(comicId,comicList,countDownLatch);
+        }
+        recyclerView.setAdapter(historyAdapter);
+        new Thread(()->{
+            try {
+                countDownLatch.await();
+                runOnUiThread(()->{
+                    if(historyAdapter!=null){
+                        historyAdapter.setData(comicList);
+                    }
+                });
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }).start();
+
+        historyAdapter.setData(comicList);
+    }
+
+    private void fetchHistoryData(int comicId,List<Comic> comicList,CountDownLatch countDownLatch) {
+        comicDetailAPI.getComicDetailById(comicId).enqueue(new Callback<ComicDetail>() {
+            @Override
+            public void onResponse(Call<ComicDetail> call, Response<ComicDetail> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    System.out.println("++++++++++++++++++++++++++++++++"+response.body());
+                    comicList.add(response.body().comic());
+
+                } else {
+                    Toast.makeText(ReadingHistoryActivity.this, "Failed to fetch data", Toast.LENGTH_SHORT).show();
+                }
+                countDownLatch.countDown();
+            }
+            @Override
+            public void onFailure(Call<ComicDetail> call, Throwable throwable) {
+                Log.e("ReadingHistoryActivity", "Failed to fetch data", throwable);
+                Toast.makeText(ReadingHistoryActivity.this, "Failed to fetch data", Toast.LENGTH_SHORT).show();
+                countDownLatch.countDown();
+            }
+        });
     }
 }
