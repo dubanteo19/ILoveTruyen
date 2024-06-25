@@ -1,6 +1,7 @@
 package com.example.ilovetruyen.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.model.Comic;
+import com.example.ilovetruyen.ui.comicDetail.ComicDetailActivity;
+import com.example.ilovetruyen.util.NameMaxSizeHelper;
 import com.example.ilovetruyen.util.TimeDifference;
 
 import java.util.List;
@@ -40,10 +43,15 @@ public class NewComicAdapter extends RecyclerView.Adapter<NewComicAdapter.NewCom
     public void onBindViewHolder(@NonNull NewComicViewHolder holder, int position) {
         var comic = comics.get(position);
         if(comic==null) return;
-        holder.nameTv.setText(comic.name());
+        holder.nameTv.setText(NameMaxSizeHelper.truncateName(comic.name(),25));
         Glide.with(holder.itemView).load(comic.thumbUrl()).into(holder.thumbIv);
         holder.chapterTv.setText("Ch. "+comic.latestChapter());
         holder.createdDateTv.setText(TimeDifference.getTimeDifference(comic.createdDate()));
+        holder.itemView.setOnClickListener(v->{
+            Intent intent = new Intent(context, ComicDetailActivity.class);
+            intent.putExtra("comicId",comic.id());
+            context.startActivity(intent);
+        });
     }
 
     @Override

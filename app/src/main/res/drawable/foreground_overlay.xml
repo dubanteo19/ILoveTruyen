@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Foreground (màu mờ) -->
+    <item>
+        <color android:color="#20FFFFFF" /> <!-- Màu mờ: #80 là độ trong suốt, #000000 là màu đen -->
+    </item>
+</layer-list>

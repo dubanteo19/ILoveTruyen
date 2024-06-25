@@ -59,7 +59,6 @@
     <string name="sendMail">Gửi mail</string>
     <string name="text_forgot_password">Vui lòng điền địa chỉ email của bạn. Bạn sẽ nhận được một email với hướng dẫn mật khẩu.</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="back_button_description">Nút quay lại</string>
     <string name="see_more">Xem thêm</string>
     <string name="see_less">Ẩn bớt</string>
@@ -69,6 +68,8 @@
     <string name="see_all">Xem tất cả</string>
     <string name="updating">Đang cập nhật</string>
     <string name="processing">Đang tiến hành</string>
+    <string name="inactive">Không hoạt động</string>
+    <string name="finshed">Hoàn thành</string>
     <string name="list">Danh sách tải truyện tranh</string>
     <string name="histoty">Lịch sử đọc truyện tranh</string>
     <string name="ads">Loại bỏ quảng cáo</string>
@@ -84,5 +85,11 @@
     <string name="summary_of_goals_and_contact_information">I Love Truyện là một ứng dụng chia sẻ các thể loại truyện tranh được thu thập từ nhiều nguồn trên internet, với mục tiêu giúp cộng đồng thỏa mãn đam mê đọc truyện mọi lúc, mọi nơi. Nếu có vấn đề về bản quyền hoặc bất kỳ yêu cầu nào, vui lòng liên hệ với chúng tôi qua địa chỉ email:</string>
     <string name="tag"> Hãy tham gia cùng chúng tôi và \n xây dựng mối quan hệ của bạn với những người khác.</string>
     <string name="comic_history">Lịch sử truyện đã đọc</string>
+    <string name="update_info">Cập nhật thông tin</string>
 
+    <string name="enter_comment">Nhập bình luận</string>
+    <string name="send_comment">Gửi</string>
+    <string name="loading">Đang tải...</string>
+    <string name="introduction">ILoveTruyen là một dự án chia sẻ đa dạng các thể loại truyện tranh, được thu thập từ nhiều nguồn khác nhau trên internet. Với mục tiêu mang đến những tác phẩm truyện tranh hấp dẫn và mới nhất cho cộng đồng, ILoveTruyen mong muốn lan tỏa văn hóa đọc truyện đến mọi người dân Việt Nam.</string>
+    <string name="version">Phiên bản 1.0.1</string>
 </resources>

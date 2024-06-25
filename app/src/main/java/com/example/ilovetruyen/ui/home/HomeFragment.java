@@ -1,12 +1,18 @@
 package com.example.ilovetruyen.ui.home;
 
+import static android.content.Context.MODE_PRIVATE;
+import static android.content.Intent.getIntent;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,23 +22,23 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-
 import com.example.ilovetruyen.LoginActivity;
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.adapter.CarouselAdapter;
+import com.example.ilovetruyen.adapter.CategoryItemAdapter;
 import com.example.ilovetruyen.adapter.ComicAdapter;
-import com.example.ilovetruyen.adapter.HotComicsAdatper;
+import com.example.ilovetruyen.adapter.HotComicsAdapter;
 import com.example.ilovetruyen.adapter.NewComicAdapter;
+import com.example.ilovetruyen.api.CategoryAPI;
 import com.example.ilovetruyen.api.ComicAPI;
 import com.example.ilovetruyen.databinding.FragmentHomeBinding;
+import com.example.ilovetruyen.model.Category;
 import com.example.ilovetruyen.model.Comic;
+import com.example.ilovetruyen.model.User;
 import com.example.ilovetruyen.ui.search.SearchActivity;
 import com.example.ilovetruyen.retrofit.RetrofitService;
 import com.github.islamkhsh.CardSliderViewPager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -43,8 +49,9 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
     private ComicAdapter comicAdapter;
-    private HotComicsAdatper hotComicsAdatper;
+    private HotComicsAdapter hotComicsAdatper;
     private NewComicAdapter newComicAdapter;
+    private CategoryItemAdapter categoryItemAdapter;
     RetrofitService retrofitService;
     ComicAPI comicAPI;
 
@@ -57,6 +64,26 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         Button home_login_btn = root.findViewById(R.id.home_login_btn);
+        TextView userName = root.findViewById(R.id.userName);
+        TextView wellcome = root.findViewById(R.id.wellcome);
+        ImageView iconsStar  = root.findViewById(R.id.iconsStar);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_prefs", MODE_PRIVATE);
+        boolean isLoggedIn = sharedPreferences.getBoolean("is_logged_in", false);
+        if (isLoggedIn) {
+            home_login_btn.setVisibility(View.GONE);
+            userName.setVisibility(View.VISIBLE);
+            wellcome.setVisibility(View.VISIBLE);
+            iconsStar.setVisibility(View.VISIBLE);
+            String fullName = sharedPreferences.getString("user_name", "User");
+            userName.setText("Hi " + fullName + "!");
+            wellcome.setText("Chào mừng bạn trở lại");
+
+        } else {
+            home_login_btn.setVisibility(View.VISIBLE);
+            userName.setVisibility(View.GONE);
+            iconsStar.setVisibility(View.GONE);
+            wellcome.setVisibility(View.GONE);
+        }
         home_login_btn.setOnClickListener(v -> {
             Intent intent = new Intent(root.getContext(), LoginActivity.class);
             startActivity(intent);
@@ -69,12 +96,44 @@ public class HomeFragment extends Fragment {
         renderCarousel(root);
         renderTitle();
         renderReadingSection(root);
-//        renderRecommendComicsSection(root);
+        renderRecommendComicsSection(root);
         renderNewComicsSection(root);
         renderHotComicsSection(root);
-
+        renderCategoriesSection(root);
+        renderFooter();
         return root;
     }
+
+    private void renderFooter() {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        fragmentTransaction
+                .replace(R.id.home_fragment_footer, FooterFragment.newInstance());
+        fragmentTransaction.commit();
+    }
+
+    private void renderCategoriesSection(View root) {
+        RecyclerView recyclerView = root.findViewById(R.id.categoies);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        categoryItemAdapter = new CategoryItemAdapter(requireContext());
+        CategoryAPI categoryAPI = retrofitService.getRetrofit().create(CategoryAPI.class);
+        categoryAPI.findAllCategories().enqueue(new Callback<List<Category>>() {
+            @Override
+            public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
+                if (response.isSuccessful()) {
+                    recyclerView.setAdapter(categoryItemAdapter);
+                    categoryItemAdapter.setData(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Category>> call, Throwable throwable) {
+
+            }
+        });
+    }
+
 
     private void showError() {
         Toast.makeText(requireContext(), "Failed to load data", Toast.LENGTH_SHORT).show();
@@ -105,7 +164,7 @@ public class HomeFragment extends Fragment {
 
     private void renderHotComicsSection(View root) {
         RecyclerView recyclerView = root.findViewById(R.id.hot_comics);
-        hotComicsAdatper = new HotComicsAdatper(requireContext());
+        hotComicsAdatper = new HotComicsAdapter(requireContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         comicAPI.getAllHotComics().enqueue(new Callback<List<Comic>>() {
@@ -127,14 +186,15 @@ public class HomeFragment extends Fragment {
     }
 
     private void renderRecommendComicsSection(View root) {
-        RecyclerView recyclerView = root.findViewById(R.id.recommend_comics);
+        RecyclerView recyclerView2 = root.findViewById(R.id.recommend_comics);
         comicAdapter = new ComicAdapter(requireContext());
-        setupRecycleview(recyclerView, comicAdapter);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false);
+        recyclerView2.setLayoutManager(linearLayoutManager);
         comicAPI.getAllRecommendationsComics().enqueue(new Callback<List<Comic>>() {
             @Override
             public void onResponse(Call<List<Comic>> call, Response<List<Comic>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    recyclerView.setAdapter(comicAdapter);
+                    recyclerView2.setAdapter(comicAdapter);
                     comicAdapter.setData(response.body());
                 } else {
                     showError();
@@ -148,10 +208,6 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void setupRecycleview(RecyclerView recyclerView, RecyclerView.Adapter<?> adapter) {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false);
-        recyclerView.setLayoutManager(linearLayoutManager);
-    }
 
     private void renderReadingSection(View root) {
         FragmentManager fm = getActivity().getSupportFragmentManager();
@@ -175,7 +231,11 @@ public class HomeFragment extends Fragment {
         fragmentTransaction
                 .replace(R.id.home_fragment_newComicsTitle, HomeSectionTitleFragment
                         .newInstance("Truyện tranh mới", "", R.drawable.category_icon));
+        fragmentTransaction
+                .replace(R.id.home_fragment_categoryTitle, HomeSectionTitleFragment
+                        .newInstance("Thể loại", "", R.drawable.category_icon));
         fragmentTransaction.commit();
+
     }
 
     private void renderCarousel(View root) {
@@ -183,7 +243,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Comic>> call, Response<List<Comic>> response) {
                 CardSliderViewPager cardSliderViewPager = root.findViewById(R.id.home_carousel);
-                cardSliderViewPager.setAdapter(new CarouselAdapter(response.body()));
+                cardSliderViewPager.setAdapter(new CarouselAdapter(response.body(),root.getContext()));
                 System.out.println(response.body());
             }
 

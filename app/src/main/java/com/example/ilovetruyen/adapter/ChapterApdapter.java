@@ -43,13 +43,12 @@ public class ChapterApdapter extends RecyclerView.Adapter<ChapterApdapter.Chapte
         return new ChapterApdapter.ChapterViewHolder(view);
     }
 
-
     @Override
     public void onBindViewHolder(@NonNull ChapterViewHolder holder, int position) {
         var chapter = chapterList.get(position);
         if (chapter == null) return;
-        holder.chapterNameView.setText(chapter.chapterName());
-        holder.createAt.setText( chapter.craeteAt().toString());
+        holder.chapterNameView.setText("Chương "+ chapter.count());
+//        holder.createAt.setText(TimeDifference.getTimeDifference(chapter.createdDate()));
     }
 
     @Override
@@ -68,7 +67,7 @@ public class ChapterApdapter extends RecyclerView.Adapter<ChapterApdapter.Chapte
         public ChapterViewHolder(@NonNull View itemView) {
             super(itemView);
             chapterNameView = itemView.findViewById(R.id.chapter_fragment_title);
-            createAt = itemView.findViewById(R.id.chapter_fragment_time);
+//            createAt = itemView.findViewById(R.id.chapter_fragment_time);
 
         }
     }

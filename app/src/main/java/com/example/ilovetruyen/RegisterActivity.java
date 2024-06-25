@@ -16,9 +16,17 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.ilovetruyen.api.UserAPI;
+import com.example.ilovetruyen.dto.UserRegister;
+import com.example.ilovetruyen.model.User;
+import com.example.ilovetruyen.retrofit.RetrofitService;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
     boolean invalid = false;
@@ -28,7 +36,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     private TextInputLayout mFullName;
     private TextView mess;
-
+    RetrofitService retrofitService;
+    UserAPI userAPI;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,11 +75,7 @@ public class RegisterActivity extends AppCompatActivity {
     private boolean isFullNameValid(String fullName, TextInputEditText fullNameValidate) {
         if (fullName.isEmpty()) {
             fullNameValidate.setError("Họ tên không được bỏ trống!");
-            Toast.makeText(this, "Họ tên không được bỏ trống!", Toast.LENGTH_SHORT).show();
-            return false;
-        } else if (fullName.equals("ngan") || fullName.equals("minh")) {
-            fullNameValidate.setError("Tên này đã tồn tại trong hệ thống!");
-            Toast.makeText(this, "Tên này đã tồn tại trong hệ thống!", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Họ tên không được bỏ trống!", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -78,7 +83,7 @@ public class RegisterActivity extends AppCompatActivity {
     public void emailValidator(TextInputEditText etMail) {
         String emailToText = String.valueOf(etMail.getText());
         if (!emailToText.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(emailToText).matches()) {
-            Toast.makeText(this, "Email hợp lệ !", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Email hợp lệ !", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Vui lòng nhập đúng định dạng email !", Toast.LENGTH_SHORT).show();
             etMail.setError("Vui lòng nhập đúng định dạng email !");
@@ -94,8 +99,24 @@ public class RegisterActivity extends AppCompatActivity {
         return true;
     }
     private void registerUser(String email, String pass, String fullName) {
-        Toast.makeText(this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
-         Intent intent = new Intent(this, LoginActivity.class);
-         startActivity(intent);
+        retrofitService = new RetrofitService();
+        userAPI = retrofitService.getRetrofit().create(UserAPI.class);
+        UserRegister userRegister = new UserRegister(email,pass,fullName);
+        userAPI.register(userRegister).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                    if(response.isSuccessful()){
+                        Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+                        startActivity(intent);
+                    }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable throwable) {
+                mess = findViewById(R.id.message);
+                mess.setText("Đăng kí thất bại !");
+//                Toast.makeText(getApplicationContext(), "Đăng kí thất bại !", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

@@ -1,61 +1,96 @@
 package com.example.ilovetruyen;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.ilovetruyen.adapter.ComicAdapter;
+import com.example.ilovetruyen.adapter.HistoryAdapter;
+import com.example.ilovetruyen.api.ComicDetailAPI;
 import com.example.ilovetruyen.model.Comic;
+import com.example.ilovetruyen.model.ComicDetail;
+import com.example.ilovetruyen.retrofit.RetrofitService;
+import com.example.ilovetruyen.util.UserStateHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ReadingHistoryActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private ComicAdapter comicAdapter;
+    private HistoryAdapter historyAdapter;
+    private List<Comic> comicList;
+    private ComicDetail comicDetail;
+    private RetrofitService retrofitService;
+    private ComicDetailAPI comicDetailAPI;
+    private Comic comic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_reading_history);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-        renderRecommendComicsSection();
+        retrofitService = new RetrofitService();
+        comicDetailAPI = retrofitService.getRetrofit().create(ComicDetailAPI.class);
+        renderReadComics();
     }
-    private void renderRecommendComicsSection() {
+
+    private void renderReadComics() {
+        var readComicIdList = UserStateHelper.getReadComics(this);
         recyclerView = findViewById(R.id.history_reading);
-        comicAdapter = new ComicAdapter(getApplicationContext());
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 3);
-        recyclerView.setLayoutManager(gridLayoutManager);
-        recyclerView.setAdapter(comicAdapter);
-//        comicAdapter.setData(getHotComics());
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        historyAdapter = new HistoryAdapter(this);
+         comicList=   new ArrayList<>();
+        CountDownLatch countDownLatch = new CountDownLatch(readComicIdList.size());
+        for (int comicId:readComicIdList){
+            fetchHistoryData(comicId,comicList,countDownLatch);
+        }
+        recyclerView.setAdapter(historyAdapter);
+        new Thread(()->{
+            try {
+                countDownLatch.await();
+                runOnUiThread(()->{
+                    if(historyAdapter!=null){
+                        historyAdapter.setData(comicList);
+                    }
+                });
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }).start();
+
+        historyAdapter.setData(comicList);
     }
-    private List<Comic> getHotComics () {
-//        var hotComics = new ArrayList<Comic>();
-//        var comic1 = new Comic("One Piece", R.drawable.one_piece);
-//        var comic2 = new Comic("Thanh Guong diet quy", R.drawable.thanh_guom_diet_quy);
-//        var comic3 = new Comic("One Punchman", R.drawable.one_puch_man);
-//        hotComics.add(comic1);
-//        hotComics.add(comic2);
-//        hotComics.add(comic3);
-//        hotComics.add(comic1);
-//        hotComics.add(comic2);
-//        hotComics.add(comic3);
-//        hotComics.add(comic1);
-//        hotComics.add(comic2);
-//        hotComics.add(comic3);
-        return null;
+
+    private void fetchHistoryData(int comicId,List<Comic> comicList,CountDownLatch countDownLatch) {
+        comicDetailAPI.getComicDetailById(comicId).enqueue(new Callback<ComicDetail>() {
+            @Override
+            public void onResponse(Call<ComicDetail> call, Response<ComicDetail> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    System.out.println("++++++++++++++++++++++++++++++++"+response.body());
+                    comicList.add(response.body().comic());
+
+                } else {
+                    Toast.makeText(ReadingHistoryActivity.this, "Failed to fetch data", Toast.LENGTH_SHORT).show();
+                }
+                countDownLatch.countDown();
+            }
+            @Override
+            public void onFailure(Call<ComicDetail> call, Throwable throwable) {
+                Log.e("ReadingHistoryActivity", "Failed to fetch data", throwable);
+                Toast.makeText(ReadingHistoryActivity.this, "Failed to fetch data", Toast.LENGTH_SHORT).show();
+                countDownLatch.countDown();
+            }
+        });
     }
 }

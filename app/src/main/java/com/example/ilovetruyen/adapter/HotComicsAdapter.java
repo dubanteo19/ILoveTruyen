@@ -1,11 +1,12 @@
 package com.example.ilovetruyen.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,17 +14,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.ilovetruyen.R;
+import com.example.ilovetruyen.ReadingHistoryActivity;
 import com.example.ilovetruyen.model.Comic;
+import com.example.ilovetruyen.ui.comicDetail.ComicDetailActivity;
 import com.example.ilovetruyen.util.TimeDifference;
+import com.example.ilovetruyen.util.UserStateHelper;
 
 import java.util.List;
 
-public class HotComicsAdatper extends RecyclerView.Adapter<HotComicsAdatper.HotComicsViewHolder> {
+public class HotComicsAdapter extends RecyclerView.Adapter<HotComicsAdapter.HotComicsViewHolder> {
 
     private Context context;
     private List<Comic> comicList;
-
-    public HotComicsAdatper(Context context) {
+    public HotComicsAdapter(Context context) {
         this.context = context;
     }
 
@@ -31,7 +34,6 @@ public class HotComicsAdatper extends RecyclerView.Adapter<HotComicsAdatper.HotC
         this.comicList = comics;
         notifyDataSetChanged();
     }
-
     @NonNull
     @Override
     public HotComicsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -49,6 +51,11 @@ public class HotComicsAdatper extends RecyclerView.Adapter<HotComicsAdatper.HotC
         holder.comicNameTv.setText(comic.name());
         holder.comicChapterTv.setText("Chương "+comic.latestChapter());
         holder.comicCreatedDateTv.setText(TimeDifference.getTimeDifference(comic.createdDate()));
+        holder.itemView.setOnClickListener(v->{
+            Intent intent = new Intent(context, ComicDetailActivity.class);
+            intent.putExtra("comicId",comic.id());
+            context.startActivity(intent);
+        });
     }
 
     @Override

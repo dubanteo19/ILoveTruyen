@@ -6,10 +6,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    android:paddingHorizontal="15dp">
-
-    <include
-        layout="@layout/navigation_top_back_button"
+    android:paddingHorizontal="15dp"
+    >
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/layout_app_bar_comic"
+        android:name="com.example.ilovetruyen.ArrowBackFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginVertical="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -18,6 +23,7 @@
         android:id="@+id/layout_scroll_view_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_app_bar_comic"
@@ -46,12 +52,12 @@
                     app:cardCornerRadius="20dp">
 
                     <ImageView
-                        android:id="@+id/comic_thumb_detail"
+                        android:id="@+id/detail_comic_thumb"
                         android:layout_width="130dp"
                         android:layout_height="180dp"
                         android:layout_gravity="top"
                         android:contentDescription="main image"
-                        android:src="@drawable/one_piece"
+                        android:scaleType="centerCrop"
                         tools:ignore="HardcodedText" />
                 </androidx.cardview.widget.CardView>
 
@@ -62,22 +68,17 @@
                     android:paddingHorizontal="10dp">
 
                     <TextView
-                        android:id="@+id/comic_name_detail"
+                        android:id="@+id/detail_name_comic"
+                        style="@style/infomationDetail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="One Piece"
+                        android:text="Đang tải..."
                         android:textAllCaps="false"
                         android:textSize="22sp"
                         tools:ignore="HardcodedText" />
 
                     <TextView
-                        style="@style/infomationDetail"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Vui Hải Tặc; Đảo Hải tặc; OnePiece"
-                        android:textSize="12sp" />
-
-                    <TextView
+                        android:id="@+id/detail_author_name"
                         style="@style/infomationDetail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -87,29 +88,32 @@
                         tools:ignore="HardcodedText" />
 
                     <TextView
+                        android:id="@+id/detail_likes"
                         style="@style/infomationDetail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="Lượt thích"
-                        android:text="325.515"
+                        android:text="@string/loading"
                         app:drawableStartCompat="@drawable/ic_heart_detail"
                         tools:ignore="HardcodedText" />
 
                     <TextView
+                        android:id="@+id/detail_views"
                         style="@style/infomationDetail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="Lượt xem"
                         android:drawableStart="@drawable/ic_eye_detail"
-                        android:text="166.972.101" />
+                        android:text="@string/loading" />
 
                     <TextView
+                        android:id="@+id/detail_created_at"
                         style="@style/infomationDetail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="Thời gian"
                         android:drawableStart="@drawable/ic_clock_detail"
-                        android:text="31/03/2003 12:39" />
+                        android:text="@string/loading" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -125,12 +129,13 @@
                 app:layout_constraintTop_toBottomOf="@id/layout_title_comic">
 
                 <TextView
+                    android:id="@+id/detail_processing"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="20dp"
                     android:drawableTop="@drawable/ic_play_detail"
                     android:drawablePadding="5dp"
-                    android:text="@string/processing" />
+                    android:text="@string/loading" />
 
                 <View
                     android:layout_width="1dp"
@@ -138,13 +143,14 @@
                     android:background="@android:color/darker_gray" />
 
                 <TextView
+                    android:id="@+id/detail_chapterLength"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:drawableTop="@drawable/ic_book_detail"
                     android:drawablePadding="5dp"
                     android:gravity="center"
-                    android:text="218 chương" />
+                    android:text="@string/loading" />
             </LinearLayout>
 
 
@@ -176,14 +182,14 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:id="@+id/layout_description_comic"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="10dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -216,12 +222,34 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
+            <!--Review comic-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginVertical="10dp"
+               >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đánh giá truyện"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_normal"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="10dp"
+                    />
+                <FrameLayout
+                    android:id="@+id/detail_comments"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
             <!--Similar comic categories -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="10dp">
+                >
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -236,7 +264,6 @@
                     android:layout_marginTop="10dp" />
             </LinearLayout>
         </LinearLayout>
-
     </ScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -286,6 +313,8 @@
             android:paddingVertical="15dp"
             android:contentDescription="Heart button"
             android:background="@drawable/border_round"
+            android:backgroundTint="@color/gray"
+            android:src="@drawable/ic_heart_detail"
             android:layout_marginRight="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/detail_saveBtn"
@@ -300,6 +329,7 @@
             android:paddingHorizontal="15dp"
             android:paddingVertical="15dp"
             android:src="@drawable/ic_save"
+            android:backgroundTint="@color/gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
