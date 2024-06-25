@@ -26,6 +26,7 @@ import com.example.ilovetruyen.model.Comic;
 import com.example.ilovetruyen.model.ComicDetail;
 import com.example.ilovetruyen.retrofit.RetrofitService;
 import com.example.ilovetruyen.ui.StatusHelper;
+import com.example.ilovetruyen.util.UserStateHelper;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -58,6 +59,7 @@ public class ComicDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comic_detail);
         // Khoi tai dich vu retrofit
+        UserStateHelper.saveReadComicId(getApplicationContext(),getIntent().getIntExtra("comicId",1));
         fetchComicDetail(getIntent().getIntExtra("comicId",1));
         heartEvent();
 
@@ -71,6 +73,7 @@ public class ComicDetailActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     comicDetail = response.body();
                     comic = comicDetail.comic();
+
                     renderComicDetail();
 
                 }

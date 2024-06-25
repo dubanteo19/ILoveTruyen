@@ -1,8 +1,13 @@
 package com.example.ilovetruyen;
 
+import static com.example.ilovetruyen.util.UserStateHelper.saveLoginStatus;
+
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Patterns;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,15 +18,25 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.ilovetruyen.api.UserAPI;
+import com.example.ilovetruyen.dto.UserRegister;
+import com.example.ilovetruyen.model.User;
+import com.example.ilovetruyen.retrofit.RetrofitService;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
     private TextInputLayout mEmail;
     private MaterialButton btn_Login;
     private TextInputLayout mPass;
-    private TextView message;
+    private TextView  message;
+    RetrofitService retrofitService;
+    UserAPI userAPI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,26 +63,48 @@ public class LoginActivity extends AppCompatActivity {
             emailValidator(emailValidate);
             String email = String.valueOf(emailValidate.getText());
             String pass = String.valueOf(password.getText());
-            if(email.equals("ngan@gmail.com") && pass.equals("123")){
-                Toast.makeText(this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-            }
-            else{
-                message.setText("Sai email hoặc password!");
-                Toast.makeText(this, "Sai email hoặc password!", Toast.LENGTH_SHORT).show();
-            }
+            loginUser(email, pass,"");
         });
        
     }
     public void emailValidator(TextInputEditText etMail) {
         String emailToText = String.valueOf(etMail.getText());
         if (!emailToText.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(emailToText).matches()) {
-            Toast.makeText(this, "Email hợp lệ !", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Email hợp lệ !", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Vui lòng nhập đúng định dạng email !", Toast.LENGTH_SHORT).show();
             etMail.setError("Vui lòng nhập đúng định dạng email !");
         }
+    }
+
+    private void loginUser(String email, String pass, String fullName) {
+        retrofitService = new RetrofitService();
+        userAPI = retrofitService.getRetrofit().create(UserAPI.class);
+        UserRegister userRegister = new UserRegister(email,pass,"");
+        message = findViewById(R.id.message);
+        userAPI.login(userRegister).enqueue(new Callback<User>() {
+
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if(response.isSuccessful() && response.body() != null){
+                    User user = response.body();
+                    saveLoginStatus(getApplicationContext(), true,user.fullName(), user.email(), user.id(), user.password());
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                }
+                else {
+                    message.setText("Sai email hoặc mật khẩu!");
+                    message.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable throwable) {
+                message.setText("Sai email hoặc mật khẩu !");
+                message.setVisibility(View.VISIBLE);
+//                Toast.makeText(getApplicationContext(), "Sai email hoặc mật khẩu !", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }
