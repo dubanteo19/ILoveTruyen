@@ -8,6 +8,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
 
 public interface UserAPI {
     @POST("/api/v1/users/register")
@@ -16,7 +17,7 @@ public interface UserAPI {
     @POST("/api/v1/users/login")
     Call<User> login(@Body UserRegister userRegister);
 
-    @PUT("/api/v1/users")
-    Call<User> update(@Body UserUpdate userUpdate);
+    @PUT("/api/v1/users/{id}")
+    Call<User> update(@Path("id") int id, @Body UserUpdate userUpdate);
 
 }

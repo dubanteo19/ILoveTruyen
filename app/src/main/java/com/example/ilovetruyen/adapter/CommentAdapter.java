@@ -1,5 +1,7 @@
 package com.example.ilovetruyen.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,22 +10,34 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.ilovetruyen.R;
+import com.example.ilovetruyen.model.Comic;
+import com.example.ilovetruyen.model.Comment;
 import com.example.ilovetruyen.model.Commentzz;
+import com.example.ilovetruyen.ui.comicDetail.ComicDetailActivity;
 import com.example.ilovetruyen.ui.comments.OnEditCommentListener;
 
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
 
-    private List<Commentzz> commentList;
-    private OnEditCommentListener onEditCommentListener;
+    private List<Comment> commentList;
+    private Context context;
 
-    public CommentAdapter(List<Commentzz> commentList, OnEditCommentListener onEditCommentListener) {
-        this.commentList = commentList;
-        this.onEditCommentListener = onEditCommentListener;
+    public CommentAdapter(Context context) {
+        this.context = context;
+        this.commentList = new ArrayList<>();
     }
-
+    public void setData(List<Comment> comments) {
+        this.commentList.clear();
+        if (comments != null) {
+            this.commentList.addAll(comments);
+        }
+        notifyDataSetChanged();
+    }
     @Override
     public CommentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -33,15 +47,20 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
     @Override
     public void onBindViewHolder(CommentViewHolder holder, int position) {
-//        holder.userName.setText(comment.getUserName());
-//        holder.commentText.setText(comment.getCommentText());
-//        holder.commentTime.setText(comment.getTime());
-//        holder.userImage.setImageResource(comment.getUserImage());
-        holder.editComment.setOnClickListener(v -> onEditCommentListener.onEditComment(position));
-    }
-    public void setData(List<Commentzz> commentList){
-        this.commentList = commentList;
-        notifyDataSetChanged();
+        Comment comment = commentList.get(position);
+        if (comment == null) return;
+
+        Glide.with(holder.itemView).load(comment.text()).into(holder.userImage);
+        holder.commentText.setText(comment.text());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = comment.createdDate().format(formatter);
+        holder.commentTime.setText(formattedDate);
+        holder.userName.setText(comment.user().fullName());
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, ComicDetailActivity.class);
+            intent.putExtra("commentId", comment.id());
+            context.startActivity(intent);
+        });
     }
 
     @Override
@@ -55,11 +74,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
         public CommentViewHolder(View view) {
             super(view);
-            userName = view.findViewById(R.id.text_user_name);
-            commentText = view.findViewById(R.id.text_comment);
-            commentTime = view.findViewById(R.id.text_time);
-            userImage = view.findViewById(R.id.image_user);
-            editComment = view.findViewById(R.id.image_more);
+            userName = view.findViewById(R.id.textUserName);
+            commentText = view.findViewById(R.id.textComment);
+            commentTime = view.findViewById(R.id.textTime);
+            userImage = view.findViewById(R.id.imageUser);
+            editComment = view.findViewById(R.id.imageMore);
         }
     }
 }
