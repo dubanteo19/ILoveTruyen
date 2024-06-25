@@ -82,6 +82,24 @@ public class NotificationsFragment extends Fragment {
         ConstraintLayout featureUpdateLayout = root.findViewById(R.id.feature_update);
         featureUpdateLayout.setOnClickListener(this::showPopup);
 
+        ConstraintLayout featureAdsLayout = root.findViewById(R.id.feature_ads);
+        featureAdsLayout.setOnClickListener(this::showPopupAds);
+
+        ConstraintLayout featureRemoveAccountLayout = root.findViewById(R.id.feature_delete);
+        featureRemoveAccountLayout.setOnClickListener(v ->{
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Xóa tài khoản")
+                    .setMessage("Bạn muốn xóa tài khoản của mình?\n" +
+                            "Tất cả dữ liệu của tài khoản cũng sẽ bị xóa.")
+                    .setIcon(R.drawable.icons_info)
+                    .setNeutralButton("Hủy bỏ", (dialog, which) -> {
+                    })
+                    .setPositiveButton("Đồng ý", (dialog, which) -> {
+
+                    })
+                    .show();
+        });
+
         Button user_login_btn = root.findViewById(R.id.user_login_btn);
         TextView email = root.findViewById(R.id.email_user);
         TextView fullName = root.findViewById(R.id.fullName);
@@ -236,5 +254,28 @@ public class NotificationsFragment extends Fragment {
             return false;
         }
         return true;
+    }
+    private void showPopupAds(View anchorView) {
+        Context context = requireContext();
+        View popupView = LayoutInflater.from(context).inflate(R.layout.fragment_popup_ads, null);
+        popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#80000000")));
+        //cập nhật
+        Button btnViewPopup = popupView.findViewById(R.id.btnViewPopup);
+        btnViewPopup.setOnClickListener(v -> {
+
+        });
+        //close
+        Button btnClosePopup = popupView.findViewById(R.id.btnClosePopup);
+        btnClosePopup.setOnClickListener(v -> {
+            popupWindow.dismiss();
+        });
+
+        int[] location = new int[2];
+        anchorView.getLocationOnScreen(location);
+        int offsetX = 0;
+        int offsetY = 0;
+        popupWindow.showAtLocation(anchorView, Gravity.NO_GRAVITY, location[0] + offsetX, location[1] + offsetY);
     }
 }
