@@ -28,6 +28,8 @@ import com.example.ilovetruyen.model.ComicDetail;
 import com.example.ilovetruyen.retrofit.RetrofitService;
 import com.example.ilovetruyen.ui.StatusHelper;
 import com.example.ilovetruyen.ui.comments.CommentFragment;
+import com.example.ilovetruyen.ui.search.SearchResultActivity;
+import com.example.ilovetruyen.util.TimeDifference;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -108,7 +110,7 @@ public class ComicDetailActivity extends AppCompatActivity {
         heartEvent();
     }
 
-
+    // Hien thi thong tin chinh cua truyen
     private void renderInfomation() {
         // set thumb
         thumb = findViewById(R.id.detail_comic_thumb);
@@ -130,7 +132,7 @@ public class ComicDetailActivity extends AppCompatActivity {
 
         // set date
         createdAt = findViewById(R.id.detail_created_at);
-        createdAt.setText(comic.createdDate().toString());
+        createdAt.setText(TimeDifference.getTimeDifference(comic.createdDate()));
 
         // set status
         status = findViewById(R.id.detail_processing);
@@ -140,10 +142,10 @@ public class ComicDetailActivity extends AppCompatActivity {
 
 
     private void renderNavTop() {
-        titleNavTV = findViewById(R.id.nav_top_title_name);
-        titleNavTV.setText("");
-        backBtn = findViewById(R.id.back_btn);
-        backBtn.setOnClickListener(v -> finish());
+//        titleNavTV = findViewById(R.id.nav_top_title_name);
+//        titleNavTV.setText("");
+//        backBtn = findViewById(R.id.back_btn);
+//        backBtn.setOnClickListener(v -> finish());
     }
 
     /* Summary comic*/
@@ -166,13 +168,19 @@ public class ComicDetailActivity extends AppCompatActivity {
             Chip chip = (Chip) LayoutInflater.from(this).inflate(R.layout.button_keyword, keywordSearch, false);
             chip.setText(category.name());
             keywordSearch.addView(chip);
+            chip.setOnClickListener(v -> {
+                Intent intent = new Intent(getApplicationContext(), SearchResultActivity.class);
+                intent.putExtra("title",category.name());
+                intent.putExtra("categoryId",category.id());
+                startActivity(intent);
+            });
         }
     }
 
     private void renderChapter() {
         chapterLength = findViewById(R.id.detail_chapterLength);
         chapterLength.setText(String.valueOf(chapterList.size())+ " chương");
-        final int MAX_CHAPTER = 2;
+        final int MAX_CHAPTER = 5;
         recyclerView = findViewById(R.id.detail_chapters);
         chapterApdapter = new ChapterApdapter(getApplicationContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, true);

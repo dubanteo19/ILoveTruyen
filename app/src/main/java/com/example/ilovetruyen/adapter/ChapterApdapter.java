@@ -48,7 +48,7 @@ public class ChapterApdapter extends RecyclerView.Adapter<ChapterApdapter.Chapte
         var chapter = chapterList.get(position);
         if (chapter == null) return;
         holder.chapterNameView.setText("Chương "+ chapter.count());
-//        holder.createAt.setText( chapter.craeteAt().toString());
+//        holder.createAt.setText(TimeDifference.getTimeDifference(chapter.createdDate()));
     }
 
     @Override
