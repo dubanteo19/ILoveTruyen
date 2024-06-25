@@ -27,9 +27,9 @@ import com.example.ilovetruyen.model.Comic;
 import com.example.ilovetruyen.model.ComicDetail;
 import com.example.ilovetruyen.retrofit.RetrofitService;
 import com.example.ilovetruyen.ui.StatusHelper;
-import com.example.ilovetruyen.ui.comments.CommentFragment;
 import com.example.ilovetruyen.ui.search.SearchResultActivity;
 import com.example.ilovetruyen.util.TimeDifference;
+import com.example.ilovetruyen.util.UserStateHelper;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -55,14 +55,14 @@ public class ComicDetailActivity extends AppCompatActivity {
     private Comic comic;
     private List<Chapter> chapterList;
     private boolean isChecked;
-    private CommentFragment commentFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comic_detail);
+        // Khoi tai dich vu retrofit
+        UserStateHelper.saveReadComicId(getApplicationContext(),getIntent().getIntExtra("comicId",1));
         fetchComicDetail(getIntent().getIntExtra("comicId",1));
-
     }
 
     private void fetchComicDetail(int comicId) {
@@ -74,6 +74,7 @@ public class ComicDetailActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     comicDetail = response.body();
                     comic = comicDetail.comic();
+
                     renderComicDetail();
                 }
             }
@@ -155,10 +156,6 @@ public class ComicDetailActivity extends AppCompatActivity {
         expandableTextView.setText(comicDetail.description());
     }
     private void renderComments() {
-        commentFragment = new CommentFragment();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.detail_comments, commentFragment);
-        transaction.commit();
     }
 
     /* category keywords*/

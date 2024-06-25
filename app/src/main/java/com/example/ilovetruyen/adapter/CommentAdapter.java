@@ -33,13 +33,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
     @Override
     public void onBindViewHolder(CommentViewHolder holder, int position) {
-
-        Commentzz comment = commentList.get(position);
-        holder.userName.setText(comment.user().fullName());
-        holder.commentText.setText(comment.text());
-//        holder.commentTime.setText(comment.createdDate().toString());
-//        holder.userImage.setImageResource(comment.);
-
+//        holder.userName.setText(comment.getUserName());
+//        holder.commentText.setText(comment.getCommentText());
+//        holder.commentTime.setText(comment.getTime());
+//        holder.userImage.setImageResource(comment.getUserImage());
         holder.editComment.setOnClickListener(v -> onEditCommentListener.onEditComment(position));
     }
     public void setData(List<Commentzz> commentList){
