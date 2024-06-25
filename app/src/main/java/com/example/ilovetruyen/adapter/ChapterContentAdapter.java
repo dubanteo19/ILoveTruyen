@@ -12,13 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.model.Chapter;
+import com.example.ilovetruyen.model.ContentImg;
 
 import java.util.List;
 
 public class ChapterContentAdapter extends RecyclerView.Adapter<ChapterContentAdapter.ViewHolder>{
     private Context mContext;
     private Chapter chapter;
-    private List<String> imageList;
+    private List<ContentImg> contentImgList;
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -30,28 +31,23 @@ public class ChapterContentAdapter extends RecyclerView.Adapter<ChapterContentAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
-        if(imageList == null) return;
-        String image = imageList.get(position);
+        if(contentImgList == null) return;
+        ContentImg image = contentImgList.get(position);
+        var width= holder.itemView.getWidth();
         //load ảnh với glide ??
         Glide.with(mContext)
-                .load(image)
+                .load(image.url())
+                .fitCenter()
                 .into(holder.imageView);
-//        holder.imageView.setImageResource(Integer.parseInt(image));
-
     }
-    public void setData(List<String> imageList){
-        this.imageList = imageList;
+    public void setData(List<ContentImg> imageList){
+        this.contentImgList = imageList;
         notifyDataSetChanged();
-    }
-
-    private List<Integer> getImageData() {
-        return null;
     }
 
     @Override
     public int getItemCount() {
-        return imageList.size();
+        return contentImgList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -63,9 +59,7 @@ public class ChapterContentAdapter extends RecyclerView.Adapter<ChapterContentAd
         }
     }
 
-    public ChapterContentAdapter(Context mContext,Chapter chapter, List<String> imageList){
-        this.chapter= chapter;
-        this.imageList= imageList;
+    public ChapterContentAdapter(Context mContext){
         this.mContext= mContext;
     }
 
