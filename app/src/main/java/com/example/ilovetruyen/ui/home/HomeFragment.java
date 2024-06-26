@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +23,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.ilovetruyen.LoginActivity;
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.adapter.CarouselAdapter;
@@ -66,7 +68,7 @@ public class HomeFragment extends Fragment {
         Button home_login_btn = root.findViewById(R.id.home_login_btn);
         TextView userName = root.findViewById(R.id.userName);
         TextView wellcome = root.findViewById(R.id.wellcome);
-        ImageView iconsStar  = root.findViewById(R.id.iconsStar);
+        ImageView iconsStar = root.findViewById(R.id.iconsStar);
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_prefs", MODE_PRIVATE);
         boolean isLoggedIn = sharedPreferences.getBoolean("is_logged_in", false);
         if (isLoggedIn) {
@@ -88,7 +90,7 @@ public class HomeFragment extends Fragment {
             Intent intent = new Intent(root.getContext(), LoginActivity.class);
             startActivity(intent);
         });
-        SearchView searchView = root.findViewById(R.id.home_search_view);
+        LinearLayout searchView = root.findViewById(R.id.home_search_view);
         searchView.setOnClickListener(v -> {
             Intent intent = new Intent(root.getContext(), SearchActivity.class);
             startActivity(intent);
@@ -243,7 +245,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Comic>> call, Response<List<Comic>> response) {
                 CardSliderViewPager cardSliderViewPager = root.findViewById(R.id.home_carousel);
-                cardSliderViewPager.setAdapter(new CarouselAdapter(response.body(),root.getContext()));
+                cardSliderViewPager.setAdapter(new CarouselAdapter(response.body(), root.getContext()));
                 System.out.println(response.body());
             }
 

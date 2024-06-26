@@ -67,15 +67,26 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <SearchView
+
+            <LinearLayout
                 android:id="@+id/home_search_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:padding="10dp"
                 android:layout_marginHorizontal="10dp"
+                android:layout_height="wrap_content"
                 android:background="@drawable/border_strike_round"
-                android:iconifiedByDefault="false"
-                android:inputType="none"
-                android:queryHint="Tìm truyện tranh"></SearchView>
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_search" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:textSize="20dp"
+                    android:layout_height="wrap_content"
+                    android:text="Tìm kiếm truyện"/>
+            </LinearLayout>
             <!--Carousel section-->
             <com.github.islamkhsh.CardSliderViewPager
                 android:id="@+id/home_carousel"
