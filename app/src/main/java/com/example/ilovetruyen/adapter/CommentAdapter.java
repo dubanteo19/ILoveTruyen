@@ -24,12 +24,14 @@ import java.util.List;
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
 
     private List<Comment> commentList;
-    private Context context;
+    //    private Context context;
+    private OnEditCommentListener onEditCommentListener;
 
-    public CommentAdapter(Context context) {
-        this.context = context;
+    public CommentAdapter() {
+//        this.context = context;
         this.commentList = new ArrayList<>();
     }
+
     public void setData(List<Comment> comments) {
         this.commentList.clear();
         if (comments != null) {
@@ -37,6 +39,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         }
         notifyDataSetChanged();
     }
+
+    public void setOnEditCommentListener(OnEditCommentListener onEditCommentListener) {
+        this.onEditCommentListener = onEditCommentListener;
+    }
+
     @Override
     public CommentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -49,17 +56,22 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         Comment comment = commentList.get(position);
         if (comment == null) return;
 
-        Glide.with(holder.itemView).load(comment.text()).into(holder.userImage);
+        Glide.with(holder.itemView).load(R.drawable.c1).into(holder.userImage);
         holder.commentText.setText(comment.text());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String formattedDate = comment.createdDate().format(formatter);
-        holder.commentTime.setText(formattedDate);
-        holder.userName.setText(comment.user().fullName());
-        holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, ComicDetailActivity.class);
-            intent.putExtra("commentId", comment.id());
-            context.startActivity(intent);
-        });
+        if (comment.createdDate() == null) {
+            holder.commentTime.setText("Unknown");
+        } else
+            holder.commentTime.setText(comment.createdDate().format(formatter));
+
+        if (comment.user() != null)
+            holder.userName.setText(comment.user().fullName());
+
+//        holder.itemView.setOnClickListener(v -> {
+//            Intent intent = new Intent(context, ComicDetailActivity.class);
+//            intent.putExtra("commentId", comment.id());
+//            context.startActivity(intent);
+//        });
     }
 
     @Override

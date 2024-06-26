@@ -73,6 +73,7 @@
         <activity
             android:name=".ui.categorySearch.CategoryResultActivity"
             android:exported="false" />
+
     </application>
 
 </manifest>
