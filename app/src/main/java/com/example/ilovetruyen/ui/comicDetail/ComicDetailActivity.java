@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.adapter.ChapterApdapter;
 import com.example.ilovetruyen.api.ComicDetailAPI;
+import com.example.ilovetruyen.database.DBHelper;
 import com.example.ilovetruyen.model.Category;
 import com.example.ilovetruyen.model.Chapter;
 import com.example.ilovetruyen.model.Comic;
@@ -57,7 +58,6 @@ public class ComicDetailActivity extends AppCompatActivity {
     private boolean isChecked;
     private int chapterId = 1;
     private int comicId;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,7 +112,10 @@ public class ComicDetailActivity extends AppCompatActivity {
         renderSimilarComics();
         heartEvent();
         continueReadingEvent();
+        saveEvent();
     }
+
+
 
     private void continueReadingEvent() {
         LinearLayout view = findViewById(R.id.detail_continue_reading_btn);
@@ -275,5 +278,29 @@ public class ComicDetailActivity extends AppCompatActivity {
             });
         }
     }
+    private void saveEvent() {
+        saveBtn = findViewById(R.id.detail_saveBtn);
+        Drawable drawable = saveBtn.getDrawable();
 
+        // Cap nhat trang thai ban dau cua nut
+        updateColorButton(drawable);
+
+        // event
+        saveBtn.setOnClickListener(v -> {
+            System.out.println("save vào danh sách --------------------------------");
+            isChecked = !isChecked; // Thay đổi trạng thái
+            updateSaveButtonOnClick(); // Cập nhật nút dựa trên trạng thái mới
+            updateColorButton(drawable);
+        });
+    }
+
+    private void updateSaveButtonOnClick() {
+        DBHelper dbHelper = new DBHelper(ComicDetailActivity.this);
+        if(dbHelper.insertData(String.valueOf(comicId).trim(),comic.name().trim(),"link ảnh","1")){
+            System.out.println("Đã lưu comics này vào db");
+        }
+        else {
+            System.out.println("lỗi insert com va favorite");
+        }
+    }
 }

@@ -2,6 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/favorite_comic_itemLayout"
 
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -50,7 +51,7 @@
 
                     </TextView>
                     <ImageButton
-                        android:id="@+id/detail_saveBtn"
+                        android:id="@+id/detail_removeBtn"
                         android:layout_width="30dp"
                         android:layout_height="match_parent"
                         android:background="@drawable/border_left_side_round"
@@ -68,13 +69,14 @@
             android:id="@+id/marquee_comic_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Kimetsu No Yaiba"
+            android:text="test"
             android:textSize="16dp"
             android:textColor="@color/black"
             android:singleLine="true"
             android:ellipsize="marquee"
             android:scrollHorizontally="true"
-            android:marqueeRepeatLimit="marquee_forever"/>
+            android:marqueeRepeatLimit="marquee_forever"
+            android:gravity="center"/>
         <TextView
             android:id="@+id/favorite_comic_currentChap"
             android:layout_width="match_parent"

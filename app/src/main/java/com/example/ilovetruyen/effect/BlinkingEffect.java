@@ -8,7 +8,7 @@ import android.view.View;
 public class BlinkingEffect {
     public static void applyBlinkingEffect(View view) {
         ObjectAnimator animator = ObjectAnimator.ofFloat(view, "alpha", 0.0f, 1.0f);
-        animator.setDuration(5000); // thời gian nhấp nháy
+        animator.setDuration(500); // thời gian nhấp nháy
         animator.setRepeatCount(ObjectAnimator.INFINITE); // số lần lặp lại
         animator.setRepeatMode(ObjectAnimator.REVERSE); // chế độ lặp lại
         animator.start();
