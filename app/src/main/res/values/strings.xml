@@ -92,4 +92,6 @@
     <string name="loading">Đang tải...</string>
     <string name="introduction">ILoveTruyen là một dự án chia sẻ đa dạng các thể loại truyện tranh, được thu thập từ nhiều nguồn khác nhau trên internet. Với mục tiêu mang đến những tác phẩm truyện tranh hấp dẫn và mới nhất cho cộng đồng, ILoveTruyen mong muốn lan tỏa văn hóa đọc truyện đến mọi người dân Việt Nam.</string>
     <string name="version">Phiên bản 1.0.1</string>
+    <string name="description_ads">Mình chân thành cảm ơn bạn đã sử dụng ứng dụng của mình, do mình không thu phí khi sử dụng ứng dụng vì vậy sẽ có quảng cáo để duy trì máy chủ, mong bạn thông cảm! Bạn có thể xem quảng cáo để nhận phần thưởng và xóa tất cả quảng cáo trong 60 phút tiếp theo!</string>
+    <string name="comment_text_goes_here">Comment text goes here.</string>
 </resources>

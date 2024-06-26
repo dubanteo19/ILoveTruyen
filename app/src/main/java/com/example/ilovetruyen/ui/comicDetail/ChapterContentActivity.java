@@ -1,6 +1,7 @@
 package com.example.ilovetruyen.ui.comicDetail;
 
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,6 +35,7 @@ public class ChapterContentActivity extends AppCompatActivity {
     private int count;
     List<ContentImg> contentImgList;
     private TextView titleBar;
+    private ImageView backBtn;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,10 @@ public class ChapterContentActivity extends AppCompatActivity {
         comicId = getIntent().getIntExtra("comicId", 1);
         count = getIntent().getIntExtra("count", 1);
         renderContentChapter();
+        backBtn = findViewById(R.id.chapter_backBtn);
+        backBtn.setOnClickListener(v -> {
+            finish();
+        });
     }
 
     private void renderContentChapter() {

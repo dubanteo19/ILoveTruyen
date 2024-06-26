@@ -3,6 +3,7 @@ package com.example.ilovetruyen.ui.notifications;
 import static android.content.Context.MODE_PRIVATE;
 
 import static com.example.ilovetruyen.util.UserStateHelper.logoutStatus;
+import static com.example.ilovetruyen.util.UserStateHelper.saveLoginStatus;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -79,9 +80,24 @@ public class NotificationsFragment extends Fragment {
             startActivity(intent);
         });
         ConstraintLayout featureUpdateLayout = root.findViewById(R.id.feature_update);
+        featureUpdateLayout.setOnClickListener(this::showPopup);
 
-        featureUpdateLayout.setOnClickListener(v -> {
-            showPopup(v);
+        ConstraintLayout featureAdsLayout = root.findViewById(R.id.feature_ads);
+        featureAdsLayout.setOnClickListener(this::showPopupAds);
+
+        ConstraintLayout featureRemoveAccountLayout = root.findViewById(R.id.feature_delete);
+        featureRemoveAccountLayout.setOnClickListener(v ->{
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Xóa tài khoản")
+                    .setMessage("Bạn muốn xóa tài khoản của mình?\n" +
+                            "Tất cả dữ liệu của tài khoản cũng sẽ bị xóa.")
+                    .setIcon(R.drawable.icons_info)
+                    .setNeutralButton("Hủy bỏ", (dialog, which) -> {
+                    })
+                    .setPositiveButton("Đồng ý", (dialog, which) -> {
+
+                    })
+                    .show();
         });
 
         Button user_login_btn = root.findViewById(R.id.user_login_btn);
@@ -149,24 +165,32 @@ public class NotificationsFragment extends Fragment {
         popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
         popupWindow.setOutsideTouchable(true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#80000000")));
-
-        TextInputEditText emailValidate = popupView.findViewById(R.id.et_input_edit_email_update);
+        TextInputEditText pass = popupView.findViewById(R.id.et_input_edit_password);
         TextInputEditText fullName = popupView.findViewById(R.id.et_input_edit_fullName_update);
-        String email = String.valueOf(emailValidate.getText());
-        String name = String.valueOf(fullName.getText());
         sharedPreferences = getActivity().getSharedPreferences("user_prefs", MODE_PRIVATE);
         int user_id = sharedPreferences.getInt("userId", 0);
         String username = sharedPreferences.getString("user_name", "User");
         String email_user = sharedPreferences.getString("email", "User");
+        String password = sharedPreferences.getString("password", "User");
+        pass.setText(password);
+        fullName.setText(username);
         message = popupView.findViewById(R.id.message);
+        //cập nhật
         Button buttonUpdate = popupView.findViewById(R.id.buttonUpdate);
         buttonUpdate.setOnClickListener(v -> {
-            if (emailValidator(emailValidate)) {
-                update(user_id, email, "", name);
-                popupWindow.dismiss();
+            String updatedName = fullName.getText() != null ? fullName.getText().toString() : "";
+            String updatedPass = pass.getText() != null ? pass.getText().toString() : "";
+            if(!passwordValidator(pass)){
+                return;
+            };
+
+            if (!isFullNameValid(updatedName, fullName)) {
+                return;
             }
+            update(user_id, email_user, updatedPass, updatedName);
 
         });
+        //close
         Button btnClosePopup = popupView.findViewById(R.id.btnClosePopup);
         btnClosePopup.setOnClickListener(v -> {
             popupWindow.dismiss();
@@ -179,19 +203,29 @@ public class NotificationsFragment extends Fragment {
         popupWindow.showAtLocation(anchorView, Gravity.NO_GRAVITY, location[0] + offsetX, location[1] + offsetY);
     }
 
-    public void update(Integer id, String email, String password, String fullName) {
+    public void update(int id, String email, String password, String fullName) {
+        Context context = requireContext();
+        View popupView = LayoutInflater.from(context).inflate(R.layout.fragment_popup, null);
         retrofitService = new RetrofitService();
         userAPI = retrofitService.getRetrofit().create(UserAPI.class);
         UserUpdate userUpdate = new UserUpdate(id, email, password, fullName);
-
-        userAPI.update(userUpdate).enqueue(new Callback<User>() {
+        userAPI.update(id,userUpdate).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Context context = requireContext();
-                    View popupView = LayoutInflater.from(context).inflate(R.layout.fragment_popup, null);
-                    message = popupView.findViewById(R.id.message);
-                    message.setText("Cập nhật thành công!");
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("password", password);
+                    editor.putString("user_name", fullName);
+                    editor.apply();
+                    TextView fullNameTextView = requireView().findViewById(R.id.fullName);
+                    fullNameTextView.setText(fullName);
+                    popupWindow.dismiss();
+                    new AlertDialog.Builder(context)
+                            .setTitle("Cập nhật thông tin")
+                            .setMessage("Bạn đã cập nhật thông tin thành công !")
+                            .setNeutralButton("Close", (dialog, which) -> {
+                            })
+                            .show();
                 } else {
                     message.setText("Cập nhật thất bại!");
                 }
@@ -204,15 +238,44 @@ public class NotificationsFragment extends Fragment {
         });
     }
 
-    public boolean emailValidator(TextInputEditText etMail) {
-        String emailToText = String.valueOf(etMail.getText());
-        if (!emailToText.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(emailToText).matches()) {
-//            Toast.makeText(this, "Email hợp lệ !", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getContext(), "Vui lòng nhập đúng định dạng email !", Toast.LENGTH_SHORT).show();
-            etMail.setError("Vui lòng nhập đúng định dạng email !");
+    public boolean passwordValidator(TextInputEditText etPassword){
+        String passwordToText = String.valueOf(etPassword.getText());
+        if (passwordToText.length() < 6) {
+            Toast.makeText(getContext(), "Mật khẩu phải có ít nhất 6 ký tự!", Toast.LENGTH_SHORT).show();
+            etPassword.setError("Mật khẩu phải có ít nhất 6 ký tự!");
+            return false;
         }
-        return false;
+        return true;
     }
+    private boolean isFullNameValid(String fullName, TextInputEditText fullNameValidate) {
+        if (fullName.isEmpty()) {
+            fullNameValidate.setError("Họ tên không được bỏ trống!");
+//            Toast.makeText(this, "Họ tên không được bỏ trống!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+    private void showPopupAds(View anchorView) {
+        Context context = requireContext();
+        View popupView = LayoutInflater.from(context).inflate(R.layout.fragment_popup_ads, null);
+        popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#80000000")));
+        //cập nhật
+        Button btnViewPopup = popupView.findViewById(R.id.btnViewPopup);
+        btnViewPopup.setOnClickListener(v -> {
 
+        });
+        //close
+        Button btnClosePopup = popupView.findViewById(R.id.btnClosePopup);
+        btnClosePopup.setOnClickListener(v -> {
+            popupWindow.dismiss();
+        });
+
+        int[] location = new int[2];
+        anchorView.getLocationOnScreen(location);
+        int offsetX = 0;
+        int offsetY = 0;
+        popupWindow.showAtLocation(anchorView, Gravity.NO_GRAVITY, location[0] + offsetX, location[1] + offsetY);
+    }
 }
