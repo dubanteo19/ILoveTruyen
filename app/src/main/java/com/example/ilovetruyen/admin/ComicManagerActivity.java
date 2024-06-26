@@ -39,25 +39,25 @@ public class ComicManagerActivity extends AppCompatActivity {
     }
 
     private void renderListComics() {
-        recyclerView = findViewById(R.id.history_reading);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        historyAdapter = new HistoryAdapter(this);
-        recyclerView.setAdapter(historyAdapter);
-        comicAPI.getAllComics().enqueue(new Callback<List<Comic>>() {
-            @Override
-            public void onResponse(Call<List<Comic>> call, Response<List<Comic>> response) {
-                System.out.println(response.body()+"=======================");
-                if(response.isSuccessful() && response.body() != null){
-
-                    historyAdapter.setData(response.body());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Comic>> call, Throwable throwable) {
-
-            }
-        });
+//        recyclerView = findViewById(R.id.history_reading);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+//        historyAdapter = new HistoryAdapter(this);
+//        recyclerView.setAdapter(historyAdapter);
+//        comicAPI.getAllComics().enqueue(new Callback<List<Comic>>() {
+//            @Override
+//            public void onResponse(Call<List<Comic>> call, Response<List<Comic>> response) {
+//                System.out.println(response.body()+"=======================");
+//                if(response.isSuccessful() && response.body() != null){
+//
+//                    historyAdapter.setData(response.body());
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<Comic>> call, Throwable throwable) {
+//
+//            }
+//        });
 
     }
 

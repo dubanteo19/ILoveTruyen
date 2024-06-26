@@ -1,14 +1,36 @@
 package com.example.ilovetruyen.ui.home;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.ilovetruyen.R;
+import com.example.ilovetruyen.api.ComicAPI;
+import com.example.ilovetruyen.api.ComicDetailAPI;
+import com.example.ilovetruyen.model.Chapter;
+import com.example.ilovetruyen.model.Comic;
+import com.example.ilovetruyen.model.ComicDetail;
+import com.example.ilovetruyen.retrofit.RetrofitService;
+import com.example.ilovetruyen.util.NameMaxSizeHelper;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,8 +38,13 @@ import com.example.ilovetruyen.R;
  * create an instance of this fragment.
  */
 public class RecentlyReadFragment extends Fragment {
-
-
+    private ImageView recent_read_thumb;
+    private TextView comic_name, like, views, comic_count;
+    private SharedPreferences sharedPreferences;
+    private RetrofitService retrofitService;
+    private ComicDetailAPI comicDetailAPI;
+    private Comic comic;
+    int recentlyComicId;
     public RecentlyReadFragment() {
         // Required empty public constructor
     }
@@ -40,10 +67,57 @@ public class RecentlyReadFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        int recentlyComicId = sharedPreferences.getInt("recentlyComicId", -1);
+        fetchComicDetail(recentlyComicId);
+    }
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_recently_read, container, false);
+        View view =  inflater.inflate(R.layout.fragment_recently_read, container, false);
+        comic_name = view.findViewById(R.id.comic_name);
+        comic_count = view.findViewById(R.id.comic_count);
+        like = view.findViewById(R.id.like);
+        views = view.findViewById(R.id.view);
+        recent_read_thumb = view.findViewById(R.id.recent_read_thumb);
+        sharedPreferences = getActivity().getSharedPreferences("user_prefs", MODE_PRIVATE);
+        recentlyComicId = sharedPreferences.getInt("recentlyComicId", -1);
+        System.out.println(recentlyComicId +"=========================================");
+        if(recentlyComicId != -1){
+            fetchComicDetail(recentlyComicId);
+        }
+        return view;
+    }
+
+    private void fetchComicDetail(int comicId) {
+        retrofitService = new RetrofitService();
+        comicDetailAPI = retrofitService.getRetrofit().create(ComicDetailAPI.class);
+
+        comicDetailAPI.getComicDetailById(comicId).enqueue(new Callback<ComicDetail>() {
+            @Override
+            public void onResponse(Call<ComicDetail> call, Response<ComicDetail> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    comic = response.body().comic();
+                    comic_name.setText(NameMaxSizeHelper.truncateName(comic.name()));
+                    comic_count.setText(String.valueOf(comic.latestChapter()));
+                    like.setText(String.valueOf(comic.likes()));
+                    views.setText(String.valueOf(comic.views()));
+                    Glide.with(getContext())
+                            .load(comic.thumbUrl())
+                            .into(recent_read_thumb);
+                }
+                else {
+                    Toast.makeText(getContext(), "Failed to fetch data", Toast.LENGTH_SHORT);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ComicDetail> call, Throwable throwable) {
+                Toast.makeText(getContext(), "Failed to fetch data", Toast.LENGTH_SHORT);
+            }
+        });
     }
 }

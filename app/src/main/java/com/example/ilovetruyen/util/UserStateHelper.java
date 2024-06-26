@@ -77,4 +77,10 @@ public class UserStateHelper {
         editor.remove(LIKE_STATUS+comicId);
         editor.apply();
     }
+    public static void saveRecentlyReadComicId(Context context, int comicId) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("recentlyComicId", comicId);
+        editor.apply();
+    }
 }
