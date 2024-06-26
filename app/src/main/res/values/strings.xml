@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">ILoveTruyen</string>
     <string name="title_home" translatable="false">Truyện tranh</string>
-    <string name="title_dashboard" translatable="false">Dashboard</string>
+    <string name="title_dashboard" translatable="false">Danh sách yêu thích</string>
     <string name="title_notifications" translatable="false">Notifications</string>
     <string name="register" translatable="false">Đăng ký</string>
     <string name="register_now" translatable="false">Chưa có tài khoản? Đăng ký ngay</string>
