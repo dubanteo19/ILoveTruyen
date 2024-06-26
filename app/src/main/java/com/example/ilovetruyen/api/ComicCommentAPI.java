@@ -16,7 +16,7 @@ public interface ComicCommentAPI {
     @GET("api/v1/comments")
     Call<List<Comment>> getAllComment();
 
-    @GET("api/v1/comments/{comicId}")
+    @GET("api/v1/comic-detail/{comicId}/comments")
     Call<List<Comment>> getCommentByComicId(@Path("comicId") int comicId);
 
     @POST("api/v1/comments")
