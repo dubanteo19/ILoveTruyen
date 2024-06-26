@@ -23,7 +23,6 @@ import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.adapter.CommentAdapter;
 import com.example.ilovetruyen.api.ComicCommentAPI;
 import com.example.ilovetruyen.dto.ComicCommentDto;
-import com.example.ilovetruyen.model.Comic;
 import com.example.ilovetruyen.model.ComicDetail;
 import com.example.ilovetruyen.model.Comment;
 import com.example.ilovetruyen.model.User;
@@ -41,26 +40,21 @@ import retrofit2.Retrofit;
 
 public class CommentFragment extends Fragment {
     private static final String ARG_COMIC_ID = "comicId";
-    private static final String ARG_COMIC_DETAIL = "comicDetail";
     private int comicId;
     private List<Comment> commentList;
     private ImageView editComment;
     private ComicCommentAPI comicCommentAPI;
-    private ComicDetail comicDetail;
     private CommentAdapter adapter;
     private RecyclerView recyclerView;
 
     public CommentFragment() {
     }
 
-    public static CommentFragment newInstance(int comicId, ComicDetail comicDetail) {
+    public static CommentFragment newInstance(int comicId) {
         CommentFragment fragment = new CommentFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COMIC_ID, comicId);
-        args.putSerializable(ARG_COMIC_DETAIL, comicDetail);
-
         fragment.setArguments(args);
-
         Retrofit retrofit = new RetrofitService().getRetrofit();
         fragment.comicCommentAPI = retrofit.create(ComicCommentAPI.class);
         fragment.commentList = new ArrayList<>();
@@ -74,7 +68,6 @@ public class CommentFragment extends Fragment {
 
         if (getArguments() != null) {
             this.comicId = getArguments().getInt(ARG_COMIC_ID);
-            this.comicDetail = (ComicDetail) getArguments().getSerializable(ARG_COMIC_DETAIL);
         }
     }
 
@@ -82,19 +75,14 @@ public class CommentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_comment, container, false);
-
         // Get user logged in id
         User currentUser = getCurrentUser();
         int userId = currentUser.id();
-        Log.d("CommentFragment", "User id: " + userId);
-        Log.d("CommentFragment", "Comic id: " + comicId);
-
         EditText commentInput = view.findViewById(R.id.comment_input);
         Button sendButton = view.findViewById(R.id.send_button);
         AtomicInteger commentEditPosition = new AtomicInteger(-1);
         this.recyclerView = view.findViewById(R.id.recycler_view_comments);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
         this.adapter = new CommentAdapter();
         adapter.setOnEditCommentListener(position -> {
             if (commentList.isEmpty()) return;
@@ -143,23 +131,20 @@ public class CommentFragment extends Fragment {
             commentInput.setText("");
         });
 
-        recyclerView.setAdapter(adapter);
-        Log.d("RecyclerView", "Setting adapter for RecyclerView with ID: " + recyclerView.getId());
-        adapter.setData(commentList);
-        Log.d("RecyclerView", recyclerView.getAdapter().toString());
 
-        getComments();
+
+//        getComments();
 
         return view;
     }
 
     private void getComments() {
-        comicCommentAPI.getCommentByComicId(this.comicId).enqueue(new Callback<>() {
+        comicCommentAPI.getCommentByComicId(comicId).enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<List<Comment>> call, Response<List<Comment>> response) {
                 if (response.isSuccessful()) {
-                    commentList = response.body();
-
+                    recyclerView.setAdapter(adapter);
+                    adapter.setData(response.body());
                 }
             }
 
