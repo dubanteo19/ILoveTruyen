@@ -2,6 +2,7 @@ package com.example.ilovetruyen.util;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class TimeDifference {
     public static String getTimeDifference(LocalDateTime start) {
@@ -22,5 +23,9 @@ public class TimeDifference {
         } else {
             return secs + "giây trước";
         }
+    }
+    public static String formatTimeOnChapter(LocalDateTime localDateTime){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        return localDateTime.format(formatter);
     }
 }

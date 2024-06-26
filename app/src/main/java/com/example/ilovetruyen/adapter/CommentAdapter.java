@@ -24,25 +24,15 @@ import java.util.List;
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
 
     private List<Comment> commentList;
-    //    private Context context;
-    private OnEditCommentListener onEditCommentListener;
 
-    public CommentAdapter() {
-//        this.context = context;
-        this.commentList = new ArrayList<>();
+    public CommentAdapter(Context context) {
     }
 
     public void setData(List<Comment> comments) {
-        this.commentList.clear();
-        if (comments != null) {
-            this.commentList.addAll(comments);
-        }
+       this.commentList=comments;
         notifyDataSetChanged();
     }
 
-    public void setOnEditCommentListener(OnEditCommentListener onEditCommentListener) {
-        this.onEditCommentListener = onEditCommentListener;
-    }
 
     @Override
     public CommentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -54,16 +44,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     @Override
     public void onBindViewHolder(CommentViewHolder holder, int position) {
         Comment comment = commentList.get(position);
-        if (comment == null) return;
         Glide.with(holder.itemView).load(R.drawable.c1).into(holder.userImage);
         holder.commentText.setText(comment.text());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        if (comment.createdDate() == null) {
-            holder.commentTime.setText("Unknown");
-        } else
+//        if (comment.createdDate() == null) {
+//            holder.commentTime.setText("Unknown");
+//        } else
             holder.commentTime.setText(comment.createdDate().format(formatter));
-
-        if (comment.user() != null)
+//
             holder.userName.setText(comment.user().fullName());
 
     }

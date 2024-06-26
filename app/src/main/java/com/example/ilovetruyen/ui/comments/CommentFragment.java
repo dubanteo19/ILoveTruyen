@@ -41,8 +41,6 @@ import retrofit2.Retrofit;
 public class CommentFragment extends Fragment {
     private static final String ARG_COMIC_ID = "comicId";
     private int comicId;
-    private List<Comment> commentList;
-    private ImageView editComment;
     private ComicCommentAPI comicCommentAPI;
     private CommentAdapter adapter;
     private RecyclerView recyclerView;
@@ -57,15 +55,12 @@ public class CommentFragment extends Fragment {
         fragment.setArguments(args);
         Retrofit retrofit = new RetrofitService().getRetrofit();
         fragment.comicCommentAPI = retrofit.create(ComicCommentAPI.class);
-        fragment.commentList = new ArrayList<>();
-
         return fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (getArguments() != null) {
             this.comicId = getArguments().getInt(ARG_COMIC_ID);
         }
@@ -76,33 +71,22 @@ public class CommentFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_comment, container, false);
         // Get user logged in id
+        recyclerView = view.findViewById(R.id.recycler_view_comments);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
+        adapter = new CommentAdapter(getContext());
+        // Submit comment
+        getComments();
+//        setSendCommentEvent(view);
+
+        return view;
+    }
+
+    private void setSendCommentEvent(View view) {
         User currentUser = getCurrentUser();
         int userId = currentUser.id();
-        EditText commentInput = view.findViewById(R.id.comment_input);
-        Button sendButton = view.findViewById(R.id.send_button);
         AtomicInteger commentEditPosition = new AtomicInteger(-1);
-        this.recyclerView = view.findViewById(R.id.recycler_view_comments);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        this.adapter = new CommentAdapter();
-        adapter.setOnEditCommentListener(position -> {
-            if (commentList.isEmpty()) return;
-
-            Comment comment = commentList.get(position);
-
-            if (userId == 0) {
-                Toast.makeText(getContext(), "Vui lòng đăng nhập để thực hiện chức năng này", Toast.LENGTH_LONG).show();
-                return;
-            }
-            if (userId == comment.user().id()) {
-                commentInput.setText(comment.text());
-                commentEditPosition.set(position);
-            } else {
-                Toast.makeText(getContext(), "Bạn không thể chỉnh sửa comment của người khác", Toast.LENGTH_LONG).show();
-            }
-        });
-
-
-        // Submit comment
+        Button sendButton = view.findViewById(R.id.send_button);
+        EditText commentInput = view.findViewById(R.id.comment_input);
         sendButton.setOnClickListener(v -> {
             String commentText = commentInput.getText().toString();
 
@@ -116,26 +100,20 @@ public class CommentFragment extends Fragment {
                 return;
             }
             if (commentEditPosition.get() != -1) {
-                Comment currentComment = commentList.get(commentEditPosition.get());
+//                Comment currentComment = commentList.get(commentEditPosition.get());
                 ComicCommentDto newComment = new ComicCommentDto(commentText, userId, comicId);
                 commentEditPosition.set(-1);
 
-                updateComment(newComment, currentComment.id());
+//                updateComment(newComment, currentComment.id());
             } else {
                 ComicCommentDto newComment = new ComicCommentDto(commentText, userId, comicId);
 
                 getComments();
                 createComment(newComment);
             }
-            adapter.setData(commentList);
+//            adapter.setData(commentList);
             commentInput.setText("");
         });
-
-
-
-//        getComments();
-
-        return view;
     }
 
     private void getComments() {
@@ -143,6 +121,7 @@ public class CommentFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Comment>> call, Response<List<Comment>> response) {
                 if (response.isSuccessful()) {
+                    System.out.println(response.body());
                     recyclerView.setAdapter(adapter);
                     adapter.setData(response.body());
                 }

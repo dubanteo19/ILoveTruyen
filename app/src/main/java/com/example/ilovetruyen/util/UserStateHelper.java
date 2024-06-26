@@ -1,20 +1,18 @@
 package com.example.ilovetruyen.util;
 
 import static android.content.Context.MODE_PRIVATE;
-
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toList;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class UserStateHelper {
 
-    private static final String PREF_NAME = "user_prefs";
-    private static final String KEY_PREFIX = "comicId-";
+    public static final String PREF_NAME = "user_prefs";
+    public static final String KEY_PREFIX = "comicId-";
+    public static final String LIKE_STATUS = "like_comicId-";
 
     public static void saveLoginStatus(Context context, boolean isLoggedIn, String fullName, String email, Integer userId, String password) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("user_prefs", MODE_PRIVATE);
@@ -64,6 +62,19 @@ public class UserStateHelper {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(KEY_PREFIX+comicId);
+        editor.apply();
+    }
+
+    public static void saveLikeStatus(Context context, int comicId){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(LIKE_STATUS+comicId, comicId);
+        editor.apply();
+    }
+    public static void removeLikeStatus(Context context, int comicId){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(LIKE_STATUS+comicId);
         editor.apply();
     }
 }
