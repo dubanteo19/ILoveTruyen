@@ -318,7 +318,7 @@ public class ComicDetailActivity extends AppCompatActivity {
 
     private void attachCommentFragment(int comicId) {
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.detail_comments, CommentFragment.newInstance(comicId, comicDetail))
+                .add(R.id.detail_comments, CommentFragment.newInstance(comicId))
                 .commit();
     }
 

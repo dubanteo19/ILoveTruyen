@@ -55,7 +55,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     public void onBindViewHolder(CommentViewHolder holder, int position) {
         Comment comment = commentList.get(position);
         if (comment == null) return;
-
         Glide.with(holder.itemView).load(R.drawable.c1).into(holder.userImage);
         holder.commentText.setText(comment.text());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -67,11 +66,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         if (comment.user() != null)
             holder.userName.setText(comment.user().fullName());
 
-//        holder.itemView.setOnClickListener(v -> {
-//            Intent intent = new Intent(context, ComicDetailActivity.class);
-//            intent.putExtra("commentId", comment.id());
-//            context.startActivity(intent);
-//        });
     }
 
     @Override
