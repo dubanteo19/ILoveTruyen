@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.model.Chapter;
 import com.example.ilovetruyen.ui.comicDetail.ChapterContentActivity;
+import com.example.ilovetruyen.util.TimeDifference;
 
 import java.util.List;
 
@@ -42,21 +43,14 @@ public class ChapterApdapter extends RecyclerView.Adapter<ChapterApdapter.Chapte
     @Override
     public void onBindViewHolder(@NonNull ChapterViewHolder holder, int position) {
         var chapter = chapterList.get(position);
-//        System.out.println("OK chua"+chapter.comicDetail().comic().id());
         if (chapter == null) return;
         holder.chapterNameView.setText("Chương "+ chapter.count());
-//        holder.createAt.setText(TimeDifference.getTimeDifference(chapter.createdDate()));
+        holder.createAt.setText(TimeDifference.formatTimeOnChapter(chapter.createdDate()));
         chapterItem = holder.itemView.findViewById(R.id.detail_chapter_item);
         chapterItem.setOnClickListener(v -> {
             Intent intent = new Intent(context, ChapterContentActivity.class);
             intent.putExtra("comicId", chapter.comicDetail().id());
             intent.putExtra("count", chapter.count());
-
-//            // Nếu context không phải là Activity, thêm cờ FLAG_ACTIVITY_NEW_TASK
-//            if (!(context instanceof android.app.Activity)) {
-//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            }
-
             context.startActivity(intent);
         });
 
@@ -75,7 +69,7 @@ public class ChapterApdapter extends RecyclerView.Adapter<ChapterApdapter.Chapte
         public ChapterViewHolder(@NonNull View itemView) {
             super(itemView);
             chapterNameView = itemView.findViewById(R.id.chapter_fragment_title);
-//            createAt = itemView.findViewById(R.id.chapter_fragment_time);
+            createAt = itemView.findViewById(R.id.chapter_fragment_time);
 
         }
     }
