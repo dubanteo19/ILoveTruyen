@@ -7,6 +7,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,6 +32,7 @@ import com.example.ilovetruyen.model.Comic;
 import com.example.ilovetruyen.model.ComicDetail;
 import com.example.ilovetruyen.retrofit.RetrofitService;
 import com.example.ilovetruyen.util.StatusHelper;
+import com.example.ilovetruyen.ui.comments.CommentFragment;
 import com.example.ilovetruyen.ui.search.SearchResultActivity;
 import com.example.ilovetruyen.util.TimeDifference;
 import com.example.ilovetruyen.util.UserStateHelper;
@@ -61,7 +63,6 @@ public class ComicDetailActivity extends AppCompatActivity {
     private ComicAdapter comicAdapter;
     private List<Chapter> chapterList;
     private boolean isChecked;
-    private int chapterId = 1;
     private int comicId;
 
     @Override
@@ -72,6 +73,7 @@ public class ComicDetailActivity extends AppCompatActivity {
         heartBtn = findViewById(R.id.detail_heartBtn);
         UserStateHelper.saveReadComicId(getApplicationContext(), comicId);
         fetchComicDetail(comicId);
+        attachCommentFragment(comicId);
     }
 
     private void fetchComicDetail(int comicId) {
@@ -122,12 +124,16 @@ public class ComicDetailActivity extends AppCompatActivity {
 
     private void continueReadingEvent() {
         LinearLayout view = findViewById(R.id.detail_continue_reading_btn);
-        view.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ChapterContentActivity.class);
-            intent.putExtra("comicId", comic.id());
-            intent.putExtra("chapterId", chapterId);
-            startActivity(intent);
-        });
+        if(chapterList.size() != 0) {
+            view.setOnClickListener(v -> {
+                Intent intent = new Intent(this, ChapterContentActivity.class);
+                intent.putExtra("comicId", comic.id());
+                intent.putExtra("count", 1);
+                startActivity(intent);
+            });
+        }else{
+            view.setVisibility(View.VISIBLE);
+        }
     }
 
     // Hien thi thong tin chinh cua truyen
@@ -149,10 +155,10 @@ public class ComicDetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 // set views
-               if(response.isSuccessful()){
-                   views = findViewById(R.id.detail_views);
-                   views.setText(String.valueOf(response.body()));
-               }
+                if (response.isSuccessful()) {
+                    views = findViewById(R.id.detail_views);
+                    views.setText(String.valueOf(response.body()));
+                }
             }
 
             @Override
@@ -230,13 +236,15 @@ public class ComicDetailActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.detail_similar_categories);
         comicAdapter = new ComicAdapter(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(comicAdapter);
-        comicAPI.getAllComicsByCategoryId(comicDetail.categories().get(0).id()).enqueue(new Callback<List<Comic>>() {
+
+        comicDetailAPI.getAllComicsByCategoryId(comicDetail.categories().get(0).id()).enqueue(new Callback<List<Comic>>() {
             @Override
             public void onResponse(Call<List<Comic>> call, Response<List<Comic>> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
+                    recyclerView.setLayoutManager(linearLayoutManager);
+                    recyclerView.setAdapter(comicAdapter);
                     comicAdapter.setData(response.body());
+
                 }
             }
 
@@ -308,5 +316,10 @@ public class ComicDetailActivity extends AppCompatActivity {
         }
     }
 
+    private void attachCommentFragment(int comicId) {
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.detail_comments, CommentFragment.newInstance(comicId, comicDetail))
+                .commit();
+    }
 
 }
