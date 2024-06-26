@@ -1,5 +1,6 @@
 package com.example.ilovetruyen;
 
+import static com.example.ilovetruyen.util.UserStateHelper.saveAdminStatus;
 import static com.example.ilovetruyen.util.UserStateHelper.saveLoginStatus;
 
 import android.content.Context;
@@ -18,6 +19,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.ilovetruyen.admin.ILoveTruyenManagerActivity;
 import com.example.ilovetruyen.api.UserAPI;
 import com.example.ilovetruyen.dto.UserRegister;
 import com.example.ilovetruyen.model.User;
@@ -63,7 +65,15 @@ public class LoginActivity extends AppCompatActivity {
             emailValidator(emailValidate);
             String email = String.valueOf(emailValidate.getText());
             String pass = String.valueOf(password.getText());
-            loginUser(email, pass,"");
+            if(email.equals("admin@gmail.com") && pass.equals("admin123")){
+                saveAdminStatus(getApplicationContext(), true);
+                Intent intent = new Intent(this, ILoveTruyenManagerActivity.class);
+                startActivity(intent);
+            }
+            else{
+                loginUser(email, pass,"");
+            }
+
         });
        
     }
