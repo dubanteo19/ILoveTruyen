@@ -27,6 +27,7 @@ import com.example.ilovetruyen.model.Comic;
 import com.example.ilovetruyen.model.ComicDetail;
 import com.example.ilovetruyen.retrofit.RetrofitService;
 import com.example.ilovetruyen.ui.StatusHelper;
+import com.example.ilovetruyen.ui.comments.CommentFragment;
 import com.example.ilovetruyen.ui.search.SearchResultActivity;
 import com.example.ilovetruyen.util.TimeDifference;
 import com.example.ilovetruyen.util.UserStateHelper;
@@ -66,6 +67,8 @@ public class ComicDetailActivity extends AppCompatActivity {
         // Khoi tai dich vu retrofit
         UserStateHelper.saveReadComicId(getApplicationContext(),comicId);
         fetchComicDetail(comicId);
+
+        attachCommentFragment(comicId);
     }
 
     private void fetchComicDetail(int comicId) {
@@ -247,9 +250,9 @@ public class ComicDetailActivity extends AppCompatActivity {
             comicDetailAPI.like(comic.id()).enqueue(new Callback<Integer>() {
                 @Override
                 public void onResponse(Call<Integer> call, Response<Integer> response) {
-                    if(response.isSuccessful()){
+                    if (response.isSuccessful()) {
                         likes.setText(String.valueOf(response.body()));
-                        System.out.println("check --------------------------------true "+response.body());
+                        System.out.println("check --------------------------------true " + response.body());
                     }
                 }
 
@@ -262,9 +265,9 @@ public class ComicDetailActivity extends AppCompatActivity {
             comicDetailAPI.like(comic.id()).enqueue(new Callback<Integer>() {
                 @Override
                 public void onResponse(Call<Integer> call, Response<Integer> response) {
-                    if(response.isSuccessful()){
+                    if (response.isSuccessful()) {
                         likes.setText(String.valueOf(response.body()));
-                        System.out.println("check --------------------------------false"+response.body());
+                        System.out.println("check --------------------------------false" + response.body());
                     }
                 }
 
@@ -274,6 +277,12 @@ public class ComicDetailActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private void attachCommentFragment(int comicId) {
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.detail_comments, CommentFragment.newInstance(comicId))
+                .commit();
     }
 
 }

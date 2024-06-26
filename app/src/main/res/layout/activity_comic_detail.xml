@@ -241,7 +241,10 @@
                 <FrameLayout
                     android:id="@+id/detail_comments"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content">
+<!--                    <include layout="@layout/fragment_comment" />-->
+                </FrameLayout>
+
             </LinearLayout>
 
             <!--Similar comic categories -->
