@@ -23,4 +23,6 @@ public interface ComicDetailAPI {
     @PUT("/api/v1/comics/likes/{id}/unlike")
     Call<Integer> unlike(@Path("id") int id);
 
+    @PUT("/api/v1/comics/views/{id}/increase")
+    Call<Integer> increaseViews(@Path("id") int id);
 }
