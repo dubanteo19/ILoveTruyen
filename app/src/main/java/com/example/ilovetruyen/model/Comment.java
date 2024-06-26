@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 // Comment.java
 public record Comment ( Integer id,
                         String text,
-                        User user,
+                        UserDto user,
                         ComicDetail comicDetail,
                         LocalDateTime createdDate){
 }
