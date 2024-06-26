@@ -1,12 +1,18 @@
 package com.example.ilovetruyen.ui.home;
 
+import static android.content.Context.MODE_PRIVATE;
+import static android.content.Intent.getIntent;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,13 +27,14 @@ import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.adapter.CarouselAdapter;
 import com.example.ilovetruyen.adapter.CategoryItemAdapter;
 import com.example.ilovetruyen.adapter.ComicAdapter;
-import com.example.ilovetruyen.adapter.HotComicsAdatper;
+import com.example.ilovetruyen.adapter.HotComicsAdapter;
 import com.example.ilovetruyen.adapter.NewComicAdapter;
 import com.example.ilovetruyen.api.CategoryAPI;
 import com.example.ilovetruyen.api.ComicAPI;
 import com.example.ilovetruyen.databinding.FragmentHomeBinding;
 import com.example.ilovetruyen.model.Category;
 import com.example.ilovetruyen.model.Comic;
+import com.example.ilovetruyen.model.User;
 import com.example.ilovetruyen.ui.search.SearchActivity;
 import com.example.ilovetruyen.retrofit.RetrofitService;
 import com.github.islamkhsh.CardSliderViewPager;
@@ -42,7 +49,7 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
     private ComicAdapter comicAdapter;
-    private HotComicsAdatper hotComicsAdatper;
+    private HotComicsAdapter hotComicsAdatper;
     private NewComicAdapter newComicAdapter;
     private CategoryItemAdapter categoryItemAdapter;
     RetrofitService retrofitService;
@@ -57,6 +64,26 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         Button home_login_btn = root.findViewById(R.id.home_login_btn);
+        TextView userName = root.findViewById(R.id.userName);
+        TextView wellcome = root.findViewById(R.id.wellcome);
+        ImageView iconsStar  = root.findViewById(R.id.iconsStar);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_prefs", MODE_PRIVATE);
+        boolean isLoggedIn = sharedPreferences.getBoolean("is_logged_in", false);
+        if (isLoggedIn) {
+            home_login_btn.setVisibility(View.GONE);
+            userName.setVisibility(View.VISIBLE);
+            wellcome.setVisibility(View.VISIBLE);
+            iconsStar.setVisibility(View.VISIBLE);
+            String fullName = sharedPreferences.getString("user_name", "User");
+            userName.setText("Hi " + fullName + "!");
+            wellcome.setText("Chào mừng bạn trở lại");
+
+        } else {
+            home_login_btn.setVisibility(View.VISIBLE);
+            userName.setVisibility(View.GONE);
+            iconsStar.setVisibility(View.GONE);
+            wellcome.setVisibility(View.GONE);
+        }
         home_login_btn.setOnClickListener(v -> {
             Intent intent = new Intent(root.getContext(), LoginActivity.class);
             startActivity(intent);
@@ -137,7 +164,7 @@ public class HomeFragment extends Fragment {
 
     private void renderHotComicsSection(View root) {
         RecyclerView recyclerView = root.findViewById(R.id.hot_comics);
-        hotComicsAdatper = new HotComicsAdatper(requireContext());
+        hotComicsAdatper = new HotComicsAdapter(requireContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         comicAPI.getAllHotComics().enqueue(new Callback<List<Comic>>() {
@@ -216,7 +243,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Comic>> call, Response<List<Comic>> response) {
                 CardSliderViewPager cardSliderViewPager = root.findViewById(R.id.home_carousel);
-                cardSliderViewPager.setAdapter(new CarouselAdapter(response.body()));
+                cardSliderViewPager.setAdapter(new CarouselAdapter(response.body(),root.getContext()));
                 System.out.println(response.body());
             }
 
