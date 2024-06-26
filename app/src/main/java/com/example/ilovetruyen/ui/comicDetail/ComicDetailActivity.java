@@ -22,6 +22,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.adapter.ChapterApdapter;
+import com.example.ilovetruyen.adapter.ComicAdapter;
+import com.example.ilovetruyen.api.ComicAPI;
 import com.example.ilovetruyen.api.ComicDetailAPI;
 import com.example.ilovetruyen.model.Category;
 import com.example.ilovetruyen.model.Chapter;
@@ -52,9 +54,11 @@ public class ComicDetailActivity extends AppCompatActivity {
     private MaterialButton detailSeeChaptersBtn;
     private ChapterApdapter chapterApdapter;
     private ComicDetailAPI comicDetailAPI;
+    private ComicAPI comicAPI;
     private RetrofitService retrofitService;
     private ComicDetail comicDetail;
     private Comic comic;
+    private ComicAdapter comicAdapter;
     private List<Chapter> chapterList;
     private boolean isChecked;
     private int chapterId = 1;
@@ -223,13 +227,24 @@ public class ComicDetailActivity extends AppCompatActivity {
     }
 
     private void renderSimilarComics() {
+        recyclerView = findViewById(R.id.detail_similar_categories);
+        comicAdapter = new ComicAdapter(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(comicAdapter);
+        comicAPI.getAllComicsByCategoryId(comicDetail.categories().get(0).id()).enqueue(new Callback<List<Comic>>() {
+            @Override
+            public void onResponse(Call<List<Comic>> call, Response<List<Comic>> response) {
+                if(response.isSuccessful()){
+                    comicAdapter.setData(response.body());
+                }
+            }
 
-//        recyclerView = findViewById(R.id.detail_similar_categories);
-//        comicAdapter = new ComicAdapter(this);
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
-//        recyclerView.setLayoutManager(linearLayoutManager);
-//        recyclerView.setAdapter(comicAdapter);
-//        comicAdapter.setData(getHotComics());
+            @Override
+            public void onFailure(Call<List<Comic>> call, Throwable throwable) {
+
+            }
+        });
     }
 
     private void heartEvent() {
