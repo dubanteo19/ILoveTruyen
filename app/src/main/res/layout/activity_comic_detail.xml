@@ -183,13 +183,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
+                android:orientation="vertical"
+                android:layout_marginBottom="20dp">
                 <LinearLayout
                     android:id="@+id/layout_description_comic"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -222,31 +221,6 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
-            <!--Review comic-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginVertical="10dp"
-               >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Đánh giá truyện"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_normal"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="10dp"
-                    />
-                <FrameLayout
-                    android:id="@+id/detail_comments"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-<!--                    <include layout="@layout/fragment_comment" />-->
-                </FrameLayout>
-
-            </LinearLayout>
-
             <!--Similar comic categories -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -265,6 +239,29 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp" />
+            </LinearLayout>
+            <!--Review comic-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginVertical="10dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đánh giá truyện"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_normal"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="10dp"
+                    />
+                <FrameLayout
+                    android:id="@+id/detail_comments"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                </FrameLayout>
+
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

@@ -24,16 +24,15 @@ import com.bumptech.glide.Glide;
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.adapter.ChapterApdapter;
 import com.example.ilovetruyen.adapter.ComicAdapter;
-import com.example.ilovetruyen.api.ComicAPI;
 import com.example.ilovetruyen.api.ComicDetailAPI;
 import com.example.ilovetruyen.model.Category;
 import com.example.ilovetruyen.model.Chapter;
 import com.example.ilovetruyen.model.Comic;
 import com.example.ilovetruyen.model.ComicDetail;
 import com.example.ilovetruyen.retrofit.RetrofitService;
-import com.example.ilovetruyen.util.StatusHelper;
 import com.example.ilovetruyen.ui.comments.CommentFragment;
 import com.example.ilovetruyen.ui.search.SearchResultActivity;
+import com.example.ilovetruyen.util.StatusHelper;
 import com.example.ilovetruyen.util.TimeDifference;
 import com.example.ilovetruyen.util.UserStateHelper;
 import com.google.android.material.button.MaterialButton;
@@ -49,14 +48,12 @@ import retrofit2.Response;
 
 public class ComicDetailActivity extends AppCompatActivity {
     private ImageButton heartBtn;
-    private TextView titleNavTV, comicName, authorName, likes, views, createdAt, status, chapterLength;
+    private TextView comicName, authorName, likes, views, createdAt, status, chapterLength;
     private ImageView thumb;
-    private RecyclerView recyclerView;
     private ChipGroup keywordSearch;
     private MaterialButton detailSeeChaptersBtn;
     private ChapterApdapter chapterApdapter;
     private ComicDetailAPI comicDetailAPI;
-    private ComicAPI comicAPI;
     private RetrofitService retrofitService;
     private ComicDetail comicDetail;
     private Comic comic;
@@ -201,7 +198,7 @@ public class ComicDetailActivity extends AppCompatActivity {
         chapterLength = findViewById(R.id.detail_chapterLength);
         chapterLength.setText(String.valueOf(chapterList.size()) + " chương");
         final int MAX_CHAPTER = 5;
-        recyclerView = findViewById(R.id.detail_chapters);
+        RecyclerView recyclerView = findViewById(R.id.detail_chapters);
         chapterApdapter = new ChapterApdapter(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, true);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -220,7 +217,7 @@ public class ComicDetailActivity extends AppCompatActivity {
     }
 
     private void renderSimilarComics() {
-        recyclerView = findViewById(R.id.detail_similar_categories);
+        RecyclerView recyclerView  = findViewById(R.id.detail_similar_categories);
         comicAdapter = new ComicAdapter(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
 
