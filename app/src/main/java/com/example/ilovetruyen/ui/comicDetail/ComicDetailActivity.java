@@ -101,6 +101,7 @@ public class ComicDetailActivity extends AppCompatActivity {
                     chapterList = response.body();
                     renderChapter();
                     renderChapterList();
+                    continueReadingEvent();
                 }
             }
 
@@ -112,14 +113,11 @@ public class ComicDetailActivity extends AppCompatActivity {
     }
 
     private void renderComicDetail() {
-        renderNavTop();
         renderInfomation();
         renderKeywords();
         renderSummaryComic();
-        renderComments();
         renderSimilarComics();
         heartEvent();
-        continueReadingEvent();
     }
 
     private void continueReadingEvent() {
@@ -132,7 +130,7 @@ public class ComicDetailActivity extends AppCompatActivity {
                 startActivity(intent);
             });
         }else{
-            view.setVisibility(View.VISIBLE);
+            view.setVisibility(View.GONE);
         }
     }
 
@@ -169,7 +167,7 @@ public class ComicDetailActivity extends AppCompatActivity {
 
         // set date
         createdAt = findViewById(R.id.detail_created_at);
-        createdAt.setText(TimeDifference.getTimeDifference(comic.createdDate()));
+        createdAt.setText(TimeDifference.formatTimeOnChapter(comic.createdDate()));
 
         // set status
         status = findViewById(R.id.detail_processing);
@@ -177,22 +175,10 @@ public class ComicDetailActivity extends AppCompatActivity {
 
     }
 
-
-    private void renderNavTop() {
-//        titleNavTV = findViewById(R.id.nav_top_title_name);
-//        titleNavTV.setText("");
-//        backBtn = findViewById(R.id.back_btn);
-//        backBtn.setOnClickListener(v -> finish());
-    }
-
     /* Summary comic*/
-
     private void renderSummaryComic() {
         ExpandableTextView expandableTextView = findViewById(R.id.expandable_text_view);
         expandableTextView.setText(comicDetail.description());
-    }
-
-    private void renderComments() {
     }
 
     /* category keywords*/
@@ -220,6 +206,7 @@ public class ComicDetailActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, true);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(chapterApdapter);
+        System.out.println("Kiem tra chapters "+chapterList);
         chapterApdapter.setData(chapterList.stream().limit(MAX_CHAPTER).collect(Collectors.toList()));
     }
 
