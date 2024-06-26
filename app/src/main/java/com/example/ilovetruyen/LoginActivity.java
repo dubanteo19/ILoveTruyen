@@ -1,5 +1,6 @@
 package com.example.ilovetruyen;
 
+import static com.example.ilovetruyen.util.UserStateHelper.saveAdminStatus;
 import static com.example.ilovetruyen.util.UserStateHelper.saveLoginStatus;
 
 import android.content.Context;
@@ -65,6 +66,7 @@ public class LoginActivity extends AppCompatActivity {
             String email = String.valueOf(emailValidate.getText());
             String pass = String.valueOf(password.getText());
             if(email.equals("admin@gmail.com") && pass.equals("admin123")){
+                saveAdminStatus(getApplicationContext(), true);
                 Intent intent = new Intent(this, ILoveTruyenManagerActivity.class);
                 startActivity(intent);
             }

@@ -27,6 +27,14 @@ public class UserStateHelper {
         editor.apply();
     }
 
+    public static void saveAdminStatus(Context context, boolean isAdmin){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("user_prefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("isAdmin", isAdmin);
+        editor.apply();
+
+    }
+
     public static void logoutStatus(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
