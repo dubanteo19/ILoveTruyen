@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".admin.FeatureComicActivity">
+
+    <!-- Top Bar with Back Arrow and Title -->
+    <LinearLayout
+        android:id="@+id/layout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- FragmentContainerView for Back Arrow -->
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_container_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:name="com.example.ilovetruyen.ArrowBackFragment"/>
+
+        <!-- Title Text -->
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:text="Chỉnh sửa truyện"/>
+    </LinearLayout>
+
+    <!-- Form Layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/layout1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- TextInputLayout for Comic Name -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_layout_edit_fullName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:errorEnabled="true"
+            app:errorTextAppearance="@style/EmailErrorAppearance"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/message">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_input_edit_fullName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tên truyện"
+                android:inputType="text" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Add more fields as needed for editing or adding new comic details -->
+        <LinearLayout
+            android:id="@+id/layoutToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:orientation="horizontal"
+            android:background="?attr/colorPrimary"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/backButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_baseline_arrow_back_24"
+                android:contentDescription="@string/back_button"
+                android:padding="8dp"/>
+
+            <TextView
+                android:id="@+id/toolbarTitle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="@string/upload_image"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/layoutToolbar"
+            android:padding="16dp">
+
+            <ImageView
+                android:id="@+id/imagePreview"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/rounded_corners"
+                android:scaleType="centerCrop"
+                android:src="@drawable/placeholder_image"
+                android:contentDescription="@string/image_preview"/>
+
+            <Button
+                android:id="@+id/selectImageButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/select_image"
+                android:backgroundTint="@color/colorPrimary"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:layout_marginBottom="16dp"/>
+
+            <Button
+                android:id="@+id/uploadButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/upload"
+                android:backgroundTint="@color/colorPrimary"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

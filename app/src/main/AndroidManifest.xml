@@ -16,6 +16,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".admin.FeatureComicActivity"
+            android:exported="false" />
+        <activity
             android:name=".admin.UserManagerActivity"
             android:exported="false" />
         <activity
@@ -84,7 +87,6 @@
         <activity
             android:name=".ui.categorySearch.CategoryResultActivity"
             android:exported="false" />
-
     </application>
 
 </manifest>
