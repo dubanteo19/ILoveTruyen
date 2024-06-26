@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,44 +5,539 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".admin.ILoveTruyenManagerActivity">
+
+    <!-- User Profile Section -->
     <LinearLayout
+        android:id="@+id/userProfile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="10dp"
         android:orientation="horizontal"
-        tools:ignore="MissingConstraints">
+        android:paddingVertical="10dp"
+        android:weightSum="1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="50dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_weight="0.75"
             android:layout_marginEnd="10dp"
-            android:src="@drawable/tout" />
+            android:src="@drawable/icons_dmim" />
+
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/userName"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:text="Xin chào admin !"
+                android:textColor="@android:color/black" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <TextView
                     android:id="@+id/wellcome"
-                    android:textStyle="bold"
-                    android:textSize="16dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="Chào mừng bạn đã trở lại"
+                    android:textSize="20dp"
+                    android:textColor="@android:color/black" />
+
                 <ImageView
                     android:id="@+id/iconsStar"
-                    android:layout_marginLeft="5dp"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/icons_stars"/>
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/icons_stars" />
             </LinearLayout>
         </LinearLayout>
 
-
+        <ImageView
+            android:id="@+id/logoutbtn"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="end"
+            android:src="@drawable/login_icon"
+            app:tint="@color/red" />
     </LinearLayout>
+
+    <!-- Category Information Card View Section -->
+    <LinearLayout
+        android:id="@+id/cardContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        app:layout_constraintTop_toBottomOf="@id/userProfile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- First CardView -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="110dp"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp"
+            android:layout_weight="0.5">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:background="@drawable/gradient_1">
+
+                <TextView
+                    android:id="@+id/total_comic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tổng số truyện"
+                    android:textColor="@android:color/white"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/total_comic_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="10"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:id="@+id/total_comic_more_or_less"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nhiều hơn 2 truyện"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Second CardView -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="110dp"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp"
+            android:layout_weight="0.5">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:background="@drawable/gradient_8">
+                <TextView
+                    android:id="@+id/total_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tổng số danh mục"
+                    android:textColor="@android:color/white"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/total_category_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="5"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:id="@+id/total_category_more_or_less"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nhiều hơn 2 danh mục"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/cardContainer_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        app:layout_constraintTop_toBottomOf="@id/cardContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Third CardView -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="110dp"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp"
+            android:layout_weight="0.5">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:background="@drawable/gradient_6">
+
+                <TextView
+                    android:id="@+id/total_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tổng số bình luận"
+                    android:textColor="@android:color/white"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/total_comment_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="30"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:id="@+id/total_comment_more_or_less"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nhiều hơn 6 bình luận"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Fourth CardView -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="110dp"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp"
+            android:layout_weight="0.5">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:background="@drawable/gradient_7">
+
+                <TextView
+                    android:id="@+id/total_user"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tổng số danh mục"
+                    android:textColor="@android:color/white"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/total_user_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="10"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:id="@+id/total_user_more_or_less"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ít hơn 2 độc giả"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/cardContainer_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+
+        app:layout_constraintTop_toBottomOf="@id/cardContainer_2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/feature_manager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:layout_marginBottom="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardContainer_3">
+
+            <ImageView
+                android:id="@+id/icon_manage"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/icons_manage"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/text_update_title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Quản lý"
+                android:textColor="@color/black"
+                android:textSize="25dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.079"
+                app:layout_constraintStart_toEndOf="@id/icon_manage"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.555" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/cardContainer_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/cardContainer_3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <!-- CardView for managing comics -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_view_manager_comic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/custom_edittext"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="26dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="75dp"
+                        android:weightSum="1"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/icon_manage_comic"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.7"
+                            android:background="@color/red"
+                            android:padding="10dp"
+                            android:src="@drawable/icons_comic"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textViewTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="20dp"
+                            android:layout_weight="0.3"
+                            android:text="Quản lý truyện"
+                            android:textColor="@android:color/black"
+                            android:textSize="20sp"
+                            android:drawableRight="@drawable/ic_arrow_svg"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/icon_manage_comic" />
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- CardView for managing categories -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_view_manager_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/custom_edittext"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="26dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="75dp"
+                        android:weightSum="1"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/icon_manage_category"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.7"
+                            android:background="@color/purple"
+                            android:padding="10dp"
+                            android:src="@drawable/icon_category"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/category"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="20dp"
+                            android:layout_weight="0.3"
+                            android:text="Quản lý danh mục"
+                            android:textColor="@android:color/black"
+                            android:drawableRight="@drawable/ic_arrow_svg"
+                            android:textSize="20sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/icon_manage_comic" />
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- CardView for managing comments -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_view_manager_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/custom_edittext"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="26dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="75dp"
+                        android:weightSum="1"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/icon_manage_comment"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.7"
+                            android:background="@color/gray"
+                            android:padding="10dp"
+                            android:src="@drawable/icons_comment"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/comment"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="20dp"
+                            android:layout_weight="0.3"
+                            android:text="Quản lý bình luận"
+                            android:drawableRight="@drawable/ic_arrow_svg"
+                            android:textColor="@android:color/black"
+                            android:textSize="20sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/icon_manage_comic" />
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- CardView for managing users -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_view_manager_user"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/custom_edittext"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="26dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="75dp"
+                        android:weightSum="1"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/icon_manage_user"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.7"
+                            android:background="@color/teal_200"
+                            android:padding="10dp"
+                            android:src="@drawable/icons_user"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/user"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="20dp"
+                            android:layout_weight="0.3"
+                            android:drawableRight="@drawable/ic_arrow_svg"
+                            android:text="Quản lý người dùng"
+                            android:textColor="@android:color/black"
+                            android:textSize="20sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/icon_manage_comic" />
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

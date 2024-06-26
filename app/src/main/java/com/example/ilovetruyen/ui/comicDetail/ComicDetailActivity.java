@@ -7,13 +7,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -55,14 +55,17 @@ public class ComicDetailActivity extends AppCompatActivity {
     private Comic comic;
     private List<Chapter> chapterList;
     private boolean isChecked;
+    private int chapterId = 1;
+    private int comicId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comic_detail);
+        comicId = getIntent().getIntExtra("comicId",1);
         // Khoi tai dich vu retrofit
-        UserStateHelper.saveReadComicId(getApplicationContext(),getIntent().getIntExtra("comicId",1));
-        fetchComicDetail(getIntent().getIntExtra("comicId",1));
+        UserStateHelper.saveReadComicId(getApplicationContext(),comicId);
+        fetchComicDetail(comicId);
     }
 
     private void fetchComicDetail(int comicId) {
@@ -74,7 +77,6 @@ public class ComicDetailActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     comicDetail = response.body();
                     comic = comicDetail.comic();
-
                     renderComicDetail();
                 }
             }
@@ -109,6 +111,17 @@ public class ComicDetailActivity extends AppCompatActivity {
         renderComments();
         renderSimilarComics();
         heartEvent();
+        continueReadingEvent();
+    }
+
+    private void continueReadingEvent() {
+        LinearLayout view = findViewById(R.id.detail_continue_reading_btn);
+        view.setOnClickListener(v->{
+            Intent intent = new Intent(this, ChapterContentActivity.class);
+            intent.putExtra("comicId", comic.id());
+            intent.putExtra("chapterId", chapterId);
+            startActivity(intent);
+        });
     }
 
     // Hien thi thong tin chinh cua truyen
@@ -179,8 +192,8 @@ public class ComicDetailActivity extends AppCompatActivity {
         chapterLength.setText(String.valueOf(chapterList.size())+ " chương");
         final int MAX_CHAPTER = 5;
         recyclerView = findViewById(R.id.detail_chapters);
-        chapterApdapter = new ChapterApdapter(getApplicationContext());
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, true);
+        chapterApdapter = new ChapterApdapter(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, true);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(chapterApdapter);
         chapterApdapter.setData(chapterList.stream().limit(MAX_CHAPTER).collect(Collectors.toList()));
@@ -190,7 +203,7 @@ public class ComicDetailActivity extends AppCompatActivity {
         detailSeeChaptersBtn = findViewById(R.id.detail_see_chapters_btn);
         detailSeeChaptersBtn.setOnClickListener(v -> {
             Intent intent = new Intent(this, ChapterListActivity.class);
-            intent.putExtra("comicId", comic.id());
+            intent.putExtra("comicId", comicId);
             startActivity(intent);
         });
     }
