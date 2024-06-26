@@ -14,7 +14,6 @@ import com.bumptech.glide.Glide;
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.model.Comic;
 import com.example.ilovetruyen.model.Comment;
-import com.example.ilovetruyen.model.Commentzz;
 import com.example.ilovetruyen.ui.comicDetail.ComicDetailActivity;
 import com.example.ilovetruyen.ui.comments.OnEditCommentListener;
 

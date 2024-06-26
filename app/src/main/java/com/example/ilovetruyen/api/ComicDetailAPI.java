@@ -14,7 +14,7 @@ public interface ComicDetailAPI {
     @GET("/api/v1/comic-detail/{id}")
     Call<ComicDetail> getComicDetailById(@Path("id") int id);
 
-    @GET("/api/v1/comic-detail/{id}/chapters")
+    @GET("api/v1/comic-detail/{id}/chapters")
     Call<List<Chapter>> getAllChapterById(@Path("id") int id);
 
     @PUT("/api/v1/comics/likes/{id}/like")
@@ -22,4 +22,5 @@ public interface ComicDetailAPI {
 
     @PUT("/api/v1/comics/likes/{id}/unlike")
     Call<Integer> unlike(@Path("id") int id);
+
 }

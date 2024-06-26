@@ -7,6 +7,7 @@
     android:layout_marginBottom="2dp"
     app:cardCornerRadius="5dp">
     <LinearLayout
+        android:id="@+id/detail_chapter_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
