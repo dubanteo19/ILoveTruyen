@@ -13,6 +13,8 @@
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
+    <string name="wishlist">Truyện yêu thích</string>
+    <string name="other">Khác</string>
     <string name="previous">Previous</string>
     <string name="email" translatable="false">Email</string>
     <string name="password" translatable="false">Password</string>

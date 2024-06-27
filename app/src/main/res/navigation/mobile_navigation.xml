@@ -14,12 +14,12 @@
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.example.ilovetruyen.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
+        android:label="@string/wishlist"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.example.ilovetruyen.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
+        android:label="@string/other"
         tools:layout="@layout/fragment_notifications" />
 </navigation>
