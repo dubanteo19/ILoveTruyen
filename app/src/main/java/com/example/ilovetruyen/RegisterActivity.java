@@ -47,7 +47,6 @@ public class RegisterActivity extends AppCompatActivity {
         mEmail = findViewById(R.id.input_layout_edit_email);
         btn_Register = findViewById(R.id.buttonRegister);
         mPass = findViewById(R.id.input_layout_password);
-        mess = findViewById(R.id.message);
 
         TextInputEditText emailValidate = findViewById(R.id.et_input_edit_email);
         TextInputEditText passwordValidate = findViewById(R.id.et_input_edit_pasword);
@@ -102,6 +101,7 @@ public class RegisterActivity extends AppCompatActivity {
         retrofitService = new RetrofitService();
         userAPI = retrofitService.getRetrofit().create(UserAPI.class);
         UserRegister userRegister = new UserRegister(email,pass,fullName);
+        mess = findViewById(R.id.message);
         userAPI.register(userRegister).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
@@ -109,13 +109,14 @@ public class RegisterActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
                         startActivity(intent);
                     }
+                    else{
+                        mess.setText("Email đã tồn tại trong hệ thống !");
+                    }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable throwable) {
-                mess = findViewById(R.id.message);
-                mess.setText("Đăng kí thất bại !");
-//                Toast.makeText(getApplicationContext(), "Đăng kí thất bại !", Toast.LENGTH_SHORT).show();
+
             }
         });
     }

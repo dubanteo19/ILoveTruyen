@@ -1,10 +1,11 @@
 package com.example.ilovetruyen.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 // Comment.java
 public record Comment ( Integer id,
                         String text,
-                        User user,
+                        UserDto user,
                         ComicDetail comicDetail,
-                        LocalDateTime createdDate){
+                        LocalDateTime createdDate) implements Serializable {
 }

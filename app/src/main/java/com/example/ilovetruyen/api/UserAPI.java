@@ -20,4 +20,6 @@ public interface UserAPI {
     @PUT("/api/v1/users/{id}")
     Call<User> update(@Path("id") int id, @Body UserUpdate userUpdate);
 
+    @POST("/api/v1/users/forgot-password/{email}")
+    Call<String> forgotPassword(@Path("email") String email);
 }

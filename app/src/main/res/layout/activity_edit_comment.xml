@@ -1,16 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?><!-- res/layout/fragment_comment.xml -->
-<LinearLayout
-    android:layout_width="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    >
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_comments"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    android:layout_gravity="center"
+    android:orientation="vertical">
     <LinearLayout
         android:id="@+id/comment_fragment"
         android:layout_width="match_parent"
@@ -29,10 +24,10 @@
                 android:layout_marginEnd="10dp"
                 android:src="@drawable/thanh_guom_diet_quy" />
             <TextView
-          android:id="@+id/fragment_comment_userName"
+                android:id="@+id/fragment_comment_userName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Phuong"
+                android:text="User name"
                 android:layout_marginVertical="10dp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
@@ -55,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:background="@drawable/button_background"
-            android:text="@string/send_comment"
+            android:text="Sửa bình luận"
             android:textColor="@android:color/white" />
     </LinearLayout>
 </LinearLayout>
