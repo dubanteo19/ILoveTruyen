@@ -7,5 +7,5 @@ public record UserDto(
         Integer id,
         String email,
         String password,
-        String fullName) {
+        String fullName)implements Serializable {
 }

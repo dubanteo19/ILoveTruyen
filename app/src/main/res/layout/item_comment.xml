@@ -53,8 +53,9 @@
 
             <ImageView
                 android:id="@+id/imageMore"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="30dp"
+                android:visibility="invisible"
+                android:layout_height="30dp"
                 android:layout_gravity="center_vertical"
                 android:padding="4dp"
                 android:src="@drawable/edit_icon" />
@@ -69,7 +70,6 @@
             android:padding="5dp"
             android:text="@string/comment_text_goes_here"
             android:textColor="@android:color/black"
-            android:background="@drawable/custom_edittext"
             android:textSize="16sp" />
 
     </LinearLayout>

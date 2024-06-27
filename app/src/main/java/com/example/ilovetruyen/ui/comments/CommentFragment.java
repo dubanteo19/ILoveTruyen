@@ -16,7 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ilovetruyen.R;
@@ -72,13 +72,19 @@ public class CommentFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_comment, container, false);
         // Get user logged in id
         recyclerView = view.findViewById(R.id.recycler_view_comments);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
-        adapter = new CommentAdapter(getContext());
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        adapter = new CommentAdapter(getContext(), getCurrentUser().id(),comicId);
         // Submit comment
+        renderUserName(view);
         getComments();
-//        setSendCommentEvent(view);
+        setSendCommentEvent(view);
 
         return view;
+    }
+
+    private void renderUserName(View view) {
+        TextView textView = view.findViewById(R.id.fragment_comment_userName);
+        textView.setText(getCurrentUser().fullName());
     }
 
     private void setSendCommentEvent(View view) {
@@ -89,12 +95,10 @@ public class CommentFragment extends Fragment {
         EditText commentInput = view.findViewById(R.id.comment_input);
         sendButton.setOnClickListener(v -> {
             String commentText = commentInput.getText().toString();
-
             if (userId == 0) {
                 Toast.makeText(getContext(), "Vui lòng đăng nhập để thực hiện chức năng này", Toast.LENGTH_LONG).show();
                 return;
             }
-
             if (commentText.isEmpty()) {
                 Toast.makeText(getContext(), "Vui lòng nhập nội dung comment", Toast.LENGTH_LONG).show();
                 return;
@@ -107,11 +111,8 @@ public class CommentFragment extends Fragment {
 //                updateComment(newComment, currentComment.id());
             } else {
                 ComicCommentDto newComment = new ComicCommentDto(commentText, userId, comicId);
-
-                getComments();
                 createComment(newComment);
             }
-//            adapter.setData(commentList);
             commentInput.setText("");
         });
     }
@@ -121,7 +122,6 @@ public class CommentFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Comment>> call, Response<List<Comment>> response) {
                 if (response.isSuccessful()) {
-                    System.out.println(response.body());
                     recyclerView.setAdapter(adapter);
                     adapter.setData(response.body());
                 }
@@ -157,7 +157,8 @@ public class CommentFragment extends Fragment {
             @Override
             public void onResponse(Call<Comment> call, Response<Comment> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(getContext(), "Tạo comment thành công", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Thêm bình thành công", Toast.LENGTH_LONG).show();
+                    getComments();
                 }
             }
 
@@ -174,7 +175,7 @@ public class CommentFragment extends Fragment {
         int userId = sharedPreferences.getInt("userId", 0);
         String email = sharedPreferences.getString("email", "");
         String password = sharedPreferences.getString("password", "");
-        String fullName = sharedPreferences.getString("fullName", "");
+        String fullName = sharedPreferences.getString("user_name", "Khách");
 
         return new User(userId, email, password, fullName, new ArrayList<>());
     }
