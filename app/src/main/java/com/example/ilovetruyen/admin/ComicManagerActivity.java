@@ -12,9 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.adapter.HistoryAdapter;
+import com.example.ilovetruyen.admin.adapter.ComicManagerAdminAdapter;
 import com.example.ilovetruyen.api.ComicAPI;
 import com.example.ilovetruyen.api.ComicDetailAPI;
 import com.example.ilovetruyen.model.Comic;
+import com.example.ilovetruyen.model.ComicDetail;
 import com.example.ilovetruyen.retrofit.RetrofitService;
 
 import java.util.List;
@@ -25,7 +27,7 @@ import retrofit2.Response;
 
 public class ComicManagerActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private HistoryAdapter historyAdapter;
+    private ComicManagerAdminAdapter comicManagerAdminAdapter;
     private ComicAPI comicAPI;
     private RetrofitService retrofitService;
     @Override
@@ -39,25 +41,24 @@ public class ComicManagerActivity extends AppCompatActivity {
     }
 
     private void renderListComics() {
-//        recyclerView = findViewById(R.id.history_reading);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-//        historyAdapter = new HistoryAdapter(this);
-//        recyclerView.setAdapter(historyAdapter);
-//        comicAPI.getAllComics().enqueue(new Callback<List<Comic>>() {
-//            @Override
-//            public void onResponse(Call<List<Comic>> call, Response<List<Comic>> response) {
-//                System.out.println(response.body()+"=======================");
-//                if(response.isSuccessful() && response.body() != null){
-//
-//                    historyAdapter.setData(response.body());
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<Comic>> call, Throwable throwable) {
-//
-//            }
-//        });
+        recyclerView = findViewById(R.id.history_reading);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        comicManagerAdminAdapter = new ComicManagerAdminAdapter(this);
+        recyclerView.setAdapter(comicManagerAdminAdapter);
+        comicAPI.getAllComics().enqueue(new Callback<List<Comic>>() {
+            @Override
+            public void onResponse(Call<List<Comic>> call, Response<List<Comic>> response) {
+                System.out.println(response.body()+"=======================");
+                if(response.isSuccessful() && response.body() != null){
+                    comicManagerAdminAdapter.setData(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Comic>> call, Throwable throwable) {
+
+            }
+        });
 
     }
 

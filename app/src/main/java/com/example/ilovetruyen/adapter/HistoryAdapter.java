@@ -81,24 +81,12 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 
                             }
                         });
-
-        SharedPreferences sharedPreferences = context.getSharedPreferences("user_prefs", MODE_PRIVATE);
-        boolean isAdmin = sharedPreferences.getBoolean("isAdmin", false);
-        if (isAdmin) {
-            holder.itemView.setOnClickListener(v -> {
-                Intent intent = new Intent(context, FeatureComicActivity.class);
-                intent.putExtra("comicId", comic.id());
-                context.startActivity(intent);
-            });
-        }
-        else{
             holder.itemView.setOnClickListener(v -> {
                 Intent intent = new Intent(context, ComicDetailActivity.class);
                 intent.putExtra("comicId", comic.id());
                 context.startActivity(intent);
 
             });
-        }
     }
 
     @Override
