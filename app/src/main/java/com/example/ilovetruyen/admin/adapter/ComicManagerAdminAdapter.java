@@ -31,6 +31,7 @@ import com.example.ilovetruyen.model.Comic;
 import com.example.ilovetruyen.model.ComicDetail;
 import com.example.ilovetruyen.retrofit.RetrofitService;
 import com.example.ilovetruyen.ui.comicDetail.ComicDetailActivity;
+import com.example.ilovetruyen.util.NameMaxSizeHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +47,8 @@ public class ComicManagerAdminAdapter extends RecyclerView.Adapter<ComicManagerA
     private ComicDetailAPI comicDetailAPI;
     private RetrofitService retrofitService;
     private ComicDetail comicDetail;
+
+    String genresText, genresDes;
 
     public ComicManagerAdminAdapter(Context context) {
         this.context = context;
@@ -74,19 +77,14 @@ public class ComicManagerAdminAdapter extends RecyclerView.Adapter<ComicManagerA
         Comic comic = comicList.get(position);
         if (comic == null) return;
         Glide.with(holder.itemView).load(comic.thumbUrl()).into(holder.comic_thumb);
-        holder.comic_title.setText(comic.name());
-        holder.comic_chapters.setText("Chương " + String.valueOf(comic.latestChapter()));
-        holder.comic_views.setText(String.valueOf(comic.views()));
-        holder.comic_likes.setText(String.valueOf(comic.likes()));
-        holder.comic_author.setText("DBT19");
+        holder.comic_title.setText("Tên:" +comic.name());
+        holder.comic_chapters.setText("Chương: " + String.valueOf(comic.latestChapter()));
+        holder.comic_views.setText(String.valueOf("Lượt xem: " + comic.views()));
+        holder.comic_likes.setText(String.valueOf("Lượt like: " + comic.likes()));
+        holder.comic_author.setText("Tác giả: DBT19");
         fetchComicDetail(comic.id());
-        List<Category> genres = comicDetail.categories();
-        if (genres != null && !genres.isEmpty()) {
-            String genresText = TextUtils.join(", ", genres);
-            holder.comic_genre.setText("Thể loại: " + genresText);
-        } else {
-            holder.comic_genre.setText("Thể loại: Không rõ");
-        }
+        holder.comic_genre.setText("Danh mục: " + genresText);
+        holder.comic_description.setText("Mô tả: " + NameMaxSizeHelper.truncateName(genresDes));
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, FeatureComicActivity.class);
             intent.putExtra("comicId", comic.id());
@@ -96,7 +94,7 @@ public class ComicManagerAdminAdapter extends RecyclerView.Adapter<ComicManagerA
 
     @Override
     public int getItemCount() {
-        return 0;
+        return comicList.size() > 0 ? comicList.size() : 0;
     }
 
     public class ComicManagerAdminViewHolder extends RecyclerView.ViewHolder {
@@ -124,8 +122,18 @@ public class ComicManagerAdminAdapter extends RecyclerView.Adapter<ComicManagerA
         comicDetailAPI.getComicDetailById(comicId).enqueue(new Callback<ComicDetail>() {
             @Override
             public void onResponse(Call<ComicDetail> call, Response<ComicDetail> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful() && response.body() != null) {
                     comicDetail = response.body();
+                    List<Category> genres = comicDetail.categories();
+                    System.out.println(genres + "============================");
+                    if (genres != null && !genres.isEmpty()) {
+                        List<String> genreNames = new ArrayList<>();
+                        for (Category genre : genres) {
+                            genreNames.add(genre.name());
+                        }
+                        genresDes = comicDetail.description();
+                        genresText = TextUtils.join(", ", genreNames);
+                    }
                 }
             }
 
