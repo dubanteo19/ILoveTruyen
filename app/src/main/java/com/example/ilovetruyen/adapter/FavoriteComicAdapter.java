@@ -2,13 +2,13 @@ package com.example.ilovetruyen.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -18,26 +18,25 @@ import com.bumptech.glide.Glide;
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.database.DBHelper;
 import com.example.ilovetruyen.effect.BlinkingEffect;
-import com.example.ilovetruyen.model.Comic;
+import com.example.ilovetruyen.model.FavoriteComics;
 import com.example.ilovetruyen.ui.comicDetail.ComicDetailActivity;
-import com.example.ilovetruyen.ui.dashboard.FavoriteComicsFragment;
+import com.example.ilovetruyen.ui.dashboard.FavoriteComicsViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FavoriteComicAdapter extends RecyclerView.Adapter<FavoriteComicAdapter.FavoriteComicsViewHolder>{
     private Context context;
-    ArrayList<String> conmicsId, comicsName, comicsThumb, comicsCurr;
+    private List<FavoriteComics> favoriteComicsList = new ArrayList<>();
     private DBHelper dbHelper;
-    public FavoriteComicAdapter(Context context) {
+    private FavoriteComicsViewModel favoriteComicsViewModel;
+    public FavoriteComicAdapter(Context context, FavoriteComicsViewModel favoriteComicsViewModel) {
         this.context = context;
+        this.favoriteComicsViewModel = favoriteComicsViewModel;
     }
 
-    public void setData(ArrayList<String> conmicsId,ArrayList<String> comicsName,ArrayList<String> comicsThumb, ArrayList<String> comicsCurr) {
-        this.conmicsId = conmicsId;
-        this.comicsName = comicsName;
-        this .comicsThumb = comicsThumb;
-        this.comicsCurr = comicsCurr;
+    public void setData(List<FavoriteComics> favoriteComicsList) {
+        this.favoriteComicsList = favoriteComicsList;
         notifyDataSetChanged();
     }
 
@@ -52,23 +51,24 @@ public class FavoriteComicAdapter extends RecyclerView.Adapter<FavoriteComicAdap
 
     @Override
     public void onBindViewHolder(@NonNull FavoriteComicsViewHolder holder, int position) {
-        holder.comicNameTv.setText(comicsName.get(position));
-        Glide.with(holder.itemView).load(comicsThumb.get(position).trim()).into(holder.thumb);
-        String currentRead ;
         try{
-         currentRead = comicsCurr.get(position);
+            if(favoriteComicsList.size() == 0 ){
+                Toast.makeText(context.getApplicationContext(), "Danh sách trống", Toast.LENGTH_SHORT).show();
+            }
+        }catch (NullPointerException e){
+            Toast.makeText(context.getApplicationContext(), "Danh sách trống", Toast.LENGTH_SHORT).show();
         }
-        catch (IndexOutOfBoundsException e){
-            currentRead ="1";
-        }
-        holder.comicChapterTv.setText("Đang xem ch."+currentRead);
-        BlinkingEffect.applyBlinkingEffect(holder.hotLableTV);//set blinking
+        FavoriteComics favoriteComics = favoriteComicsList.get(position);
+        holder.bindData(favoriteComics); //bind data vào holder
+        //effect
+        BlinkingEffect.applyBlinkingEffect(holder.hotLableTV);//set blinking hot label
         holder.comicNameTv.setSelected(true);
+        //action button
         holder.itemCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ComicDetailActivity.class);
-                intent.putExtra("comicId",Integer.valueOf(conmicsId.get(position)));
+                intent.putExtra("comicId",Integer.valueOf(favoriteComicsList.get(position).id()));
                 context.startActivity(intent);
 
             }
@@ -76,17 +76,19 @@ public class FavoriteComicAdapter extends RecyclerView.Adapter<FavoriteComicAdap
         holder.removeBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int position = holder.getAdapterPosition();
                 dbHelper = new DBHelper(v.getContext());
-                Integer id = Integer.valueOf(conmicsId.get(position));
+                Integer id = Integer.valueOf(favoriteComicsList.get(position).id());
                 if(id == null){
+
                     return ;
                 }else {
                     System.out.println("pre_delete"+id);
                     System.out.println();
-                    if(dbHelper.deleteData(String.valueOf(id-1))){
-                        conmicsId.remove(position);
+                    if(dbHelper.deleteData(String.valueOf(id))){
+                        favoriteComicsViewModel.removeData(position);
+
                         //lỗi khi chuyển về nút home thì data chuyển ngược , không update
-                        setData(conmicsId,comicsName,comicsThumb,comicsCurr);
                         System.out.println("remove favorite coms");
                     }else {
                         System.out.println("lỗi");
@@ -102,7 +104,7 @@ public class FavoriteComicAdapter extends RecyclerView.Adapter<FavoriteComicAdap
 
     @Override
     public int getItemCount() {
-        return conmicsId.size();
+        return favoriteComicsList.size();
     }
 
     public  class FavoriteComicsViewHolder extends RecyclerView.ViewHolder {
@@ -119,6 +121,19 @@ public class FavoriteComicAdapter extends RecyclerView.Adapter<FavoriteComicAdap
             comicChapterTv = (TextView)itemView.findViewById(R.id.favorite_comic_currentChap);
             removeBut = itemView.findViewById(R.id.detail_removeBtn);
             itemCard = itemView.findViewById(R.id.favorite_comic_itemLayout);
+        }
+
+        public void bindData(FavoriteComics favoriteComics) {
+            comicNameTv.setText(favoriteComics.name());
+            Glide.with(itemView).load(favoriteComics.thumbUrl().trim()).into(thumb);
+            String currentRead ;
+            try{
+                currentRead = favoriteComics.currRead(); //may be null
+            }
+            catch (IndexOutOfBoundsException e){
+                currentRead ="1";
+            }
+            comicChapterTv.setText("Đang xem ch."+currentRead);
         }
     }
 

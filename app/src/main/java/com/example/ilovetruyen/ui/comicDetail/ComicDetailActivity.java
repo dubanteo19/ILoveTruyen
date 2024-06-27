@@ -48,7 +48,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ComicDetailActivity extends AppCompatActivity {
-    private ImageButton heartBtn;
+    private ImageButton heartBtn,saveBtn;
     private TextView comicName, authorName, likes, views, createdAt, status, chapterLength;
     private ImageView thumb;
     private ChipGroup keywordSearch;
@@ -61,6 +61,7 @@ public class ComicDetailActivity extends AppCompatActivity {
     private ComicAdapter comicAdapter;
     private List<Chapter> chapterList;
     private boolean isChecked;
+    private boolean isFavor;
     private int comicId;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -123,15 +124,20 @@ public class ComicDetailActivity extends AppCompatActivity {
 
     private void continueReadingEvent() {
         LinearLayout view = findViewById(R.id.detail_continue_reading_btn);
-        if(chapterList.size() != 0) {
-            view.setOnClickListener(v -> {
-                Intent intent = new Intent(this, ChapterContentActivity.class);
-                intent.putExtra("comicId", comic.id());
-                intent.putExtra("count", 1);
-                startActivity(intent);
-            });
-        }else{
-            view.setVisibility(View.GONE);
+        try{
+            if(chapterList.size() != 0) {
+                view.setOnClickListener(v -> {
+                    Intent intent = new Intent(this, ChapterContentActivity.class);
+                    intent.putExtra("comicId", comic.id());
+                    intent.putExtra("count", 1);
+                    startActivity(intent);
+                });
+            }else{
+                view.setVisibility(View.GONE);
+            }
+
+        }catch (NullPointerException e){
+            System.out.println("không có detail");
         }
     }
 
@@ -308,23 +314,30 @@ public class ComicDetailActivity extends AppCompatActivity {
         Drawable drawable = saveBtn.getDrawable();
 
         // Cap nhat trang thai ban dau cua nut
-        updateColorButton(drawable);
+        updateSaveColorButton(drawable,String.valueOf(comicId));
         // event
         saveBtn.setOnClickListener(v -> {
             System.out.println("save vào danh sách --------------------------------");
             isChecked = !isChecked; // Thay đổi trạng thái
-            updateSaveButtonOnClick(); // Cập nhật nút dựa trên trạng thái mới
-            updateColorButton(drawable);
+            updateSaveButtonOnClick(drawable); // Cập nhật nút dựa trên trạng thái mới
+            updateSaveColorButton(drawable,String.valueOf(comicId));
+
         });
     }
 
-    private void updateSaveButtonOnClick() {
+    private void updateSaveButtonOnClick(Drawable drawable) {
         DBHelper dbHelper = new DBHelper(ComicDetailActivity.this);
-        if(dbHelper.insertData(String.valueOf(comicId).trim(),comic.name().trim(),"link ảnh","1")){
-            System.out.println("Đã lưu comics này vào db");
+        if(isChecked){
+            dbHelper.deleteData(String.valueOf(comicId));
+            System.out.println("Đã xóa");
         }
-        else {
-            System.out.println("lỗi insert com va favorite");
+        else{
+            if(dbHelper.insertData(String.valueOf(comicId).trim(),comic.name().trim(),comic.thumbUrl().trim(),"1")){
+                System.out.println("Đã lưu comics này vào db");
+            }
+            else {
+                System.out.println("lỗi insert com va favorite");
+            }
         }
     }
 
@@ -332,6 +345,20 @@ public class ComicDetailActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.detail_comments, CommentFragment.newInstance(comicId))
                 .commit();
+    }
+    private void updateSaveColorButton(Drawable drawable,String id) {
+        DBHelper dbHelper = new DBHelper(getApplicationContext());
+        if(dbHelper.checkExist(id)){
+            isFavor =true;
+        }
+        else {
+            isFavor= false;
+        }
+        if (isFavor) {
+            drawable.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.secondary), PorterDuff.Mode.SRC_IN);
+        } else {
+            drawable.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.text), PorterDuff.Mode.SRC_IN);
+        }
     }
 
 }
