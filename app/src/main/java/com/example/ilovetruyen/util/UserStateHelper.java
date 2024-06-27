@@ -29,6 +29,10 @@ public class UserStateHelper {
         SharedPreferences sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("is_logged_in", false);
+        editor.remove("user_name");
+        editor.remove("email");
+        editor.remove("userId");
+        editor.remove("password");
         editor.apply();
     }
 
