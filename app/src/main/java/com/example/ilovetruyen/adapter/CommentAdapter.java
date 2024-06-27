@@ -15,6 +15,7 @@ import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.model.Comic;
 import com.example.ilovetruyen.model.Comment;
 import com.example.ilovetruyen.ui.comicDetail.ComicDetailActivity;
+import com.example.ilovetruyen.ui.comments.EditCommentActivity;
 import com.example.ilovetruyen.ui.comments.OnEditCommentListener;
 
 import java.time.format.DateTimeFormatter;
@@ -24,12 +25,18 @@ import java.util.List;
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
 
     private List<Comment> commentList;
+    private int userId;
 
-    public CommentAdapter(Context context) {
+    private Context context;
+private int comicId;
+    public CommentAdapter(Context context, int userId,int comicId) {
+        this.userId = userId;
+        this.context = context;
+        this.comicId= comicId;
     }
 
     public void setData(List<Comment> comments) {
-       this.commentList=comments;
+        this.commentList = comments;
         notifyDataSetChanged();
     }
 
@@ -47,13 +54,17 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         Glide.with(holder.itemView).load(R.drawable.c1).into(holder.userImage);
         holder.commentText.setText(comment.text());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//        if (comment.createdDate() == null) {
-//            holder.commentTime.setText("Unknown");
-//        } else
-            holder.commentTime.setText(comment.createdDate().format(formatter));
-//
-            holder.userName.setText(comment.user().fullName());
-
+        holder.commentTime.setText(comment.createdDate().format(formatter));
+        holder.userName.setText(comment.user().fullName());
+        if (comment.user().id() == userId) {
+            holder.editComment.setVisibility(View.VISIBLE);
+        }
+        holder.editComment.setOnClickListener(v -> {
+            Intent intent = new Intent(context, EditCommentActivity.class);
+            intent.putExtra("comment", comment);
+            intent.putExtra("comicId", comicId);
+            context.startActivity(intent);
+        });
     }
 
     @Override
