@@ -4,8 +4,11 @@ import com.example.ilovetruyen.dto.UserRegister;
 import com.example.ilovetruyen.dto.UserUpdate;
 import com.example.ilovetruyen.model.User;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -22,4 +25,7 @@ public interface UserAPI {
 
     @POST("/api/v1/users/forgot-password/{email}")
     Call<String> forgotPassword(@Path("email") String email);
+
+    @GET("/api/v1/users")
+    Call<List<User>> findAll();
 }
