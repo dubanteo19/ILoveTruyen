@@ -51,7 +51,7 @@ private int comicId;
     @Override
     public void onBindViewHolder(CommentViewHolder holder, int position) {
         Comment comment = commentList.get(position);
-        Glide.with(holder.itemView).load(R.drawable.c1).into(holder.userImage);
+        Glide.with(holder.itemView).load(R.drawable.thanh_guom_diet_quy).into(holder.userImage);
         holder.commentText.setText(comment.text());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         holder.commentTime.setText(comment.createdDate().format(formatter));
