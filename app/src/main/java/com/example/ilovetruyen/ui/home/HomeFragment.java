@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +23,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.ilovetruyen.LoginActivity;
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.adapter.CarouselAdapter;
@@ -57,8 +59,6 @@ public class HomeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
         retrofitService = new RetrofitService();
         comicAPI = retrofitService.getRetrofit().create(ComicAPI.class);
         binding = FragmentHomeBinding.inflate(inflater, container, false);
@@ -66,7 +66,7 @@ public class HomeFragment extends Fragment {
         Button home_login_btn = root.findViewById(R.id.home_login_btn);
         TextView userName = root.findViewById(R.id.userName);
         TextView wellcome = root.findViewById(R.id.wellcome);
-        ImageView iconsStar  = root.findViewById(R.id.iconsStar);
+        ImageView iconsStar = root.findViewById(R.id.iconsStar);
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_prefs", MODE_PRIVATE);
         boolean isLoggedIn = sharedPreferences.getBoolean("is_logged_in", false);
         if (isLoggedIn) {
@@ -88,7 +88,7 @@ public class HomeFragment extends Fragment {
             Intent intent = new Intent(root.getContext(), LoginActivity.class);
             startActivity(intent);
         });
-        SearchView searchView = root.findViewById(R.id.home_search_view);
+        LinearLayout searchView = root.findViewById(R.id.home_search_view);
         searchView.setOnClickListener(v -> {
             Intent intent = new Intent(root.getContext(), SearchActivity.class);
             startActivity(intent);
@@ -221,19 +221,19 @@ public class HomeFragment extends Fragment {
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction
                 .replace(R.id.home_fragment_recentLyReadComicsTitle, HomeSectionTitleFragment
-                        .newInstance("Bạn vừa đọc", "", R.drawable.ic_home_clock));
+                        .newInstance("Bạn vừa đọc", 1, R.drawable.ic_home_clock));
         fragmentTransaction
                 .replace(R.id.home_fragment_hotComicsTitle, HomeSectionTitleFragment
-                        .newInstance("Hot nhất mọi thời gian", "", R.drawable.category_icon));
+                        .newInstance("Hot nhất mọi thời gian", 2, R.drawable.category_icon));
         fragmentTransaction
                 .replace(R.id.home_fragment_recommendComicsTitle, HomeSectionTitleFragment
-                        .newInstance("Gợi ý truyện tranh", "", R.drawable.thumb_up_icon));
+                        .newInstance("Gợi ý truyện tranh", 3, R.drawable.thumb_up_icon));
         fragmentTransaction
                 .replace(R.id.home_fragment_newComicsTitle, HomeSectionTitleFragment
-                        .newInstance("Truyện tranh mới", "", R.drawable.category_icon));
+                        .newInstance("Truyện tranh mới",4, R.drawable.category_icon));
         fragmentTransaction
                 .replace(R.id.home_fragment_categoryTitle, HomeSectionTitleFragment
-                        .newInstance("Thể loại", "", R.drawable.category_icon));
+                        .newInstance("Thể loại", 5, R.drawable.category_icon));
         fragmentTransaction.commit();
 
     }
@@ -243,8 +243,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Comic>> call, Response<List<Comic>> response) {
                 CardSliderViewPager cardSliderViewPager = root.findViewById(R.id.home_carousel);
-                cardSliderViewPager.setAdapter(new CarouselAdapter(response.body(),root.getContext()));
-                System.out.println(response.body());
+                cardSliderViewPager.setAdapter(new CarouselAdapter(response.body(), root.getContext()));
             }
 
             @Override

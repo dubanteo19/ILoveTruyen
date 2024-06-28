@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_marginBottom="5dp"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp"
+        android:background="@color/white"
+        android:elevation="2dp"
+        android:gravity="center_vertical"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/text_stt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Số thứ tự"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/text_category_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Tên danh mục"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:layout_marginStart="8dp"
+            tools:ignore="MissingConstraints" />
+
+        <ImageView
+            android:id="@+id/icon_edit"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/icons_edit"
+            android:contentDescription="Edit"
+            android:padding="8dp"
+            android:layout_marginStart="8dp"
+            tools:ignore="MissingConstraints" />
+
+        <ImageView
+            android:id="@+id/icon_delete"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/icons_delete"
+            android:contentDescription="Delete"
+            android:padding="8dp"
+            android:layout_marginStart="8dp"
+            tools:ignore="MissingConstraints" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

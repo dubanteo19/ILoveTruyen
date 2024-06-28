@@ -2,12 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.ilovetruyen">
-
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -22,17 +21,12 @@
         <activity
             android:name=".ui.maps.MapActivity"
             android:exported="false" />
-        <!--
-             TODO: Before you run your application, you need a Google Maps API key.
-
-             To get one, follow the directions here:
-
-                https://developers.google.com/maps/documentation/android-sdk/get-api-key
-
-             Once you have your API key (it starts with "AIza"), define a new property in your
-             project's local.properties file (e.g. MAPS_API_KEY=Aiza...), and replace the
-             "YOUR_API_KEY" string in this file with "${MAPS_API_KEY}".
-        -->
+        <activity
+            android:name=".ui.home.ViewMoreCategoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.home.ViewMoreActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.comments.EditCommentActivity"
             android:exported="false" />
@@ -44,6 +38,9 @@
             android:exported="false" />
         <activity
             android:name=".admin.CategoryManagerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.AddComicActivity"
             android:exported="false" />
         <activity
             android:name=".admin.ComicManagerActivity"
