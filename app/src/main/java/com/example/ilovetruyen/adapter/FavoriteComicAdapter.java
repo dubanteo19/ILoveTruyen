@@ -16,10 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.ilovetruyen.R;
-import com.example.ilovetruyen.database.DBHelper;
+import com.example.ilovetruyen.database.FaComDAO;
 import com.example.ilovetruyen.effect.BlinkingEffect;
 import com.example.ilovetruyen.model.FavoriteComics;
 import com.example.ilovetruyen.ui.comicDetail.ComicDetailActivity;
+import com.example.ilovetruyen.ui.dashboard.FavoriteComicsFragment;
 import com.example.ilovetruyen.ui.dashboard.FavoriteComicsViewModel;
 
 import java.util.ArrayList;
@@ -28,11 +29,13 @@ import java.util.List;
 public class FavoriteComicAdapter extends RecyclerView.Adapter<FavoriteComicAdapter.FavoriteComicsViewHolder>{
     private Context context;
     private List<FavoriteComics> favoriteComicsList = new ArrayList<>();
-    private DBHelper dbHelper;
-    private FavoriteComicsViewModel favoriteComicsViewModel;
-    public FavoriteComicAdapter(Context context, FavoriteComicsViewModel favoriteComicsViewModel) {
+    private OnDataChangeListener dataChangeListener;
+    public FavoriteComicAdapter(Context context, OnDataChangeListener dataChangeListener) {
         this.context = context;
-        this.favoriteComicsViewModel = favoriteComicsViewModel;
+        this.dataChangeListener = dataChangeListener;
+    }
+    public interface OnDataChangeListener {
+        void onDataChanged();
     }
 
     public void setData(List<FavoriteComics> favoriteComicsList) {
@@ -70,24 +73,22 @@ public class FavoriteComicAdapter extends RecyclerView.Adapter<FavoriteComicAdap
                 Intent intent = new Intent(context, ComicDetailActivity.class);
                 intent.putExtra("comicId",Integer.valueOf(favoriteComicsList.get(position).id()));
                 context.startActivity(intent);
-
             }
         });
         holder.removeBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
-                dbHelper = new DBHelper(v.getContext());
                 Integer id = Integer.valueOf(favoriteComicsList.get(position).id());
                 if(id == null){
-
+                    Toast.makeText(v.getContext(), "Danh sách trống", Toast.LENGTH_SHORT).show();
                     return ;
                 }else {
                     System.out.println("pre_delete"+id);
-                    System.out.println();
-                    if(dbHelper.deleteData(String.valueOf(id))){
-                        favoriteComicsViewModel.removeData(position);
-
+                    FaComDAO faComDAO = new FaComDAO(context);
+                    faComDAO.open();
+                    if(faComDAO.deleteData(String.valueOf(id))){
+                        dataChangeListener.onDataChanged();
                         //lỗi khi chuyển về nút home thì data chuyển ngược , không update
                         System.out.println("remove favorite coms");
                     }else {
@@ -98,8 +99,6 @@ public class FavoriteComicAdapter extends RecyclerView.Adapter<FavoriteComicAdap
 
             }
         });
-        System.out.println("chheck5");
-
     }
 
     @Override

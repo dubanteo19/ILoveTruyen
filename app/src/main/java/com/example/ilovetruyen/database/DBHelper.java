@@ -8,6 +8,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import com.example.ilovetruyen.model.FavoriteComics;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class DBHelper extends SQLiteOpenHelper {
     public static final String DB_NAME = "ilovecomics.db";
     public static final String TB_COMICS ="COMICS";
@@ -22,8 +27,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public DBHelper(@Nullable Context context) {
         super(context,TB_FACOMICS,null,1);
     }
-
-
     @Override
     public void onCreate(SQLiteDatabase db) {
         String tbFavoriteComics = "CREATE TABLE " + TB_FACOMICS+"("
@@ -36,70 +39,4 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
-    public  SQLiteDatabase open(){
-        return this.getWritableDatabase();
-    }
-    public Boolean insertData(String comicsId,String name,String thumbUrl,String currentRead ){
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(TB_FACOMICS_ID,comicsId);
-        contentValues.put(TB_FACOMICS_NAME,name);
-        contentValues.put(TB_FACOMICS_THUMBIMAGE,thumbUrl);
-        contentValues.put(TB_FACOMICS_CUR_READ,currentRead);
-        long result = sqLiteDatabase.insert(TB_FACOMICS,null,contentValues);
-        if(result == -1){
-            return false; //fail insert
-        }else{
-            return true; // insert success
-        }
-    }
-    public boolean checkExist(String comicsId){
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        String[] projection = null;
-        String selection = TB_FACOMICS_ID + " = ?";
-        String[] selectionArgs = { comicsId };
-//        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM "+TB_FACOMICS+" WHERE "+TB_FACOMICS_ID+" = ?",new String[]{comicsId});
-//        if(cursor.getCount() >0 || cursor != null){
-//            return true;//this item already exist
-//        }else {
-//            return false;
-//        }
-        Cursor cursor = sqLiteDatabase.query(
-                TB_FACOMICS,    // Tên bảng
-                projection,   // Các cột cần trả về (null sẽ lấy tất cả các cột)
-                selection,    // Mệnh đề WHERE
-                selectionArgs,// Đối số cho WHERE
-                null,         // GROUP BY
-                null,         // HAVING
-                null          // ORDER BY
-        );
-        if(cursor.getCount() > 0 ){
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-    public Boolean deleteData(String comicsId){
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        long result = sqLiteDatabase.delete(TB_FACOMICS,TB_FACOMICS_ID +" = ?",new String[]{comicsId});
-        if(result  == -1){
-            return false;//fail delete
-        }else {
-            return true; // delete success
-        }
-    }
-    public Cursor getItem(String id){
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        String querry = "Select * from "+TB_FACOMICS +" where " +TB_FACOMICS_ID+" = "+id;
-        Cursor cursor = sqLiteDatabase.rawQuery(querry,null);
-        return cursor;
-    }
-    public Cursor getAllData(){
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        String querry = "Select * from "+TB_FACOMICS;
-        Cursor cursor = sqLiteDatabase.rawQuery(querry,null);
-        return cursor;
-    }
-
 }
