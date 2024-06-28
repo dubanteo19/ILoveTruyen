@@ -1,4 +1,4 @@
-package com.example.ilovetruyen.ui;
+package com.example.ilovetruyen.util;
 
 import com.example.ilovetruyen.model.Status;
 

@@ -1,6 +1,7 @@
 package com.example.ilovetruyen.api;
 
 import com.example.ilovetruyen.model.Chapter;
+import com.example.ilovetruyen.model.Comic;
 import com.example.ilovetruyen.model.ComicDetail;
 
 import java.util.List;
@@ -23,4 +24,9 @@ public interface ComicDetailAPI {
     @PUT("/api/v1/comics/likes/{id}/unlike")
     Call<Integer> unlike(@Path("id") int id);
 
+    @PUT("/api/v1/comics/views/{id}/increase")
+    Call<Integer> increaseViews(@Path("id") int id);
+
+    @GET("/api/v1/comics/category/{id}")
+    Call<List<Comic>> getAllComicsByCategoryId(@Path("id") Integer categoryIds);
 }
