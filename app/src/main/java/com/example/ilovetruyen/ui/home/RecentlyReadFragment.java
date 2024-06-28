@@ -4,8 +4,11 @@ import static android.content.Context.MODE_PRIVATE;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -13,10 +16,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.api.ComicAPI;
 import com.example.ilovetruyen.api.ComicDetailAPI;
@@ -41,10 +47,12 @@ public class RecentlyReadFragment extends Fragment {
     private ImageView recent_read_thumb;
     private TextView comic_name, like, views, comic_count;
     private SharedPreferences sharedPreferences;
+    private LinearLayout layout;
     private RetrofitService retrofitService;
     private ComicDetailAPI comicDetailAPI;
     private Comic comic;
     int recentlyComicId;
+
     public RecentlyReadFragment() {
         // Required empty public constructor
     }
@@ -67,26 +75,29 @@ public class RecentlyReadFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @Override
     public void onResume() {
         super.onResume();
         int recentlyComicId = sharedPreferences.getInt("recentlyComicId", -1);
         fetchComicDetail(recentlyComicId);
     }
+
     @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragment_recently_read, container, false);
+        View view = inflater.inflate(R.layout.fragment_recently_read, container, false);
         comic_name = view.findViewById(R.id.comic_name);
         comic_count = view.findViewById(R.id.comic_count);
         like = view.findViewById(R.id.like);
+        layout = view.findViewById(R.id.recent_read_container);
         views = view.findViewById(R.id.view);
         recent_read_thumb = view.findViewById(R.id.recent_read_thumb);
         sharedPreferences = getActivity().getSharedPreferences("user_prefs", MODE_PRIVATE);
         recentlyComicId = sharedPreferences.getInt("recentlyComicId", -1);
-        System.out.println(recentlyComicId +"=========================================");
-        if(recentlyComicId != -1){
+        System.out.println(recentlyComicId + "=========================================");
+        if (recentlyComicId != -1) {
             fetchComicDetail(recentlyComicId);
         }
         return view;
@@ -107,9 +118,22 @@ public class RecentlyReadFragment extends Fragment {
                     views.setText(String.valueOf(comic.views()));
                     Glide.with(getContext())
                             .load(comic.thumbUrl())
+                            .into(new CustomTarget<Drawable>() {
+                                @Override
+                                public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                                    resource.setAlpha(40);
+                                  layout.setBackground(resource);
+                                }
+
+                                @Override
+                                public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                                }
+                            });
+                    Glide.with(getContext())
+                            .load(comic.thumbUrl())
                             .into(recent_read_thumb);
-                }
-                else {
+                } else {
                     Toast.makeText(getContext(), "Failed to fetch data", Toast.LENGTH_SHORT);
                 }
             }
