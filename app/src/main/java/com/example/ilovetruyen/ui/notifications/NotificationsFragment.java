@@ -84,6 +84,20 @@ public class NotificationsFragment extends Fragment {
 
         ConstraintLayout featureAdsLayout = root.findViewById(R.id.feature_ads);
         featureAdsLayout.setOnClickListener(this::showPopupAds);
+        ConstraintLayout shareLayout = root.findViewById(R.id.contact_share);
+        shareLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                String head = "Test share to Other";
+                String body ="Test chức năng share \nDown load this app via below link:\n http://linkappne.com";
+                intent.putExtra(Intent.EXTRA_SUBJECT,head);
+                intent.putExtra(Intent.EXTRA_TEXT,body);
+                startActivity(Intent.createChooser(intent,head));
+                System.out.println("popup share ---------------------------");
+            }
+        });
 
         ConstraintLayout featureRemoveAccountLayout = root.findViewById(R.id.feature_delete);
         featureRemoveAccountLayout.setOnClickListener(v ->{
