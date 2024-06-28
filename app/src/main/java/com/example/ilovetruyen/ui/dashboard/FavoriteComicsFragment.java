@@ -54,4 +54,10 @@ public class FavoriteComicsFragment extends Fragment implements FavoriteComicAda
     public void onDataChanged() {
         renderFavoriteComics(view);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        renderFavoriteComics(view);
+    }
 }
