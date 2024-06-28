@@ -1,9 +1,7 @@
 package com.example.ilovetruyen.ui.notifications;
 
 import static android.content.Context.MODE_PRIVATE;
-
 import static com.example.ilovetruyen.util.UserStateHelper.logoutStatus;
-import static com.example.ilovetruyen.util.UserStateHelper.saveLoginStatus;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -11,11 +9,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Patterns;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +36,7 @@ import com.example.ilovetruyen.databinding.FragmentNotificationsBinding;
 import com.example.ilovetruyen.dto.UserUpdate;
 import com.example.ilovetruyen.model.User;
 import com.example.ilovetruyen.retrofit.RetrofitService;
+import com.example.ilovetruyen.ui.maps.MapActivity;
 import com.google.android.material.textfield.TextInputEditText;
 
 import retrofit2.Call;
@@ -77,6 +73,12 @@ public class NotificationsFragment extends Fragment {
         ConstraintLayout feature_list = root.findViewById(R.id.feature_list);
         feature_list.setOnClickListener(v -> {
             Intent intent = new Intent(root.getContext(), ListOfStoryDownloadsActivity.class);
+            startActivity(intent);
+        });
+        // Chuyen sang activity google map
+        ConstraintLayout featureGGMap = root.findViewById(R.id.feature_maps);
+        featureGGMap.setOnClickListener(v -> {
+            Intent intent = new Intent(root.getContext(), MapActivity.class);
             startActivity(intent);
         });
         ConstraintLayout featureUpdateLayout = root.findViewById(R.id.feature_update);
