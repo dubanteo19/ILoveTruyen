@@ -2,6 +2,7 @@ package com.example.ilovetruyen.admin.adapter;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -47,7 +48,6 @@ import retrofit2.Response;
 public class ComicManagerAdminAdapter extends RecyclerView.Adapter<ComicManagerAdminAdapter.ComicManagerAdminViewHolder>{
     private Context context;
     private List<Comic> comicList;
-
     private ComicDetailAPI comicDetailAPI;
     private RetrofitService retrofitService;
     private ComicDetail comicDetail;
@@ -95,7 +95,16 @@ public class ComicManagerAdminAdapter extends RecyclerView.Adapter<ComicManagerA
             context.startActivity(intent);
         });
         holder.deleteBtn.setOnClickListener(v ->{
+            new AlertDialog.Builder(context)
+                    .setTitle("Xác nhận xóa")
+                    .setMessage("Bạn có chắc chắn muốn xóa truyện này khỏi ứng dụng?")
+                    .setNeutralButton("Hủy bỏ", (dialog, which) -> {
 
+                    })
+                    .setPositiveButton("Đồng ý", (dialog, which) -> {
+
+                    })
+                    .show();
         });
 
     }
