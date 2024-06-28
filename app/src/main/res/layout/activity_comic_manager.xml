@@ -5,7 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".admin.ComicManagerActivity">
+    tools:context=".admin.ComicManagerActivity"
+    android:layout_marginBottom="50dp">
     <LinearLayout
         android:id="@+id/layout1"
         android:layout_width="match_parent"
@@ -63,7 +64,8 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="50dp"
+        android:layout_marginVertical="30dp"
+        android:layout_marginHorizontal="50dp"
         android:tooltipText="Thêm một truyện mới"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
