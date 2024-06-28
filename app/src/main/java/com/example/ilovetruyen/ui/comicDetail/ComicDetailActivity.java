@@ -131,6 +131,7 @@ public class ComicDetailActivity extends AppCompatActivity{
                     Intent intent = new Intent(this, ChapterContentActivity.class);
                     intent.putExtra("comicId", comic.id());
                     intent.putExtra("count", 1);
+                    intent.putExtra("chapterTotal",chapterList.size());
                     startActivity(intent);
                 });
             }else{
@@ -324,7 +325,6 @@ public class ComicDetailActivity extends AppCompatActivity{
 
     private void saveClicked(Drawable drawable,DBHelper dbHelper,boolean isFavor) {
         isFavor = !isFavor; // Thay đổi trạng thái
-        System.out.println("save vào danh sách " +isFavor);
         updateSaveButtonOnClick(drawable,dbHelper); // Cập nhật nút dựa trên trạng thái mới
         updateSaveColorButton(drawable);
 
