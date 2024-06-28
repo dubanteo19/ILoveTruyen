@@ -10,6 +10,8 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,6 +26,7 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.adapter.HistoryAdapter;
+import com.example.ilovetruyen.admin.AddComicActivity;
 import com.example.ilovetruyen.admin.FeatureComicActivity;
 import com.example.ilovetruyen.api.ComicDetailAPI;
 import com.example.ilovetruyen.model.Category;
@@ -32,6 +35,7 @@ import com.example.ilovetruyen.model.ComicDetail;
 import com.example.ilovetruyen.retrofit.RetrofitService;
 import com.example.ilovetruyen.ui.comicDetail.ComicDetailActivity;
 import com.example.ilovetruyen.util.NameMaxSizeHelper;
+import com.example.ilovetruyen.util.UserStateHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +51,6 @@ public class ComicManagerAdminAdapter extends RecyclerView.Adapter<ComicManagerA
     private ComicDetailAPI comicDetailAPI;
     private RetrofitService retrofitService;
     private ComicDetail comicDetail;
-
     String genresText, genresDes;
 
     public ComicManagerAdminAdapter(Context context) {
@@ -77,7 +80,7 @@ public class ComicManagerAdminAdapter extends RecyclerView.Adapter<ComicManagerA
         Comic comic = comicList.get(position);
         if (comic == null) return;
         Glide.with(holder.itemView).load(comic.thumbUrl()).into(holder.comic_thumb);
-        holder.comic_title.setText("Tên:" +comic.name());
+        holder.comic_title.setText("Tên:" +NameMaxSizeHelper.truncateName(comic.name()));
         holder.comic_chapters.setText("Chương: " + String.valueOf(comic.latestChapter()));
         holder.comic_views.setText(String.valueOf("Lượt xem: " + comic.views()));
         holder.comic_likes.setText(String.valueOf("Lượt like: " + comic.likes()));
@@ -85,11 +88,16 @@ public class ComicManagerAdminAdapter extends RecyclerView.Adapter<ComicManagerA
         fetchComicDetail(comic.id());
         holder.comic_genre.setText("Danh mục: " + genresText);
         holder.comic_description.setText("Mô tả: " + NameMaxSizeHelper.truncateName(genresDes));
-        holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, FeatureComicActivity.class);
-            intent.putExtra("comicId", comic.id());
+        holder.editBtn.setOnClickListener(v->{
+            UserStateHelper.saveEditComicStatus(context, true);
+            Intent intent = new Intent(context, AddComicActivity.class);
+            intent.putExtra("comicId",comic.id());
             context.startActivity(intent);
         });
+        holder.deleteBtn.setOnClickListener(v ->{
+
+        });
+
     }
 
     @Override
@@ -99,8 +107,7 @@ public class ComicManagerAdminAdapter extends RecyclerView.Adapter<ComicManagerA
 
     public class ComicManagerAdminViewHolder extends RecyclerView.ViewHolder {
         private TextView comic_title, comic_author, comic_genre, comic_chapters, comic_views, comic_likes,comic_description;
-        private ImageView comic_thumb;
-
+        private ImageView comic_thumb,editBtn, deleteBtn;
 
         public ComicManagerAdminViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -112,8 +119,8 @@ public class ComicManagerAdminAdapter extends RecyclerView.Adapter<ComicManagerA
             comic_likes = itemView.findViewById(R.id.comic_likes);
             comic_description = itemView.findViewById(R.id.comic_description);
             comic_thumb = itemView.findViewById(R.id.comic_thumb);
-
-
+            editBtn = itemView.findViewById(R.id.edit);
+            deleteBtn = itemView.findViewById(R.id.delete);
         }
     }
     private void fetchComicDetail(int comicId) {

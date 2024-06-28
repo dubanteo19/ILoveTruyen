@@ -68,7 +68,7 @@ public class ComicDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_comic_detail);
         comicId = getIntent().getIntExtra("comicId", 1);
         UserStateHelper.saveRecentlyReadComicId(getApplicationContext(), comicId);
-        System.out.println(comicId + "++++++++++++++++++++++++++++++++++++++++++++");
+//        System.out.println(comicId + "++++++++++++++++++++++++++++++++++++++++++++");
         heartBtn = findViewById(R.id.detail_heartBtn);
         UserStateHelper.saveReadComicId(getApplicationContext(), comicId);
         fetchComicDetail(comicId);

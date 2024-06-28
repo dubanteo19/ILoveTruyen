@@ -1,6 +1,21 @@
 package com.example.ilovetruyen.admin;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +33,8 @@ import com.example.ilovetruyen.api.ComicDetailAPI;
 import com.example.ilovetruyen.model.Comic;
 import com.example.ilovetruyen.model.ComicDetail;
 import com.example.ilovetruyen.retrofit.RetrofitService;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -30,11 +47,22 @@ public class ComicManagerActivity extends AppCompatActivity {
     private ComicManagerAdminAdapter comicManagerAdminAdapter;
     private ComicAPI comicAPI;
     private RetrofitService retrofitService;
+    private PopupWindow popupWindow;
+    private FloatingActionButton fab;
+
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_comic_manager);
+        fab = findViewById(R.id.fab);
+        fab.setOnClickListener(v ->{
+            Intent intent = new Intent(this, AddComicActivity.class);
+            startActivity(intent);
+        });
+
         retrofitService = new RetrofitService();
         comicAPI = retrofitService.getRetrofit().create(ComicAPI.class);
         renderListComics();
@@ -55,7 +83,8 @@ public class ComicManagerActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<Comic>> call, Throwable throwable) {
+            public void onFailure(Call<List<Comic>> call
+                    , Throwable throwable) {
 
             }
         });

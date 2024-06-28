@@ -32,6 +32,18 @@ public class UserStateHelper {
         editor.apply();
 
     }
+    public static void saveEditComicStatus(Context context, boolean isEditComic){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("user_prefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("isEditComic", isEditComic);
+        editor.apply();
+    }
+    public static void saveDeleteComicStatus(Context context, boolean isDeleteComic){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("user_prefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("isDeleteComic", isDeleteComic);
+        editor.apply();
+    }
 
     public static void logoutStatus(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE);

@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
             emailValidator(emailValidate);
             String email = String.valueOf(emailValidate.getText());
             String pass = String.valueOf(password.getText());
-            if(email.equals("admin@gmail.com") && pass.equals("admin123")){
+            if(email.equals("admin@gmail.com") && pass.equals("admin")){
                 saveAdminStatus(getApplicationContext(), true);
                 Intent intent = new Intent(this, ILoveTruyenManagerActivity.class);
                 startActivity(intent);
