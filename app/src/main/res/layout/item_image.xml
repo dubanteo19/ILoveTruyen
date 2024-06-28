@@ -19,7 +19,7 @@
             android:layout_marginTop="8dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/c0">
+            >
         </ImageView>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -79,7 +79,6 @@ public class SearchActivity extends AppCompatActivity {
                     handleNotFound();
                 }
             }
-
             @Override
             public void onFailure(Call<List<Comic>> call, Throwable throwable) {
                 handleNotFound();
@@ -91,5 +90,6 @@ public class SearchActivity extends AppCompatActivity {
         TextView textView= layoutNotFound.findViewById(R.id.search_notification_title);
         textView.setText("Không tìm thấy truyện!");
         layoutNotFound.setVisibility(View.VISIBLE);
+
     }
 }

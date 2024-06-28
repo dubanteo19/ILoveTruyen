@@ -2,6 +2,7 @@ package com.example.ilovetruyen.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.model.Comic;
 import com.example.ilovetruyen.ui.comicDetail.ComicDetailActivity;
@@ -40,6 +44,18 @@ public class CarouselAdapter extends CardSliderAdapter<CarouselAdapter.CarouselV
     public void bindVH(@NonNull CarouselViewHolder carouselViewHolder, int i) {
         var comic = comics.get(i);
         Glide.with(carouselViewHolder.itemView).load(comic.thumbUrl()).into(carouselViewHolder.comicThumb);
+       Glide.with(carouselViewHolder.itemView).load(comic.thumbUrl()).into(new CustomTarget<Drawable>() {
+           @Override
+           public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+             resource.setAlpha(50);
+               carouselViewHolder.itemView.setBackground(resource);
+           }
+
+           @Override
+           public void onLoadCleared(@Nullable Drawable placeholder) {
+
+           }
+       });
         carouselViewHolder.readNowBtn.setOnClickListener(v -> {
             Intent intent = new Intent(context, ComicDetailActivity.class);
             intent.putExtra("comicId", comic.id());
