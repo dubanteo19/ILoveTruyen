@@ -2,9 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.ilovetruyen">
-
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -17,8 +19,8 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".admin.AddComicActivity"
-/>
+            android:name=".ui.maps.MapActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.home.ViewMoreCategoryActivity"
             android:exported="false" />
@@ -36,6 +38,9 @@
             android:exported="false" />
         <activity
             android:name=".admin.CategoryManagerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.AddComicActivity"
             android:exported="false" />
         <activity
             android:name=".admin.ComicManagerActivity"
@@ -79,7 +84,7 @@
         <activity
             android:name=".ui.comicDetail.ComicDetailActivity"
             android:exported="true"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name" />
         <activity
             android:name=".ui.comicDetail.ChapterListActivity"
             android:exported="false"
@@ -91,6 +96,9 @@
         <activity
             android:name=".ui.categorySearch.CategoryResultActivity"
             android:exported="false" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAEUwgDq3Lozf3A6amxx7z2l7YiTdomIzg" />
     </application>
 
 </manifest>
