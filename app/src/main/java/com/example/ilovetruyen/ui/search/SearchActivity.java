@@ -50,17 +50,20 @@ public class SearchActivity extends AppCompatActivity {
         backBtn.setOnClickListener(v -> finish());
         retrofitService = new RetrofitService();
         comicAPI =  retrofitService.getRetrofit().create(ComicAPI.class);
-
-
         recyclerView = findViewById(R.id.search_result_comics);
         comicAdapter = new NewComicAdapter(this);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this,3);
         recyclerView.setLayoutManager(gridLayoutManager);
         searchBtn.setOnClickListener(this::doSearch);
-
-
+        setBackListener();
     }
 
+    private void setBackListener() {
+        ImageButton backBtn = findViewById(R.id.search_back_icon);
+        backBtn.setOnClickListener(v->{
+            finish();
+        });
+    }
     private void doSearch(View v) {
         progressBar.setVisibility(View.VISIBLE);
         layoutNotFound.setVisibility(View.INVISIBLE);

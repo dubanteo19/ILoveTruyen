@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.ilovetruyen"
-    >
+    package="com.example.ilovetruyen">
+
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -15,6 +16,12 @@
         android:theme="@style/Theme.ILoveTruyen"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.home.ViewMoreCategoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.home.ViewMoreActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.comments.EditCommentActivity"
             android:exported="false" />
@@ -69,8 +76,7 @@
         <activity
             android:name=".ui.comicDetail.ComicDetailActivity"
             android:exported="true"
-            android:label="@string/app_name">
-        </activity>
+            android:label="@string/app_name" />
         <activity
             android:name=".ui.comicDetail.ChapterListActivity"
             android:exported="false"

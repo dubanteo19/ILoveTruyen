@@ -39,7 +39,6 @@ public class CategoryItemAdapter extends RecyclerView.Adapter<CategoryItemAdapte
     public void onBindViewHolder(@NonNull CategoryItemViewHolder holder, int position) {
         Category category = categoryList.get(position);
         holder.txtCategoryName.setText(category.name());
-//        holder.txtCategoryDescription.setText(category.getDescription());
         holder.cardView.setBackgroundResource(GradientHelper.getColor(category.id()));
         holder.cardView.setOnClickListener(v -> {
              Intent intent = new Intent(context, SearchResultActivity.class);

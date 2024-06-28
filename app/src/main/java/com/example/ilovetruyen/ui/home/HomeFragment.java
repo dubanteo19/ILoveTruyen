@@ -59,8 +59,6 @@ public class HomeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
         retrofitService = new RetrofitService();
         comicAPI = retrofitService.getRetrofit().create(ComicAPI.class);
         binding = FragmentHomeBinding.inflate(inflater, container, false);
@@ -223,19 +221,19 @@ public class HomeFragment extends Fragment {
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction
                 .replace(R.id.home_fragment_recentLyReadComicsTitle, HomeSectionTitleFragment
-                        .newInstance("Bạn vừa đọc", "", R.drawable.ic_home_clock));
+                        .newInstance("Bạn vừa đọc", 1, R.drawable.ic_home_clock));
         fragmentTransaction
                 .replace(R.id.home_fragment_hotComicsTitle, HomeSectionTitleFragment
-                        .newInstance("Hot nhất mọi thời gian", "", R.drawable.category_icon));
+                        .newInstance("Hot nhất mọi thời gian", 2, R.drawable.category_icon));
         fragmentTransaction
                 .replace(R.id.home_fragment_recommendComicsTitle, HomeSectionTitleFragment
-                        .newInstance("Gợi ý truyện tranh", "", R.drawable.thumb_up_icon));
+                        .newInstance("Gợi ý truyện tranh", 3, R.drawable.thumb_up_icon));
         fragmentTransaction
                 .replace(R.id.home_fragment_newComicsTitle, HomeSectionTitleFragment
-                        .newInstance("Truyện tranh mới", "", R.drawable.category_icon));
+                        .newInstance("Truyện tranh mới",4, R.drawable.category_icon));
         fragmentTransaction
                 .replace(R.id.home_fragment_categoryTitle, HomeSectionTitleFragment
-                        .newInstance("Thể loại", "", R.drawable.category_icon));
+                        .newInstance("Thể loại", 5, R.drawable.category_icon));
         fragmentTransaction.commit();
 
     }
@@ -246,7 +244,6 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<List<Comic>> call, Response<List<Comic>> response) {
                 CardSliderViewPager cardSliderViewPager = root.findViewById(R.id.home_carousel);
                 cardSliderViewPager.setAdapter(new CarouselAdapter(response.body(), root.getContext()));
-                System.out.println(response.body());
             }
 
             @Override

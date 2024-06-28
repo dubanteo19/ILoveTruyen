@@ -3,6 +3,7 @@ package com.example.ilovetruyen.ui.search;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -50,6 +51,7 @@ public class SearchResultActivity extends AppCompatActivity {
         comicAdapter = new NewComicAdapter(this);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this,3);
         recyclerView.setLayoutManager(gridLayoutManager);
+        setBackListener();
         comicAPI.getAllComicsByCategoryId(categoryId).enqueue(new Callback<List<Comic>>() {
             @Override
             public void onResponse(Call<List<Comic>> call, Response<List<Comic>> response) {
@@ -67,7 +69,12 @@ public class SearchResultActivity extends AppCompatActivity {
         });
 
     }
-
+    private void setBackListener() {
+        ImageButton backBtn = findViewById(R.id.search_back_icon);
+        backBtn.setOnClickListener(v->{
+            finish();
+        });
+    }
     private void hideLoading() {
         ProgressBar progressBar = findViewById(R.id.process_bar);
         progressBar.setVisibility(View.INVISIBLE);

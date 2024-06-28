@@ -28,6 +28,7 @@
             android:layout_weight="1"
             />
         <ImageView
+            android:id="@+id/show_more"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@drawable/right_arrow_icon"
