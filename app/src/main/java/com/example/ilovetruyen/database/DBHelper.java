@@ -53,12 +53,30 @@ public class DBHelper extends SQLiteOpenHelper {
             return true; // insert success
         }
     }
-    public Boolean checkExist(String comicsId){
+    public boolean checkExist(String comicsId){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        Cursor cursor = sqLiteDatabase.rawQuery("SELECT* FROM "+TB_FACOMICS+" WHERE "+TB_FACOMICS_ID+" = ?",new String[]{comicsId});
-        if(cursor.getCount() >0){
-            return true;//this item already exist
-        }else {
+        String[] projection = null;
+        String selection = TB_FACOMICS_ID + " = ?";
+        String[] selectionArgs = { comicsId };
+//        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM "+TB_FACOMICS+" WHERE "+TB_FACOMICS_ID+" = ?",new String[]{comicsId});
+//        if(cursor.getCount() >0 || cursor != null){
+//            return true;//this item already exist
+//        }else {
+//            return false;
+//        }
+        Cursor cursor = sqLiteDatabase.query(
+                TB_FACOMICS,    // Tên bảng
+                projection,   // Các cột cần trả về (null sẽ lấy tất cả các cột)
+                selection,    // Mệnh đề WHERE
+                selectionArgs,// Đối số cho WHERE
+                null,         // GROUP BY
+                null,         // HAVING
+                null          // ORDER BY
+        );
+        if(cursor.getCount() > 0 ){
+            return true;
+        }
+        else {
             return false;
         }
     }

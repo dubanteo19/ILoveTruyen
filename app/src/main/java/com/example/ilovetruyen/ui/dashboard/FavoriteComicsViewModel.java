@@ -37,6 +37,7 @@ public class FavoriteComicsViewModel extends ViewModel {
         Cursor cursor = dbHelper.getAllData();
         if (cursor.getCount() == 0) {
             Toast.makeText(context, "Danh sách trống", Toast.LENGTH_SHORT).show();
+            dbHelper.getWritableDatabase();
         } else {
             List<FavoriteComics> faCom = new ArrayList<>();
             while (cursor.moveToNext()) {

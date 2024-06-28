@@ -61,7 +61,7 @@ public class ComicDetailActivity extends AppCompatActivity {
     private ComicAdapter comicAdapter;
     private List<Chapter> chapterList;
     private boolean isChecked;
-    private boolean isFavor;
+    private boolean isFavor ;
     private int comicId;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -312,31 +312,50 @@ public class ComicDetailActivity extends AppCompatActivity {
     private void saveEvent() {
         saveBtn = findViewById(R.id.detail_saveBtn);
         Drawable drawable = saveBtn.getDrawable();
-
+        DBHelper dbHelper = new DBHelper(ComicDetailActivity.this);
         // Cap nhat trang thai ban dau cua nut
-        updateSaveColorButton(drawable,String.valueOf(comicId));
+        checkExist(String.valueOf(comicId).trim(),dbHelper);
+        System.out.println("giá trị ban đầu favor " + isFavor);
+        updateSaveColorButton(drawable);
         // event
         saveBtn.setOnClickListener(v -> {
-            System.out.println("save vào danh sách --------------------------------");
-            isChecked = !isChecked; // Thay đổi trạng thái
-            updateSaveButtonOnClick(drawable); // Cập nhật nút dựa trên trạng thái mới
-            updateSaveColorButton(drawable,String.valueOf(comicId));
+            System.out.println("chạy click");
+            saveClicked(drawable,dbHelper,isFavor);
 
         });
     }
 
-    private void updateSaveButtonOnClick(Drawable drawable) {
-        DBHelper dbHelper = new DBHelper(ComicDetailActivity.this);
-        if(isChecked){
-            dbHelper.deleteData(String.valueOf(comicId));
-            System.out.println("Đã xóa");
+    private void saveClicked(Drawable drawable,DBHelper dbHelper,boolean isFavor) {
+        isFavor = !isFavor; // Thay đổi trạng thái
+        System.out.println("save vào danh sách " +isFavor);
+
+        updateSaveButtonOnClick(drawable,dbHelper); // Cập nhật nút dựa trên trạng thái mới
+        updateSaveColorButton(drawable);
+    }
+
+    public void checkExist(String id, DBHelper dbHelper){
+        if(dbHelper.checkExist(id)){
+           this.isFavor =true;
         }
-        else{
-            if(dbHelper.insertData(String.valueOf(comicId).trim(),comic.name().trim(),comic.thumbUrl().trim(),"1")){
+        else {
+            this.isFavor=false;
+        }
+    }
+
+    private void updateSaveButtonOnClick(Drawable drawable, DBHelper dbHelper) {
+        if(isFavor == true){
+            dbHelper.deleteData(String.valueOf(comicId));
+            isFavor= false;
+            System.out.println("Đã xóa");
+        } else{
+            if (dbHelper.insertData(String.valueOf(comicId).trim(), comic.name().trim(), comic.thumbUrl().trim(), "1")) {
+                this.isFavor= true;
                 System.out.println("Đã lưu comics này vào db");
+
             }
             else {
                 System.out.println("lỗi insert com va favorite");
+                this.isFavor = false;
             }
         }
     }
@@ -346,18 +365,13 @@ public class ComicDetailActivity extends AppCompatActivity {
                 .add(R.id.detail_comments, CommentFragment.newInstance(comicId))
                 .commit();
     }
-    private void updateSaveColorButton(Drawable drawable,String id) {
-        DBHelper dbHelper = new DBHelper(getApplicationContext());
-        if(dbHelper.checkExist(id)){
-            isFavor =true;
+    private void updateSaveColorButton(Drawable drawable) {
+        if(isFavor){
+            drawable.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.secondary), PorterDuff.Mode.SRC_IN);
         }
         else {
-            isFavor= false;
-        }
-        if (isFavor) {
-            drawable.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.secondary), PorterDuff.Mode.SRC_IN);
-        } else {
             drawable.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.text), PorterDuff.Mode.SRC_IN);
+
         }
     }
 
