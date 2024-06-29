@@ -51,6 +51,7 @@ public class ChapterApdapter extends RecyclerView.Adapter<ChapterApdapter.Chapte
             Intent intent = new Intent(context, ChapterContentActivity.class);
             intent.putExtra("comicId", chapter.comicDetail().id());
             intent.putExtra("count", chapter.count());
+            intent.putExtra("chapterTotal",chapterList.size());
             context.startActivity(intent);
         });
 
