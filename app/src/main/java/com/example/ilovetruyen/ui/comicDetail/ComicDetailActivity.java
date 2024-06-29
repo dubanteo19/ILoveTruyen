@@ -24,7 +24,10 @@ import com.bumptech.glide.Glide;
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.adapter.ChapterApdapter;
 import com.example.ilovetruyen.adapter.ComicAdapter;
+import com.example.ilovetruyen.adapter.FavoriteComicAdapter;
 import com.example.ilovetruyen.api.ComicDetailAPI;
+import com.example.ilovetruyen.database.DBHelper;
+import com.example.ilovetruyen.database.FaComDAO;
 import com.example.ilovetruyen.model.Category;
 import com.example.ilovetruyen.model.Chapter;
 import com.example.ilovetruyen.model.Comic;
@@ -46,8 +49,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ComicDetailActivity extends AppCompatActivity {
-    private ImageButton heartBtn;
+public class ComicDetailActivity extends AppCompatActivity{
+    private ImageButton heartBtn,saveBtn;
     private TextView comicName, authorName, likes, views, createdAt, status, chapterLength;
     private ImageView thumb;
     private ChipGroup keywordSearch;
@@ -59,13 +62,15 @@ public class ComicDetailActivity extends AppCompatActivity {
     private Comic comic;
     private ComicAdapter comicAdapter;
     private List<Chapter> chapterList;
+    private FaComDAO faComDAO;
     private boolean isChecked;
+    private boolean isFavor ;
     private int comicId;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comic_detail);
+        faComDAO = new FaComDAO(this);
         comicId = getIntent().getIntExtra("comicId", 1);
         UserStateHelper.saveRecentlyReadComicId(getApplicationContext(), comicId);
 //        System.out.println(comicId + "++++++++++++++++++++++++++++++++++++++++++++");
@@ -117,19 +122,25 @@ public class ComicDetailActivity extends AppCompatActivity {
         renderSummaryComic();
         renderSimilarComics();
         heartEvent();
+        saveEvent();
     }
-
     private void continueReadingEvent() {
         LinearLayout view = findViewById(R.id.detail_continue_reading_btn);
-        if(chapterList.size() != 0) {
-            view.setOnClickListener(v -> {
-                Intent intent = new Intent(this, ChapterContentActivity.class);
-                intent.putExtra("comicId", comic.id());
-                intent.putExtra("count", 1);
-                startActivity(intent);
-            });
-        }else{
-            view.setVisibility(View.GONE);
+        try{
+            if(chapterList.size() != 0) {
+                view.setOnClickListener(v -> {
+                    Intent intent = new Intent(this, ChapterContentActivity.class);
+                    intent.putExtra("comicId", comic.id());
+                    intent.putExtra("count", 1);
+                    intent.putExtra("chapterTotal",chapterList.size());
+                    startActivity(intent);
+                });
+            }else{
+                view.setVisibility(View.GONE);
+            }
+
+        }catch (NullPointerException e){
+            System.out.println("không có detail");
         }
     }
 
@@ -173,7 +184,6 @@ public class ComicDetailActivity extends AppCompatActivity {
         status.setText(StatusHelper.getStatusName(comicDetail.status()));
 
     }
-
     /* Summary comic*/
     private void renderSummaryComic() {
         ExpandableTextView expandableTextView = findViewById(R.id.expandable_text_view);
@@ -301,11 +311,69 @@ public class ComicDetailActivity extends AppCompatActivity {
             });
         }
     }
+    private void saveEvent() {
+        ImageButton saveBtn = findViewById(R.id.detail_saveBtn);
+        Drawable drawable = saveBtn.getDrawable();
+        DBHelper dbHelper = new DBHelper(ComicDetailActivity.this);
+        // Cap nhat trang thai ban dau cua nut
+        checkExist(String.valueOf(comicId).trim(),dbHelper);
+        updateSaveColorButton(drawable);
+        // event
+        saveBtn.setOnClickListener(v -> {
+            saveClicked(drawable,dbHelper,isFavor);
+        });
+    }
+
+    private void saveClicked(Drawable drawable,DBHelper dbHelper,boolean isFavor) {
+        isFavor = !isFavor; // Thay đổi trạng thái
+        updateSaveButtonOnClick(drawable,dbHelper); // Cập nhật nút dựa trên trạng thái mới
+        updateSaveColorButton(drawable);
+
+    }
+
+    public void checkExist(String id, DBHelper dbHelper){
+        faComDAO.openForReading();
+        if(faComDAO.checkExist(id)){
+           this.isFavor =true;
+        }
+        else {
+            this.isFavor=false;
+        }
+    }
+
+    private void updateSaveButtonOnClick(Drawable drawable, DBHelper dbHelper) {
+        faComDAO.open();
+        if(isFavor == true){
+            faComDAO.deleteData(String.valueOf(comicId));
+            isFavor= false;
+            System.out.println("Đã xóa");
+            //NOTE: sự kiện báo về fragment
+        } else{
+            if (faComDAO.insertData(String.valueOf(comicId).trim(), comic.name().trim(), comic.thumbUrl().trim(), "1")) {
+                this.isFavor= true;
+                System.out.println("Đã lưu comics này vào db");
+                //sự kiện báo về fragment
+            }
+            else {
+                System.out.println("lỗi insert com va favorite");
+                this.isFavor = false;
+            }
+        }
+    }
 
     private void attachCommentFragment(int comicId) {
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.detail_comments, CommentFragment.newInstance(comicId))
                 .commit();
+    }
+    private void updateSaveColorButton(Drawable drawable) {
+        if(isFavor){
+            drawable.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.secondary), PorterDuff.Mode.SRC_IN);
+        }
+        else {
+            drawable.setColorFilter(ContextCompat.getColor(getApplicationContext(), R.color.text), PorterDuff.Mode.SRC_IN);
+
+        }
     }
 
 }

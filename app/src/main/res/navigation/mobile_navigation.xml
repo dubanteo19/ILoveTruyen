@@ -13,10 +13,8 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.ilovetruyen.ui.dashboard.DashboardFragment"
-        android:label="@string/wishlist"
-        tools:layout="@layout/fragment_dashboard" />
-
+        android:name="com.example.ilovetruyen.ui.dashboard.FavoriteComicsFragment"
+       android:label="@string/wishlist"/>
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.example.ilovetruyen.ui.notifications.NotificationsFragment"

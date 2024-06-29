@@ -17,9 +17,10 @@ public interface ComicAPI {
     Call<List<Comic>> getAllHotComics();
     @GET("/api/v1/comics/latest")
     Call<List<Comic>> getAllNewComics();
+    @GET("/api/v1/comics/favorite")
+    Call<List<Comic>> getFavoriteComics();
     @GET("/api/v1/comics/category/{id}")
     Call<List<Comic>> getAllComicsByCategoryId(@Path("id") Integer categoryIds);
     @GET("/api/v1/comics/search/{name}")
     Call<List<Comic>> searchComicsByName(@Path("name") String searchValue);
-
 }
