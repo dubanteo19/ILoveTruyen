@@ -11,11 +11,13 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -36,6 +38,8 @@ import com.example.ilovetruyen.databinding.FragmentNotificationsBinding;
 import com.example.ilovetruyen.dto.UserUpdate;
 import com.example.ilovetruyen.model.User;
 import com.example.ilovetruyen.retrofit.RetrofitService;
+import com.example.ilovetruyen.ui.adventise.AdvertiseFragment;
+import com.example.ilovetruyen.ui.home.HomeFragment;
 import com.example.ilovetruyen.ui.maps.MapActivity;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -49,6 +53,7 @@ public class NotificationsFragment extends Fragment {
     private static final String SHARED_PREF_NAME = "story_history";
     private PopupWindow popupWindow;
     private FragmentNotificationsBinding binding;
+//    private OnPopupClickListener popupClickListener;
     RetrofitService retrofitService;
     UserAPI userAPI;
 
@@ -145,6 +150,17 @@ public class NotificationsFragment extends Fragment {
 
         return root;
     }
+
+//    @Override
+//    public void onAttach(@NonNull Context context) {
+//        super.onAttach(context);
+//        if (getParentFragment() instanceof OnPopupClickListener) {
+//            popupClickListener = (OnPopupClickListener) getParentFragment();
+//        } else {
+//            throw new RuntimeException(context.toString() + " must implement OnCloseClickListener");
+//        }
+//    }
+
 
     @Override
     public void onDestroyView() {
@@ -257,6 +273,7 @@ public class NotificationsFragment extends Fragment {
         }
         return true;
     }
+
     private void showPopupAds(View anchorView) {
         Context context = requireContext();
         View popupView = LayoutInflater.from(context).inflate(R.layout.fragment_popup_ads, null);
@@ -264,20 +281,36 @@ public class NotificationsFragment extends Fragment {
         popupWindow.setOutsideTouchable(true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#80000000")));
         //cập nhật
-        Button btnViewPopup = popupView.findViewById(R.id.btnViewPopup);
-        btnViewPopup.setOnClickListener(v -> {
 
-        });
+
         //close
         Button btnClosePopup = popupView.findViewById(R.id.btnClosePopup);
         btnClosePopup.setOnClickListener(v -> {
             popupWindow.dismiss();
         });
+        Button btnViewPopup = popupView.findViewById(R.id.btnViewPopup);
+        btnViewPopup.setOnClickListener(v -> {
+            if(popupWindow.isShowing()){
+                Fragment parentFragment = getParentFragment();
+                Toast.makeText(context, parentFragment instanceof HomeFragment ? "HomeFragment" : "AdvertiseFragment", Toast.LENGTH_SHORT).show();
+                if (parentFragment instanceof HomeFragment) {
+                    ((HomeFragment) parentFragment).hideAdvertiseFragment();
+                }
+                    Toast.makeText(context, "Đã xóa quảng cáo", Toast.LENGTH_SHORT).show();
+            }
+            popupWindow.dismiss();
 
+
+
+
+
+        });
         int[] location = new int[2];
         anchorView.getLocationOnScreen(location);
         int offsetX = 0;
         int offsetY = 0;
         popupWindow.showAtLocation(anchorView, Gravity.NO_GRAVITY, location[0] + offsetX, location[1] + offsetY);
     }
+
+
 }
