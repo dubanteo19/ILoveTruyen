@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -59,7 +60,6 @@ public class HomeFragment extends Fragment {
     private CategoryItemAdapter categoryItemAdapter;
     RetrofitService retrofitService;
     ComicAPI comicAPI;
-    private boolean isAdvertiseVisible = true; // Biến trạng thái
     private static final String KEY_AD_VISIBLE = "ad_visible";
     private AdvertiseFragment adFr;
     private static final String PREFS_NAME = "ad_prefs";
@@ -92,12 +92,19 @@ public class HomeFragment extends Fragment {
         //
 
         //Thêm FragmentAdvertise vào FragmentHome
-        adFr = new AdvertiseFragment();
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.add(R.id.fragment_container_advertise, adFr, "ad_fragment");
-        transaction.commit();
+        adFr = (AdvertiseFragment) getChildFragmentManager().findFragmentByTag("ad_fragment");
+        if (adFr == null) {
+            adFr = new AdvertiseFragment();
+            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+            transaction.add(R.id.fragment_container_advertise, adFr, "ad_fragment");
+            transaction.commit();
+        } else if (adFr.isHidden()) {
+            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+            transaction.show(adFr);
+            transaction.commit();
+        }
 
-         //Kiểm tra trạng thái từ SharedPreferences
+        //Kiểm tra trạng thái từ SharedPreferences
 //        SharedPreferences adprefs = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 //        boolean isAdVisible = adprefs.getBoolean(KEY_AD_VISIBLE, true);
 //
@@ -143,7 +150,28 @@ public class HomeFragment extends Fragment {
         renderHotComicsSection(root);
         renderCategoriesSection(root);
         renderFooter();
+
+        Toast.makeText(getContext(), "re-rendered", Toast.LENGTH_SHORT).show();
+
         return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("ads_prefs", Context.MODE_PRIVATE);
+        boolean isAdsShouldHide = sharedPreferences.getBoolean("is_close_ads", true);
+
+        CloseAdsSharedVM closeAdsSharedVM = new ViewModelProvider(requireActivity()).get(CloseAdsSharedVM.class);
+        closeAdsSharedVM.getCloseAds().observe(getViewLifecycleOwner(), isCloseAds -> {
+            if (isCloseAds) {
+                Toast.makeText(getContext(), "adFr added: " + adFr.isAdded(), Toast.LENGTH_SHORT).show();
+                hideAdvertiseFragment();
+
+                Toast.makeText(getContext(), "adFr hidden: " + adFr.isHidden(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 
     private void renderFooter() {
@@ -272,7 +300,7 @@ public class HomeFragment extends Fragment {
                         .newInstance("Gợi ý truyện tranh", 3, R.drawable.thumb_up_icon));
         fragmentTransaction
                 .replace(R.id.home_fragment_newComicsTitle, HomeSectionTitleFragment
-                        .newInstance("Truyện tranh mới",4, R.drawable.category_icon));
+                        .newInstance("Truyện tranh mới", 4, R.drawable.category_icon));
         fragmentTransaction
                 .replace(R.id.home_fragment_categoryTitle, HomeSectionTitleFragment
                         .newInstance("Thể loại", 5, R.drawable.category_icon));
@@ -295,28 +323,17 @@ public class HomeFragment extends Fragment {
         });
 
     }
-    // Phương thức để hiển thị hoặc ẩn FragmentAdvertise
-    public void toggleAdvertiseFragment() {
-        FragmentManager fragmentManager = getChildFragmentManager();
-        Fragment addvertiseFr = fragmentManager.findFragmentByTag("ad_fragment");
 
-        if (addvertiseFr != null) {
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            if (isAdvertiseVisible) {
-                fragmentTransaction.hide(addvertiseFr);
-            } else {
-                fragmentTransaction.show(addvertiseFr);
-            }
-            fragmentTransaction.commit();
-            isAdvertiseVisible = !isAdvertiseVisible;
+
+    public void hideAdvertiseFragment() {
+        if (adFr != null && !adFr.isHidden()) {
+            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+            transaction
+                    .hide(adFr)
+                    .commit();
+
+            Toast.makeText(getContext(), "adFr hidden: " + adFr.isHidden(), Toast.LENGTH_SHORT).show();
         }
-    }
-  public void hideAdvertiseFragment() {
-      if (adFr != null && !adFr.isHidden()) {
-          FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-          transaction.hide(adFr);
-          transaction.commit();
-      }
     }
 
     @Override
@@ -324,7 +341,5 @@ public class HomeFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-
-
 
 }

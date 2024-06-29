@@ -158,11 +158,11 @@
                     android:layout_marginTop="10dp" />
 
             </LinearLayout>
-            <!--Adventise -->
+            <!--Advertise -->
             <FrameLayout
                 android:id="@+id/fragment_container_advertise"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="wrap_content"/>
             <!--New comics section-->
             <LinearLayout
                 android:layout_width="match_parent"

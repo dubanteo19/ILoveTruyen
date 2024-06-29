@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -39,12 +38,13 @@ public class AdvertiseFragment extends Fragment {
                 // Gọi phương thức closeAdvertiseFragment từ FragmentHome
                 Fragment parentFragment = getParentFragment();
                 if (parentFragment instanceof HomeFragment) {
-                    ((HomeFragment) parentFragment).toggleAdvertiseFragment();
-                    Toast.makeText(getContext(), "Đóng quảng cáo", Toast.LENGTH_SHORT).show();
+                    ((HomeFragment) parentFragment).hideAdvertiseFragment();
                 }
             }
         });
 
         return view;
     }
+
+
 }
