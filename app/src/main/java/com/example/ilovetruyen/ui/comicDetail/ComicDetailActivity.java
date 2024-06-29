@@ -8,9 +8,11 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,7 +51,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ComicDetailActivity extends AppCompatActivity{
+public class ComicDetailActivity extends AppCompatActivity implements CommentFragment.OnCommentFocusListener {
     private ImageButton heartBtn,saveBtn;
     private TextView comicName, authorName, likes, views, createdAt, status, chapterLength;
     private ImageView thumb;
@@ -66,9 +68,11 @@ public class ComicDetailActivity extends AppCompatActivity{
     private boolean isChecked;
     private boolean isFavor ;
     private int comicId;
+    private ScrollView scrollView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_comic_detail);
         faComDAO = new FaComDAO(this);
         comicId = getIntent().getIntExtra("comicId", 1);
@@ -78,7 +82,9 @@ public class ComicDetailActivity extends AppCompatActivity{
         UserStateHelper.saveReadComicId(getApplicationContext(), comicId);
         fetchComicDetail(comicId);
         attachCommentFragment(comicId);
+
     }
+
 
     private void fetchComicDetail(int comicId) {
         retrofitService = new RetrofitService();
@@ -151,6 +157,8 @@ public class ComicDetailActivity extends AppCompatActivity{
         Glide.with(this).load(comic.thumbUrl()).into(thumb);
         // set comic name
         comicName = findViewById(R.id.detail_name_comic);
+        scrollView = findViewById(R.id.layout_scroll_view_detail);
+
         comicName.setText(comic.name());
         // set author name
         authorName = findViewById(R.id.detail_author_name);
@@ -375,5 +383,14 @@ public class ComicDetailActivity extends AppCompatActivity{
 
         }
     }
+    @Override
+    public void onCommentFocus() {
+        scrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.smoothScrollTo(0, scrollView.getBottom());
 
+            }
+        });
+    }
 }

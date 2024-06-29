@@ -2,9 +2,11 @@ package com.example.ilovetruyen.ui.comments;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -41,9 +43,23 @@ import retrofit2.Retrofit;
 public class CommentFragment extends Fragment {
     private static final String ARG_COMIC_ID = "comicId";
     private int comicId;
+    private EditText commentEditText;
     private ComicCommentAPI comicCommentAPI;
     private CommentAdapter adapter;
     private RecyclerView recyclerView;
+    private OnCommentFocusListener focusListener;
+
+    public interface OnCommentFocusListener {
+        void onCommentFocus();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof OnCommentFocusListener) {
+            focusListener = (OnCommentFocusListener) context;
+        }
+    }
 
     public CommentFragment() {
     }
@@ -78,6 +94,18 @@ public class CommentFragment extends Fragment {
         renderUserName(view);
         getComments();
         setSendCommentEvent(view);
+        commentEditText = view.findViewById(R.id.comment_input);
+        commentEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    if (focusListener != null) {
+                        focusListener.onCommentFocus();
+                        Toast.makeText(getContext(), "Focus", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        });
 
         return view;
     }
@@ -104,7 +132,6 @@ public class CommentFragment extends Fragment {
                 return;
             }
             if (commentEditPosition.get() != -1) {
-//                Comment currentComment = commentList.get(commentEditPosition.get());
                 ComicCommentDto newComment = new ComicCommentDto(commentText, userId, comicId);
                 commentEditPosition.set(-1);
 
@@ -134,6 +161,7 @@ public class CommentFragment extends Fragment {
         });
 
     }
+
 
     private void updateComment(ComicCommentDto comment, int idComment) {
         comicCommentAPI.updateComment(idComment, comment).enqueue(new Callback<Comment>() {
