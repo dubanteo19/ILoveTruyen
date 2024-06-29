@@ -1,8 +1,11 @@
 package com.example.ilovetruyen.adapter;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +24,8 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.ilovetruyen.R;
 import com.example.ilovetruyen.ReadingHistoryActivity;
+import com.example.ilovetruyen.admin.ComicManagerActivity;
+import com.example.ilovetruyen.admin.FeatureComicActivity;
 import com.example.ilovetruyen.model.Comic;
 import com.example.ilovetruyen.ui.comicDetail.ComicDetailActivity;
 
@@ -76,11 +81,12 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 
                             }
                         });
-        holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, ComicDetailActivity.class);
-            intent.putExtra("comicId", comic.id());
-            context.startActivity(intent);
-        });
+            holder.itemView.setOnClickListener(v -> {
+                Intent intent = new Intent(context, ComicDetailActivity.class);
+                intent.putExtra("comicId", comic.id());
+                context.startActivity(intent);
+
+            });
     }
 
     @Override
