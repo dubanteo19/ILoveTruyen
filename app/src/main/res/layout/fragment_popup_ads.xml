@@ -67,7 +67,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/red"
-                    android:text="Xem" />
+                    android:text="Xóa" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnClosePopup"

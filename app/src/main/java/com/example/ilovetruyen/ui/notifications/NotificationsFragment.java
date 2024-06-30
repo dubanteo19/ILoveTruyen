@@ -25,6 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.ilovetruyen.ListOfStoryDownloadsActivity;
 import com.example.ilovetruyen.LoginActivity;
@@ -36,6 +37,7 @@ import com.example.ilovetruyen.databinding.FragmentNotificationsBinding;
 import com.example.ilovetruyen.dto.UserUpdate;
 import com.example.ilovetruyen.model.User;
 import com.example.ilovetruyen.retrofit.RetrofitService;
+import com.example.ilovetruyen.ui.home.CloseAdsSharedVM;
 import com.example.ilovetruyen.ui.maps.MapActivity;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -49,6 +51,7 @@ public class NotificationsFragment extends Fragment {
     private static final String SHARED_PREF_NAME = "story_history";
     private PopupWindow popupWindow;
     private FragmentNotificationsBinding binding;
+    //    private OnPopupClickListener popupClickListener;
     RetrofitService retrofitService;
     UserAPI userAPI;
 
@@ -88,7 +91,7 @@ public class NotificationsFragment extends Fragment {
         featureAdsLayout.setOnClickListener(this::showPopupAds);
 
         ConstraintLayout featureRemoveAccountLayout = root.findViewById(R.id.feature_delete);
-        featureRemoveAccountLayout.setOnClickListener(v ->{
+        featureRemoveAccountLayout.setOnClickListener(v -> {
             new AlertDialog.Builder(getContext())
                     .setTitle("Xóa tài khoản")
                     .setMessage("Bạn muốn xóa tài khoản của mình?\n" +
@@ -146,11 +149,23 @@ public class NotificationsFragment extends Fragment {
         return root;
     }
 
+//    @Override
+//    public void onAttach(@NonNull Context context) {
+//        super.onAttach(context);
+//        if (getParentFragment() instanceof OnPopupClickListener) {
+//            popupClickListener = (OnPopupClickListener) getParentFragment();
+//        } else {
+//            throw new RuntimeException(context.toString() + " must implement OnCloseClickListener");
+//        }
+//    }
+
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
     }
+
     public static void logout(Context context) {
         logoutStatus(context);
         Intent intent = new Intent(context, MainActivity.class);
@@ -182,9 +197,10 @@ public class NotificationsFragment extends Fragment {
         buttonUpdate.setOnClickListener(v -> {
             String updatedName = fullName.getText() != null ? fullName.getText().toString() : "";
             String updatedPass = pass.getText() != null ? pass.getText().toString() : "";
-            if(!passwordValidator(pass)){
+            if (!passwordValidator(pass)) {
                 return;
-            };
+            }
+            ;
 
             if (!isFullNameValid(updatedName, fullName)) {
                 return;
@@ -211,7 +227,7 @@ public class NotificationsFragment extends Fragment {
         retrofitService = new RetrofitService();
         userAPI = retrofitService.getRetrofit().create(UserAPI.class);
         UserUpdate userUpdate = new UserUpdate(id, email, password, fullName);
-        userAPI.update(id,userUpdate).enqueue(new Callback<User>() {
+        userAPI.update(id, userUpdate).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -240,7 +256,7 @@ public class NotificationsFragment extends Fragment {
         });
     }
 
-    public boolean passwordValidator(TextInputEditText etPassword){
+    public boolean passwordValidator(TextInputEditText etPassword) {
         String passwordToText = String.valueOf(etPassword.getText());
         if (passwordToText.length() < 6) {
             Toast.makeText(getContext(), "Mật khẩu phải có ít nhất 6 ký tự!", Toast.LENGTH_SHORT).show();
@@ -249,6 +265,7 @@ public class NotificationsFragment extends Fragment {
         }
         return true;
     }
+
     private boolean isFullNameValid(String fullName, TextInputEditText fullNameValidate) {
         if (fullName.isEmpty()) {
             fullNameValidate.setError("Họ tên không được bỏ trống!");
@@ -257,6 +274,7 @@ public class NotificationsFragment extends Fragment {
         }
         return true;
     }
+
     private void showPopupAds(View anchorView) {
         Context context = requireContext();
         View popupView = LayoutInflater.from(context).inflate(R.layout.fragment_popup_ads, null);
@@ -264,20 +282,41 @@ public class NotificationsFragment extends Fragment {
         popupWindow.setOutsideTouchable(true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#80000000")));
         //cập nhật
-        Button btnViewPopup = popupView.findViewById(R.id.btnViewPopup);
-        btnViewPopup.setOnClickListener(v -> {
 
-        });
+
         //close
         Button btnClosePopup = popupView.findViewById(R.id.btnClosePopup);
         btnClosePopup.setOnClickListener(v -> {
             popupWindow.dismiss();
         });
+        Button btnViewPopup = popupView.findViewById(R.id.btnViewPopup);
+        btnViewPopup.setOnClickListener(v -> {
 
+            if (popupWindow.isShowing()) {
+                SharedPreferences adsSharedPreferences = context.getSharedPreferences("ads_prefs", MODE_PRIVATE);
+
+                SharedPreferences.Editor editor = adsSharedPreferences.edit();
+                editor.putBoolean("is_close_ads", true);
+                editor.apply();
+
+                boolean isCloseAds = adsSharedPreferences.getBoolean("is_close_ads", false);
+
+                CloseAdsSharedVM closeAdsSharedVM = new ViewModelProvider(requireActivity()).get(CloseAdsSharedVM.class);
+                closeAdsSharedVM.setCloseAds(isCloseAds);
+
+                Toast.makeText(context, "Đã xóa quảng cáo", Toast.LENGTH_SHORT).show();
+            }
+
+            popupWindow.dismiss();
+
+
+        });
         int[] location = new int[2];
         anchorView.getLocationOnScreen(location);
         int offsetX = 0;
         int offsetY = 0;
         popupWindow.showAtLocation(anchorView, Gravity.NO_GRAVITY, location[0] + offsetX, location[1] + offsetY);
     }
+
+
 }
