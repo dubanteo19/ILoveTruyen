@@ -45,12 +45,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ComicManagerAdminAdapter extends RecyclerView.Adapter<ComicManagerAdminAdapter.ComicManagerAdminViewHolder>{
+public class ComicManagerAdminAdapter extends RecyclerView.Adapter<ComicManagerAdminAdapter.ComicManagerAdminViewHolder> {
     private Context context;
-    private List<Comic> comicList;
+    private List<ComicDetail> comicList;
     private ComicDetailAPI comicDetailAPI;
     private RetrofitService retrofitService;
-    private ComicDetail comicDetail;
     String genresText, genresDes;
 
     public ComicManagerAdminAdapter(Context context) {
@@ -58,7 +57,7 @@ public class ComicManagerAdminAdapter extends RecyclerView.Adapter<ComicManagerA
         this.comicList = new ArrayList<>();
     }
 
-    public void setData(List<Comic> comicList) {
+    public void setData(List<ComicDetail> comicList) {
         this.comicList.clear();
         if (comicList != null) {
             this.comicList.addAll(comicList);
@@ -77,24 +76,25 @@ public class ComicManagerAdminAdapter extends RecyclerView.Adapter<ComicManagerA
 
     @Override
     public void onBindViewHolder(@NonNull ComicManagerAdminViewHolder holder, int position) {
-        Comic comic = comicList.get(position);
+        var comicDetail = comicList.get(position);
+        var comic = comicDetail.comic();
         if (comic == null) return;
         Glide.with(holder.itemView).load(comic.thumbUrl()).into(holder.comic_thumb);
-        holder.comic_title.setText("Tên:" +NameMaxSizeHelper.truncateName(comic.name()));
+        holder.comic_title.setText("Tên:" + NameMaxSizeHelper.truncateName(comic.name()));
         holder.comic_chapters.setText("Chương: " + String.valueOf(comic.latestChapter()));
         holder.comic_views.setText(String.valueOf("Lượt xem: " + comic.views()));
         holder.comic_likes.setText(String.valueOf("Lượt like: " + comic.likes()));
         holder.comic_author.setText("Tác giả: DBT19");
-        fetchComicDetail(comic.id());
+        fetchComicDetail(comicDetail);
         holder.comic_genre.setText("Danh mục: " + genresText);
         holder.comic_description.setText("Mô tả: " + NameMaxSizeHelper.truncateName(genresDes));
-        holder.editBtn.setOnClickListener(v->{
+        holder.editBtn.setOnClickListener(v -> {
             UserStateHelper.saveEditComicStatus(context, true);
             Intent intent = new Intent(context, AddComicActivity.class);
-            intent.putExtra("comicId",comic.id());
+            intent.putExtra("comicId", comic.id());
             context.startActivity(intent);
         });
-        holder.deleteBtn.setOnClickListener(v ->{
+        holder.deleteBtn.setOnClickListener(v -> {
             new AlertDialog.Builder(context)
                     .setTitle("Xác nhận xóa")
                     .setMessage("Bạn có chắc chắn muốn xóa truyện này khỏi ứng dụng?")
@@ -115,8 +115,8 @@ public class ComicManagerAdminAdapter extends RecyclerView.Adapter<ComicManagerA
     }
 
     public class ComicManagerAdminViewHolder extends RecyclerView.ViewHolder {
-        private TextView comic_title, comic_author, comic_genre, comic_chapters, comic_views, comic_likes,comic_description;
-        private ImageView comic_thumb,editBtn, deleteBtn;
+        private TextView comic_title, comic_author, comic_genre, comic_chapters, comic_views, comic_likes, comic_description;
+        private ImageView comic_thumb, editBtn, deleteBtn;
 
         public ComicManagerAdminViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -132,32 +132,17 @@ public class ComicManagerAdminAdapter extends RecyclerView.Adapter<ComicManagerA
             deleteBtn = itemView.findViewById(R.id.delete);
         }
     }
-    private void fetchComicDetail(int comicId) {
-        retrofitService = new RetrofitService();
-        comicDetailAPI = retrofitService.getRetrofit().create(ComicDetailAPI.class);
-        comicDetailAPI.getComicDetailById(comicId).enqueue(new Callback<ComicDetail>() {
-            @Override
-            public void onResponse(Call<ComicDetail> call, Response<ComicDetail> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    comicDetail = response.body();
-                    List<Category> genres = comicDetail.categories();
-                    System.out.println(genres + "============================");
-                    if (genres != null && !genres.isEmpty()) {
-                        List<String> genreNames = new ArrayList<>();
-                        for (Category genre : genres) {
-                            genreNames.add(genre.name());
-                        }
-                        genresDes = comicDetail.description();
-                        genresText = TextUtils.join(", ", genreNames);
-                    }
-                }
-            }
 
-            @Override
-            public void onFailure(Call<ComicDetail> call, Throwable throwable) {
-                Toast.makeText(context.getApplicationContext(), "Failed to fetch data", Toast.LENGTH_SHORT);
+    private void fetchComicDetail(ComicDetail comicDetail) {
+        List<Category> genres = comicDetail.categories();
+        if (genres != null && !genres.isEmpty()) {
+            List<String> genreNames = new ArrayList<>();
+            for (Category genre : genres) {
+                genreNames.add(genre.name());
             }
-        });
+            genresDes = comicDetail.description();
+            genresText = TextUtils.join(", ", genreNames);
+        }
+
     }
-
 }

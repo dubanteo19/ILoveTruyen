@@ -20,8 +20,6 @@ import com.example.ilovetruyen.database.FaComDAO;
 import com.example.ilovetruyen.effect.BlinkingEffect;
 import com.example.ilovetruyen.model.FavoriteComics;
 import com.example.ilovetruyen.ui.comicDetail.ComicDetailActivity;
-import com.example.ilovetruyen.ui.dashboard.FavoriteComicsFragment;
-import com.example.ilovetruyen.ui.dashboard.FavoriteComicsViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

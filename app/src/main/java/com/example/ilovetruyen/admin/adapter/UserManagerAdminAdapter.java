@@ -68,8 +68,7 @@ public class UserManagerAdminAdapter extends RecyclerView.Adapter<UserManagerAdm
     }
     private void showAddCategoryDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setView(R.layout.dialog_add_category)
-                .setTitle("Xóa người dùng")
+               builder.setTitle("Xóa người dùng")
                 .setMessage("Bạn có chắc muốn xóa người dùng này không ?")
                 .setPositiveButton("Xóa", (dialog, which) -> {
 

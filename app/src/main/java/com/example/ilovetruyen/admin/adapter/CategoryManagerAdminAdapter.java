@@ -59,19 +59,6 @@ public class CategoryManagerAdminAdapter extends RecyclerView.Adapter<CategoryMa
         holder.editBtn.setOnClickListener(v->{
             showAddCategoryDialog();
         });
-        holder.deleteBtn.setOnClickListener(v ->{
-            new AlertDialog.Builder(context)
-                    .setTitle("Xác nhận xóa")
-                    .setMessage("Bạn có chắc chắn muốn xóa truyện này khỏi ứng dụng?")
-                    .setNeutralButton("Hủy bỏ", (dialog, which) -> {
-                    })
-                    .setPositiveButton("Đồng ý", (dialog, which) -> {
-                        categories.remove(position);
-                        notifyItemRemoved(position);
-                        notifyItemRangeChanged(position, categories.size());
-                    })
-                    .show();
-        });
     }
     @Override
     public int getItemCount() {

@@ -56,16 +56,6 @@ public class RecentlyReadFragment extends Fragment {
     public RecentlyReadFragment() {
         // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment RecentlyReadFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static RecentlyReadFragment newInstance() {
         RecentlyReadFragment fragment = new RecentlyReadFragment();
         return fragment;
@@ -113,7 +103,7 @@ public class RecentlyReadFragment extends Fragment {
                 if (response.isSuccessful() && response.body() != null) {
                     comic = response.body().comic();
                     comic_name.setText(NameMaxSizeHelper.truncateName(comic.name()));
-                    comic_count.setText(String.valueOf(comic.latestChapter()));
+                    comic_count.setText("Chương "+String.valueOf(comic.latestChapter()));
                     like.setText(String.valueOf(comic.likes()));
                     views.setText(String.valueOf(comic.views()));
                     Glide.with(getContext())

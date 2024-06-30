@@ -41,13 +41,20 @@
             android:exported="false" />
         <activity
             android:name=".admin.AddComicActivity"
-            android:exported="false" />
+            android:exported="true">
+        </activity>
         <activity
             android:name=".admin.ComicManagerActivity"
             android:exported="false" />
         <activity
             android:name=".admin.ILoveTruyenManagerActivity"
-            android:exported="false" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.search.SearchResultActivity"
             android:exported="false" />
@@ -75,6 +82,12 @@
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name">
+
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

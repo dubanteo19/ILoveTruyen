@@ -12,20 +12,27 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ilovetruyen.R;
+import com.example.ilovetruyen.api.ComicCommentAPI;
 import com.example.ilovetruyen.model.Comment;
-import com.example.ilovetruyen.model.User;
+import com.example.ilovetruyen.retrofit.RetrofitService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommentManagerAdminAdapter extends RecyclerView.Adapter<CommentManagerAdminAdapter.CommentManagerAdminViewHolder>{
+public class CommentManagerAdminAdapter extends RecyclerView.Adapter<CommentManagerAdminAdapter.CommentManagerAdminViewHolder> {
     private Context context;
     private List<Comment> comments;
+    private OnCommentDeleteListener onCommentDeleteListener;
 
-    public CommentManagerAdminAdapter(Context context) {
+    public interface OnCommentDeleteListener {
+        void deleteComment(Integer commentId);
+    }
+    public CommentManagerAdminAdapter(Context context,OnCommentDeleteListener onCommentDeleteListener) {
         this.context = context;
         this.comments = new ArrayList<>();
+        this.onCommentDeleteListener = onCommentDeleteListener;
     }
+
 
     public void setData(List<Comment> comments) {
         this.comments.clear();
@@ -34,6 +41,7 @@ public class CommentManagerAdminAdapter extends RecyclerView.Adapter<CommentMana
         }
         notifyDataSetChanged();
     }
+
     @NonNull
     @Override
     public CommentManagerAdminAdapter.CommentManagerAdminViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -48,8 +56,9 @@ public class CommentManagerAdminAdapter extends RecyclerView.Adapter<CommentMana
         Comment comment = comments.get(position);
         if (comment == null) return;
         holder.user_comment_content.setText(comment.text());
+        holder.user_comment_user_name.setText("Tác giả: " + comment.user().fullName());
         holder.user_delete_comment.setOnClickListener(v -> {
-            showAddCategoryDialog();
+            showAddCategoryDialog(comment.id());
         });
     }
 
@@ -59,22 +68,23 @@ public class CommentManagerAdminAdapter extends RecyclerView.Adapter<CommentMana
     }
 
     public class CommentManagerAdminViewHolder extends RecyclerView.ViewHolder {
-        private TextView user_comment_content;
+        private TextView user_comment_content, user_comment_user_name, user_comment_comic_name;
         private ImageView user_delete_comment;
 
         public CommentManagerAdminViewHolder(@NonNull View itemView) {
             super(itemView);
             user_comment_content = itemView.findViewById(R.id.user_comment_content);
             user_delete_comment = itemView.findViewById(R.id.user_delete_comment);
+            user_comment_user_name = itemView.findViewById(R.id.admin_admin_userName);
         }
     }
-    private void showAddCategoryDialog() {
+
+    private void showAddCategoryDialog(Integer id) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setView(R.layout.dialog_add_category)
-                .setTitle("Xóa bình luận")
+        builder.setTitle("Xóa bình luận")
                 .setMessage("Bạn có chắc muốn xóa bình luận này không ?")
                 .setPositiveButton("Xóa", (dialog, which) -> {
-
+                    onCommentDeleteListener.deleteComment(id);
                 })
                 .setNegativeButton("Hủy", (dialog, which) -> {
                     dialog.dismiss();
@@ -83,5 +93,8 @@ public class CommentManagerAdminAdapter extends RecyclerView.Adapter<CommentMana
         AlertDialog dialog = builder.create();
         dialog.show();
 
+    }
+
+    private void deleteComment(Integer id) {
     }
 }

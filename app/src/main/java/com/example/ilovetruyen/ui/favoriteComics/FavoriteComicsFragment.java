@@ -1,4 +1,4 @@
-package com.example.ilovetruyen.ui.dashboard;
+package com.example.ilovetruyen.ui.favoriteComics;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -38,9 +38,6 @@ public class FavoriteComicsFragment extends Fragment implements FavoriteComicAda
             var favoriteList = faComDAO.getAllFavoriteComics();
             if(!favoriteList.isEmpty()) {
                 favoriteComicAdapter.setData(favoriteList);
-            }
-            else {
-                Toast.makeText(getContext(), "Danh sách trống", Toast.LENGTH_SHORT).show();
             }
         }
 

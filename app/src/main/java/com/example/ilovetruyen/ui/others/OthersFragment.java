@@ -1,4 +1,4 @@
-package com.example.ilovetruyen.ui.notifications;
+package com.example.ilovetruyen.ui.others;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.example.ilovetruyen.util.UserStateHelper.logoutStatus;
@@ -25,7 +25,6 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.ilovetruyen.ListOfStoryDownloadsActivity;
 import com.example.ilovetruyen.LoginActivity;
@@ -37,7 +36,6 @@ import com.example.ilovetruyen.databinding.FragmentNotificationsBinding;
 import com.example.ilovetruyen.dto.UserUpdate;
 import com.example.ilovetruyen.model.User;
 import com.example.ilovetruyen.retrofit.RetrofitService;
-import com.example.ilovetruyen.ui.home.CloseAdsSharedVM;
 import com.example.ilovetruyen.ui.maps.MapActivity;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -45,7 +43,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NotificationsFragment extends Fragment {
+public class OthersFragment extends Fragment {
 
     private SharedPreferences sharedPreferences;
     private static final String SHARED_PREF_NAME = "story_history";
@@ -60,8 +58,6 @@ public class NotificationsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        NotificationsViewModel notificationsViewModel =
-                new ViewModelProvider(this).get(NotificationsViewModel.class);
 
         binding = FragmentNotificationsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -291,19 +287,11 @@ public class NotificationsFragment extends Fragment {
         });
         Button btnViewPopup = popupView.findViewById(R.id.btnViewPopup);
         btnViewPopup.setOnClickListener(v -> {
-
             if (popupWindow.isShowing()) {
                 SharedPreferences adsSharedPreferences = context.getSharedPreferences("ads_prefs", MODE_PRIVATE);
-
                 SharedPreferences.Editor editor = adsSharedPreferences.edit();
                 editor.putBoolean("is_close_ads", true);
                 editor.apply();
-
-                boolean isCloseAds = adsSharedPreferences.getBoolean("is_close_ads", false);
-
-                CloseAdsSharedVM closeAdsSharedVM = new ViewModelProvider(requireActivity()).get(CloseAdsSharedVM.class);
-                closeAdsSharedVM.setCloseAds(isCloseAds);
-
                 Toast.makeText(context, "Đã xóa quảng cáo", Toast.LENGTH_SHORT).show();
             }
 

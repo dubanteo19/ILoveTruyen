@@ -160,7 +160,7 @@
             </LinearLayout>
             <!--Advertise -->
             <FrameLayout
-                android:id="@+id/fragment_container_advertise"
+                android:id="@+id/home_fragment_container_advertise"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <!--New comics section-->
