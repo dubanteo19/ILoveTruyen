@@ -56,12 +56,7 @@ public class CommentFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if (context instanceof OnCommentFocusListener) {
-            focusListener = (OnCommentFocusListener) context;
-        }
-    }
-
-    public CommentFragment() {
+      this.focusListener = (OnCommentFocusListener) context;
     }
 
     public static CommentFragment newInstance(int comicId) {
@@ -89,7 +84,7 @@ public class CommentFragment extends Fragment {
         // Get user logged in id
         recyclerView = view.findViewById(R.id.recycler_view_comments);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        adapter = new CommentAdapter(getContext(), getCurrentUser().id(),comicId);
+        adapter = new CommentAdapter(getContext(), getCurrentUser().id(), comicId);
         // Submit comment
         renderUserName(view);
         getComments();
@@ -99,10 +94,7 @@ public class CommentFragment extends Fragment {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    if (focusListener != null) {
                         focusListener.onCommentFocus();
-                        Toast.makeText(getContext(), "Focus", Toast.LENGTH_LONG).show();
-                    }
                 }
             }
         });
@@ -135,7 +127,6 @@ public class CommentFragment extends Fragment {
                 ComicCommentDto newComment = new ComicCommentDto(commentText, userId, comicId);
                 commentEditPosition.set(-1);
 
-//                updateComment(newComment, currentComment.id());
             } else {
                 ComicCommentDto newComment = new ComicCommentDto(commentText, userId, comicId);
                 createComment(newComment);
@@ -204,7 +195,6 @@ public class CommentFragment extends Fragment {
         String email = sharedPreferences.getString("email", "");
         String password = sharedPreferences.getString("password", "");
         String fullName = sharedPreferences.getString("user_name", "Khách");
-
         return new User(userId, email, password, fullName, new ArrayList<>());
     }
 }

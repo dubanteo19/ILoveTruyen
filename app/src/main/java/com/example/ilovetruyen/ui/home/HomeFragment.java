@@ -150,9 +150,6 @@ public class HomeFragment extends Fragment {
         renderHotComicsSection(root);
         renderCategoriesSection(root);
         renderFooter();
-
-        Toast.makeText(getContext(), "re-rendered", Toast.LENGTH_SHORT).show();
-
         return root;
     }
 

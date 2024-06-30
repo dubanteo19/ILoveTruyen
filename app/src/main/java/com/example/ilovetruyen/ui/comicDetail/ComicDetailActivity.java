@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -385,12 +386,9 @@ public class ComicDetailActivity extends AppCompatActivity implements CommentFra
     }
     @Override
     public void onCommentFocus() {
-        scrollView.post(new Runnable() {
-            @Override
-            public void run() {
-                scrollView.smoothScrollTo(0, scrollView.getBottom());
-
-            }
-        });
+        var target = findViewById(R.id.detail_comments).getBottom();
+        scrollView.postDelayed(()->{
+            scrollView.fullScroll(View.FOCUS_DOWN);
+        },200);
     }
 }
