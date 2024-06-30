@@ -5,8 +5,9 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".admin.ComicManagerActivity"
-    android:layout_marginBottom="50dp">
+    android:layout_marginBottom="50dp"
+    tools:context=".admin.ComicManagerActivity">
+
     <LinearLayout
         android:id="@+id/layout1"
         android:layout_width="match_parent"
@@ -18,11 +19,11 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_container_view"
+            android:name="com.example.ilovetruyen.ArrowBackFragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginStart="20dp"
-            android:name="com.example.ilovetruyen.ArrowBackFragment"/>
+            android:layout_marginTop="10dp" />
 
         <TextView
             android:id="@+id/text"
@@ -31,9 +32,9 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:text="@string/list_comic"
             android:textAlignment="center"
-            android:textSize="20sp"
-            android:text="@string/list_comic"/>
+            android:textSize="20sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -43,33 +44,39 @@
         android:orientation="vertical"
         android:padding="10dp"
 
-        app:layout_constraintTop_toBottomOf="@+id/layout1"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/layout1">
+
+        <ProgressBar
+            android:id="@+id/process_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
 
         <FrameLayout
             android:id="@+id/history"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/history_reading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="70dp"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="70dp" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="30dp"
         android:layout_marginHorizontal="50dp"
+        android:layout_marginVertical="30dp"
+        android:contentDescription="Thêm truyện"
         android:tooltipText="Thêm một truyện mới"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/icons_add"
-        android:contentDescription="Thêm truyện" />
+        app:srcCompat="@drawable/icons_add" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

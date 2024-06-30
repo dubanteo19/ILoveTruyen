@@ -1,7 +1,6 @@
 package com.example.ilovetruyen.ui.home;
 
 import static android.content.Context.MODE_PRIVATE;
-import static android.content.Intent.getIntent;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,7 +20,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,9 +35,7 @@ import com.example.ilovetruyen.api.ComicAPI;
 import com.example.ilovetruyen.databinding.FragmentHomeBinding;
 import com.example.ilovetruyen.model.Category;
 import com.example.ilovetruyen.model.Comic;
-import com.example.ilovetruyen.model.User;
 import com.example.ilovetruyen.ui.adventise.AdvertiseFragment;
-import com.example.ilovetruyen.ui.notifications.NotificationsFragment;
 import com.example.ilovetruyen.ui.search.SearchActivity;
 import com.example.ilovetruyen.retrofit.RetrofitService;
 import com.github.islamkhsh.CardSliderViewPager;
@@ -63,60 +58,33 @@ public class HomeFragment extends Fragment {
     private static final String KEY_AD_VISIBLE = "ad_visible";
     private AdvertiseFragment adFr;
     private static final String PREFS_NAME = "ad_prefs";
-//    public interface OnAdvertiseFragmentInteractionListener {
-//        void hideAdvertiseFragment();
-//    }
-//
-//    private OnAdvertiseFragmentInteractionListener listener;
-//
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnAdvertiseFragmentInteractionListener) {
-//            listener = (OnAdvertiseFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnAdvertiseFragmentInteractionListener");
-//        }
-//    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         retrofitService = new RetrofitService();
         comicAPI = retrofitService.getRetrofit().create(ComicAPI.class);
+        adFr = AdvertiseFragment.newInstance();
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+        renderHeader(root);
+        renderAds();
+        renderCarousel(root);
+        renderTitle();
+        renderReadingSection(root);
+        renderRecommendComicsSection(root);
+        renderNewComicsSection(root);
+        renderHotComicsSection(root);
+        renderCategoriesSection(root);
+        renderFooter();
+        return root;
+    }
+
+    private void renderHeader(View root) {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_prefs", MODE_PRIVATE);
         Button home_login_btn = root.findViewById(R.id.home_login_btn);
+        ImageView iconsStar = root.findViewById(R.id.iconsStar);
         TextView userName = root.findViewById(R.id.userName);
         TextView wellcome = root.findViewById(R.id.wellcome);
-        //
-
-        //Thêm FragmentAdvertise vào FragmentHome
-        adFr = (AdvertiseFragment) getChildFragmentManager().findFragmentByTag("ad_fragment");
-        if (adFr == null) {
-            adFr = new AdvertiseFragment();
-            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-            transaction.add(R.id.fragment_container_advertise, adFr, "ad_fragment");
-            transaction.commit();
-        } else if (adFr.isHidden()) {
-            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-            transaction.show(adFr);
-            transaction.commit();
-        }
-
-        //Kiểm tra trạng thái từ SharedPreferences
-//        SharedPreferences adprefs = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-//        boolean isAdVisible = adprefs.getBoolean(KEY_AD_VISIBLE, true);
-//
-//        if (isAdVisible) {
-//            // Thêm FragmentAdvertise vào FragmentHome nếu quảng cáo được đặt hiển thị
-//            AdvertiseFragment fragmentAdvertise = new AdvertiseFragment();
-//            FragmentTransaction trans= getChildFragmentManager().beginTransaction();
-//            trans.add(R.id.fragment_container_advertise, fragmentAdvertise, "advertise_fragment");
-//            trans.commit();
-//        }
-        ImageView iconsStar = root.findViewById(R.id.iconsStar);
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_prefs", MODE_PRIVATE);
         boolean isLoggedIn = sharedPreferences.getBoolean("is_logged_in", false);
         if (isLoggedIn) {
             home_login_btn.setVisibility(View.GONE);
@@ -142,33 +110,22 @@ public class HomeFragment extends Fragment {
             Intent intent = new Intent(root.getContext(), SearchActivity.class);
             startActivity(intent);
         });
-        renderCarousel(root);
-        renderTitle();
-        renderReadingSection(root);
-        renderRecommendComicsSection(root);
-        renderNewComicsSection(root);
-        renderHotComicsSection(root);
-        renderCategoriesSection(root);
-        renderFooter();
-        return root;
+    }
+
+    private void renderAds() {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("ads_prefs", Context.MODE_PRIVATE);
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction
+                .replace(R.id.home_fragment_container_advertise, adFr)
+                .commit();
+        boolean isAdsShouldHide = sharedPreferences.getBoolean("is_close_ads", false);
+        if (isAdsShouldHide) hideAdvertiseFragment();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("ads_prefs", Context.MODE_PRIVATE);
-        boolean isAdsShouldHide = sharedPreferences.getBoolean("is_close_ads", true);
 
-        CloseAdsSharedVM closeAdsSharedVM = new ViewModelProvider(requireActivity()).get(CloseAdsSharedVM.class);
-        closeAdsSharedVM.getCloseAds().observe(getViewLifecycleOwner(), isCloseAds -> {
-            if (isCloseAds) {
-                Toast.makeText(getContext(), "adFr added: " + adFr.isAdded(), Toast.LENGTH_SHORT).show();
-                hideAdvertiseFragment();
-
-                Toast.makeText(getContext(), "adFr hidden: " + adFr.isHidden(), Toast.LENGTH_SHORT).show();
-
-            }
-        });
     }
 
     private void renderFooter() {
@@ -323,14 +280,10 @@ public class HomeFragment extends Fragment {
 
 
     public void hideAdvertiseFragment() {
-        if (adFr != null && !adFr.isHidden()) {
-            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-            transaction
-                    .hide(adFr)
-                    .commit();
-
-            Toast.makeText(getContext(), "adFr hidden: " + adFr.isHidden(), Toast.LENGTH_SHORT).show();
-        }
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction
+                .hide(adFr)
+                .commit();
     }
 
     @Override

@@ -21,11 +21,10 @@ public class AdvertiseFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
     }
-
+public static AdvertiseFragment newInstance(){
+        return new AdvertiseFragment();
+}
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

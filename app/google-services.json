@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "61350786482",
+    "project_id": "ilovetruyen-c0144",
+    "storage_bucket": "ilovetruyen-c0144.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:61350786482:android:a47dfe9e8c2cb17803a0ab",
+        "android_client_info": {
+          "package_name": "com.example.ilovetruyen"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBlNGgIBMX9-eN4qGwgS0mTykQe9rwmz8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

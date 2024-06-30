@@ -1,10 +1,13 @@
 package com.example.ilovetruyen.admin;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,9 +24,11 @@ import com.example.ilovetruyen.admin.adapter.CategoryManagerAdminAdapter;
 import com.example.ilovetruyen.admin.adapter.ComicManagerAdminAdapter;
 import com.example.ilovetruyen.api.CategoryAPI;
 import com.example.ilovetruyen.api.ComicAPI;
+import com.example.ilovetruyen.dto.CategoryDTO;
 import com.example.ilovetruyen.model.Category;
 import com.example.ilovetruyen.retrofit.RetrofitService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
 import com.iamageo.library.BeautifulDialog;
 
 import java.util.List;
@@ -38,13 +43,14 @@ public class CategoryManagerActivity extends AppCompatActivity {
     private CategoryAPI categoryAPI;
     private RetrofitService retrofitService;
     private FloatingActionButton fab;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_category_manager);
         fab = findViewById(R.id.fab);
-        fab.setOnClickListener(v ->{
+        fab.setOnClickListener(v -> {
             showAddCategoryDialog();
         });
         retrofitService = new RetrofitService();
@@ -52,7 +58,7 @@ public class CategoryManagerActivity extends AppCompatActivity {
         renderListCategorys();
     }
 
-    public void renderListCategorys(){
+    public void renderListCategorys() {
         recyclerView = findViewById(R.id.category_manager);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         categoryManagerAdminAdapter = new CategoryManagerAdminAdapter(this);
@@ -61,10 +67,9 @@ public class CategoryManagerActivity extends AppCompatActivity {
         categoryAPI.findAllCategories().enqueue(new Callback<List<Category>>() {
             @Override
             public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
-                if(response.isSuccessful() && response.body() != null){
+                if (response.isSuccessful() && response.body() != null) {
                     categoryManagerAdminAdapter.setData(response.body());
-                }
-                else{
+                } else {
                     Toast.makeText(getApplicationContext(), "Fetch data to failed !", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -78,10 +83,21 @@ public class CategoryManagerActivity extends AppCompatActivity {
 
     private void showAddCategoryDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(R.layout.dialog_add_category)
-                .setTitle("Thêm danh mục mới")
-                .setPositiveButton("Thêm", (dialog, which) -> {
 
+// Inflate the dialog layout
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_add_category, null);
+        builder.setView(dialogView);
+
+// Get reference to the EditText
+        TextInputLayout editTextCategory;
+        editTextCategory = dialogView.findViewById(R.id.dialog_categoryName);
+        builder.setTitle("Thêm danh mục mới")
+                .setPositiveButton("Thêm", (dialog, which) -> {
+                    // Get the text from the EditText
+                    String category = editTextCategory.getEditText().getText().toString();
+                    // Do something with the text
+                    saveCategory(category);
                 })
                 .setNegativeButton("Hủy", (dialog, which) -> {
                     dialog.dismiss();
@@ -90,5 +106,21 @@ public class CategoryManagerActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
 
+    }
+
+    private void saveCategory(String category) {
+        categoryAPI.save(new CategoryDTO(category)).enqueue(new Callback<Boolean>() {
+            @Override
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if (response.isSuccessful())
+                    Toast.makeText(getApplicationContext(), "Thêm thể loại mới thành công", Toast.LENGTH_SHORT).show();
+                renderListCategorys();
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable throwable) {
+
+            }
+        });
     }
 }

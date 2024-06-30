@@ -1,6 +1,10 @@
 package com.example.ilovetruyen.admin;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,25 +30,29 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CommentManagerActivity extends AppCompatActivity {
+public class CommentManagerActivity extends AppCompatActivity implements CommentManagerAdminAdapter.OnCommentDeleteListener {
     private RecyclerView recyclerView;
     private CommentManagerAdminAdapter commentManagerAdminAdapter;
     private RetrofitService retrofitService;
+    private ProgressBar progressBar;
     private ComicCommentAPI comicCommentAPI;
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_comment_manager);
+        progressBar = findViewById(R.id.process_bar);
         retrofitService = new RetrofitService();
         comicCommentAPI = retrofitService.getRetrofit().create(ComicCommentAPI.class);
         renderCommentList();
     }
 
     private void renderCommentList() {
+        progressBar.setVisibility(View.VISIBLE);
         recyclerView = findViewById(R.id.comment_manager);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        commentManagerAdminAdapter = new CommentManagerAdminAdapter(this);
+        commentManagerAdminAdapter = new CommentManagerAdminAdapter(this,this);
         recyclerView.setAdapter(commentManagerAdminAdapter);
         comicCommentAPI.getAllComment().enqueue(new Callback<List<Comment>>() {
             @Override
@@ -52,6 +60,7 @@ public class CommentManagerActivity extends AppCompatActivity {
                 System.out.println(response.body()+"=======================");
                 if(response.isSuccessful() && response.body() != null){
                     commentManagerAdminAdapter.setData(response.body());
+                    progressBar.setVisibility(View.GONE);
                 }
             }
             @Override
@@ -59,5 +68,23 @@ public class CommentManagerActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void deleteComment(Integer commentId) {
+       comicCommentAPI.deleteComment(commentId).enqueue(new Callback<Boolean>() {
+           @Override
+           public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+               if(response.body()){
+                   Toast.makeText(getApplicationContext(),"Xóa bình luận thành công",Toast.LENGTH_LONG).show();
+                   renderCommentList();
+               }
+           }
+
+           @Override
+           public void onFailure(Call<Boolean> call, Throwable throwable) {
+
+           }
+       });
     }
 }

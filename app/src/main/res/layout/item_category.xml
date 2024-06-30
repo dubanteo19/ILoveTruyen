@@ -49,15 +49,6 @@
             android:layout_marginStart="8dp"
             tools:ignore="MissingConstraints" />
 
-        <ImageView
-            android:id="@+id/icon_delete"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/icons_delete"
-            android:contentDescription="Delete"
-            android:padding="8dp"
-            android:layout_marginStart="8dp"
-            tools:ignore="MissingConstraints" />
 
     </LinearLayout>
 

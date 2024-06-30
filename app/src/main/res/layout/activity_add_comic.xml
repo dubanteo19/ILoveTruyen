@@ -88,6 +88,7 @@
                         />
 
                     <ImageView
+                        android:id="@+id/add_comic_selectImgBtn"
                         android:layout_width="40dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="16dp"
@@ -95,9 +96,9 @@
                         android:src="@drawable/icons_add"
                         android:tooltipText="Thêm ảnh bìa" />
                 </LinearLayout>
-
                 <ImageView
                     android:layout_width="match_parent"
+                    android:id="@+id/thumb_Iv"
                     android:layout_height="180dp"
                     android:layout_marginTop="16dp"
                     android:src="@drawable/image_place_holder"
@@ -110,37 +111,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginTop="20dp">
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Danh mục"
-                    android:textSize="20sp"
-                    android:textStyle="bold"/>
-
-                <CheckBox
-                    android:id="@+id/category_1"
-                    android:layout_width="wrap_content"
+                    android:textSize="20sp"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/admin_categoies_rv"
                     android:layout_height="wrap_content"
-                    android:text="Action"/>
-
-                <CheckBox
-                    android:id="@+id/category_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Manhua"/>
-
-                <CheckBox
-                    android:id="@+id/category_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Comedy"/>
-
-                <CheckBox
-                    android:id="@+id/category_4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Drama"/>
+                    android:layout_width="match_parent"/>
             </LinearLayout>
 
             <LinearLayout

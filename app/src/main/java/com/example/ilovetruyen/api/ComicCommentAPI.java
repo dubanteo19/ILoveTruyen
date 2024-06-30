@@ -7,6 +7,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -22,6 +23,8 @@ public interface ComicCommentAPI {
     @POST("api/v1/comments")
     Call<Comment> createComment(@Body ComicCommentDto comicCommentDto);
 
+    @DELETE("api/v1/comments/{id}")
+    Call<Boolean> deleteComment(@Path("id") int id);
     @PUT("api/v1/comments/{id}")
     Call<Comment> updateComment(@Path("id") int id, @Body ComicCommentDto comicCommentDto);
 }

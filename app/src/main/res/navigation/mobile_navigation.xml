@@ -13,11 +13,11 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.ilovetruyen.ui.dashboard.FavoriteComicsFragment"
+        android:name="com.example.ilovetruyen.ui.favoriteComics.FavoriteComicsFragment"
        android:label="@string/wishlist"/>
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.example.ilovetruyen.ui.notifications.NotificationsFragment"
+        android:name="com.example.ilovetruyen.ui.others.OthersFragment"
         android:label="@string/other"
         tools:layout="@layout/fragment_notifications" />
 </navigation>

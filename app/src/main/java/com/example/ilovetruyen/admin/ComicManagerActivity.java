@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -49,7 +50,7 @@ public class ComicManagerActivity extends AppCompatActivity {
     private RetrofitService retrofitService;
     private PopupWindow popupWindow;
     private FloatingActionButton fab;
-
+    private ProgressBar progressBar;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -57,8 +58,9 @@ public class ComicManagerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_comic_manager);
+        progressBar = findViewById(R.id.process_bar);
         fab = findViewById(R.id.fab);
-        fab.setOnClickListener(v ->{
+        fab.setOnClickListener(v -> {
             Intent intent = new Intent(this, AddComicActivity.class);
             startActivity(intent);
         });
@@ -69,21 +71,23 @@ public class ComicManagerActivity extends AppCompatActivity {
     }
 
     private void renderListComics() {
+        progressBar.setVisibility(View.VISIBLE);
         recyclerView = findViewById(R.id.history_reading);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         comicManagerAdminAdapter = new ComicManagerAdminAdapter(this);
-        recyclerView.setAdapter(comicManagerAdminAdapter);
-        comicAPI.getAllComics().enqueue(new Callback<List<Comic>>() {
+        comicAPI.getAllComicsDetail().enqueue(new Callback<List<ComicDetail>>() {
             @Override
-            public void onResponse(Call<List<Comic>> call, Response<List<Comic>> response) {
-                System.out.println(response.body()+"=======================");
-                if(response.isSuccessful() && response.body() != null){
+            public void onResponse(Call<List<ComicDetail>> call, Response<List<ComicDetail>> response) {
+                System.out.println(response.body() + "=======================");
+                if (response.isSuccessful() && response.body() != null) {
+                    recyclerView.setAdapter(comicManagerAdminAdapter);
                     comicManagerAdminAdapter.setData(response.body());
+                    progressBar.setVisibility(View.GONE);
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Comic>> call
+            public void onFailure(Call<List<ComicDetail>> call
                     , Throwable throwable) {
 
             }
