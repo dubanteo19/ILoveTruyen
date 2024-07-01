@@ -1,6 +1,7 @@
 package com.example.ilovetruyen.ui.others;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.example.ilovetruyen.retrofit.GoogleSignConfig.*;
 import static com.example.ilovetruyen.util.UserStateHelper.logoutStatus;
 
 import android.app.Activity;
@@ -35,8 +36,10 @@ import com.example.ilovetruyen.api.UserAPI;
 import com.example.ilovetruyen.databinding.FragmentNotificationsBinding;
 import com.example.ilovetruyen.dto.UserUpdate;
 import com.example.ilovetruyen.model.User;
+import com.example.ilovetruyen.retrofit.GoogleSignConfig;
 import com.example.ilovetruyen.retrofit.RetrofitService;
 import com.example.ilovetruyen.ui.maps.MapActivity;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.material.textfield.TextInputEditText;
 
 import retrofit2.Call;
@@ -84,6 +87,8 @@ public class OthersFragment extends Fragment {
         featureUpdateLayout.setOnClickListener(this::showPopup);
 
         ConstraintLayout featureAdsLayout = root.findViewById(R.id.feature_ads);
+        ConstraintLayout shareLayout= root.findViewById(R.id.contact_share);
+        shareLayout.setOnClickListener(this::handleShare);
         featureAdsLayout.setOnClickListener(this::showPopupAds);
 
         ConstraintLayout featureRemoveAccountLayout = root.findViewById(R.id.feature_delete);
@@ -132,6 +137,7 @@ public class OthersFragment extends Fragment {
 
                             })
                             .setPositiveButton("Đồng ý", (dialog, which) -> {
+                                logoutGoogle();
                                 logout(context);
                             })
                             .show();
@@ -145,15 +151,22 @@ public class OthersFragment extends Fragment {
         return root;
     }
 
-//    @Override
-//    public void onAttach(@NonNull Context context) {
-//        super.onAttach(context);
-//        if (getParentFragment() instanceof OnPopupClickListener) {
-//            popupClickListener = (OnPopupClickListener) getParentFragment();
-//        } else {
-//            throw new RuntimeException(context.toString() + " must implement OnCloseClickListener");
-//        }
-//    }
+    private void handleShare(View view) {
+           Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                String head = "I love truyện";
+                String body ="Hãy tải ngay ứng dụng I love truyện \nỨng dụng đọc truyện hàng đầu Việt Nam";
+                intent.putExtra(Intent.EXTRA_SUBJECT,head);
+                intent.putExtra(Intent.EXTRA_TEXT,body);
+                startActivity(Intent.createChooser(intent,head));
+                System.out.println("popup share ---------------------------");
+    }
+
+    private void logoutGoogle() {
+       var  mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), createGoogleSignInOptions());
+       mGoogleSignInClient.signOut();
+    }
+
 
 
     @Override
@@ -184,20 +197,17 @@ public class OthersFragment extends Fragment {
         int user_id = sharedPreferences.getInt("userId", 0);
         String username = sharedPreferences.getString("user_name", "User");
         String email_user = sharedPreferences.getString("email", "User");
-        String password = sharedPreferences.getString("password", "User");
-        pass.setText(password);
+        String password= sharedPreferences.getString("password", "User");
         fullName.setText(username);
         message = popupView.findViewById(R.id.message);
         //cập nhật
         Button buttonUpdate = popupView.findViewById(R.id.buttonUpdate);
         buttonUpdate.setOnClickListener(v -> {
             String updatedName = fullName.getText() != null ? fullName.getText().toString() : "";
-            String updatedPass = pass.getText() != null ? pass.getText().toString() : "";
+            String updatedPass = pass.getText() != null ? pass.getText().toString() : password;
             if (!passwordValidator(pass)) {
                 return;
             }
-            ;
-
             if (!isFullNameValid(updatedName, fullName)) {
                 return;
             }
@@ -254,6 +264,7 @@ public class OthersFragment extends Fragment {
 
     public boolean passwordValidator(TextInputEditText etPassword) {
         String passwordToText = String.valueOf(etPassword.getText());
+        if(passwordToText.isBlank()) return true;
         if (passwordToText.length() < 6) {
             Toast.makeText(getContext(), "Mật khẩu phải có ít nhất 6 ký tự!", Toast.LENGTH_SHORT).show();
             etPassword.setError("Mật khẩu phải có ít nhất 6 ký tự!");

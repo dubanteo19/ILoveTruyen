@@ -92,7 +92,8 @@
             android:layout_margin="8dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="4dp"
-            android:layout_weight="0.5">
+            android:layout_weight="0.5"
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -115,7 +116,7 @@
                     android:id="@+id/total_comic_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="10"
+                    android:text="Loading"
                     android:gravity="center"
                     android:textColor="@android:color/white"
                     android:textSize="25sp" />
@@ -151,7 +152,7 @@
                     android:id="@+id/total_category"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Tổng số danh mục"
+                    android:text="Tổng số thể loại"
                     android:textColor="@android:color/white"
                     android:gravity="center"
                     android:textSize="18sp"
@@ -161,7 +162,7 @@
                     android:id="@+id/total_category_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="5"
+                    android:text="Loading"
                     android:gravity="center"
                     android:textColor="@android:color/white"
                     android:textSize="25sp" />
@@ -219,7 +220,7 @@
                     android:id="@+id/total_comment_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="30"
+                    android:text="Loading"
                     android:gravity="center"
                     android:textColor="@android:color/white"
                     android:textSize="25sp" />
@@ -256,7 +257,7 @@
                     android:id="@+id/total_user"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Tổng số danh mục"
+                    android:text="Tổng số độc giả"
                     android:textColor="@android:color/white"
                     android:gravity="center"
                     android:textSize="18sp"
@@ -266,7 +267,7 @@
                     android:id="@+id/total_user_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="10"
+                    android:text="Loading"
                     android:gravity="center"
                     android:textColor="@android:color/white"
                     android:textSize="25sp" />
@@ -427,7 +428,7 @@
                             android:layout_height="match_parent"
                             android:layout_margin="20dp"
                             android:layout_weight="0.3"
-                            android:text="Quản lý danh mục"
+                            android:text="Quản lý thể loại"
                             android:textColor="@android:color/black"
                             android:drawableRight="@drawable/ic_arrow_svg"
                             android:textSize="20sp"

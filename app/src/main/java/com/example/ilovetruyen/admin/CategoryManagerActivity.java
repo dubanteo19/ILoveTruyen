@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +44,7 @@ public class CategoryManagerActivity extends AppCompatActivity {
     private CategoryAPI categoryAPI;
     private RetrofitService retrofitService;
     private FloatingActionButton fab;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,7 @@ public class CategoryManagerActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_category_manager);
         fab = findViewById(R.id.fab);
+        progressBar = findViewById(R.id.process_bar);
         fab.setOnClickListener(v -> {
             showAddCategoryDialog();
         });
@@ -59,16 +62,17 @@ public class CategoryManagerActivity extends AppCompatActivity {
     }
 
     public void renderListCategorys() {
+        progressBar.setVisibility(View.VISIBLE);
         recyclerView = findViewById(R.id.category_manager);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         categoryManagerAdminAdapter = new CategoryManagerAdminAdapter(this);
         recyclerView.setAdapter(categoryManagerAdminAdapter);
-
         categoryAPI.findAllCategories().enqueue(new Callback<List<Category>>() {
             @Override
             public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     categoryManagerAdminAdapter.setData(response.body());
+                    progressBar.setVisibility(View.GONE);
                 } else {
                     Toast.makeText(getApplicationContext(), "Fetch data to failed !", Toast.LENGTH_SHORT).show();
                 }
@@ -112,14 +116,12 @@ public class CategoryManagerActivity extends AppCompatActivity {
         categoryAPI.save(new CategoryDTO(category)).enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                if (response.isSuccessful())
-                    Toast.makeText(getApplicationContext(), "Thêm thể loại mới thành công", Toast.LENGTH_SHORT).show();
-                renderListCategorys();
             }
 
             @Override
             public void onFailure(Call<Boolean> call, Throwable throwable) {
-
+                Toast.makeText(getApplicationContext(), "Thêm thể loại mới failed", Toast.LENGTH_SHORT).show();
+                renderListCategorys();
             }
         });
     }

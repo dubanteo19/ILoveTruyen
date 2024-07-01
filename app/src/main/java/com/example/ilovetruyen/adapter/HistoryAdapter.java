@@ -64,6 +64,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         if (comic == null) return;
         Glide.with(holder.itemView).load(comic.thumbUrl()).into(holder.history_read_thumb);
         holder.history_name.setText(comic.name());
+        String lastChapter = comic.latestChapter() == 0?"Chưa có chương":"Ch. "+String.valueOf(comic.latestChapter());
         holder.history_chapter.setText("Chương " + String.valueOf(comic.latestChapter()));
         holder.history_view.setText(String.valueOf(comic.views()));
         holder.history_heart.setText(String.valueOf(comic.likes()));

@@ -3,7 +3,9 @@ package com.example.ilovetruyen.admin;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,19 +36,21 @@ public class UserManagerActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private UserManagerAdminAdapter userManagerAdminAdapter;
     private RetrofitService retrofitService;
+    private ProgressBar progressBar;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_user_manager);
-
+        progressBar = findViewById(R.id.process_bar);
         retrofitService = new RetrofitService();
         userAPI = retrofitService.getRetrofit().create(UserAPI.class);
         renderUserList();
     }
+
     private void renderUserList() {
+        progressBar.setVisibility(View.VISIBLE);
         recyclerView = findViewById(R.id.user_manager);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         userManagerAdminAdapter = new UserManagerAdminAdapter(this);
@@ -54,9 +58,9 @@ public class UserManagerActivity extends AppCompatActivity {
         userAPI.findAll().enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                System.out.println(response.body()+"=======================");
-                if(response.isSuccessful() && response.body() != null){
+                if (response.isSuccessful() && response.body() != null) {
                     userManagerAdminAdapter.setData(response.body());
+                    progressBar.setVisibility(View.GONE);
                 }
             }
 

@@ -19,6 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -62,12 +63,18 @@ public class ComicManagerActivity extends AppCompatActivity {
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(v -> {
             Intent intent = new Intent(this, AddComicActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent,1);
         });
 
         retrofitService = new RetrofitService();
         comicAPI = retrofitService.getRetrofit().create(ComicAPI.class);
         renderListComics();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        recreate();
     }
 
     private void renderListComics() {
