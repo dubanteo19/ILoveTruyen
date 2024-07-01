@@ -153,7 +153,6 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<Category>> call, Throwable throwable) {
-
             }
         });
     }

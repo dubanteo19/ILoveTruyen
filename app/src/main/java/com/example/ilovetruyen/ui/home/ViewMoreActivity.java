@@ -60,11 +60,9 @@ public class ViewMoreActivity extends AppCompatActivity {
             case 3 -> call = comicAPI.getAllHotComics();
             default -> call = comicAPI.getAllNewComics();
         }
-        System.out.println(target);
         call.enqueue(new Callback<List<Comic>>() {
             @Override
             public void onResponse(Call<List<Comic>> call, Response<List<Comic>> response) {
-                System.out.println("----"+response.body());
                 if (response.isSuccessful() && !response.body().isEmpty()) {
                     recyclerView.setAdapter(comicAdapter);
                     comicAdapter.setData(response.body());

@@ -93,7 +93,6 @@ public class ChapterContentActivity extends AppCompatActivity {
             public void onResponse(Call<List<Chapter>> call, Response<List<Chapter>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     progressBar.setVisibility(View.GONE);
-                    System.out.println("số lượng chapter ******" + response.body());
                     recyclerView.setAdapter(recycleAdapter);
                     recycleAdapter.setData(response.body().get(count - 1).contentImgList());
                     titleBar = findViewById(R.id.title_bar);
@@ -126,17 +125,13 @@ public class ChapterContentActivity extends AppCompatActivity {
         nextChapBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Sau", Toast.LENGTH_SHORT).show();
                 recreateActivityWithNewData(comicId, count + 1, chapterTotal);
             }
         });
         prevChapBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Trước", Toast.LENGTH_SHORT).show();
                 recreateActivityWithNewData(comicId, count - 1, chapterTotal);
-
-
             }
         });
     }
@@ -152,7 +147,7 @@ public class ChapterContentActivity extends AppCompatActivity {
         setIntent(newIntent);
 
         // Gọi recreate() để tạo lại Activity với Intent mới
-        recreate();
+        startActivity(newIntent);
     }
 
     @Override
