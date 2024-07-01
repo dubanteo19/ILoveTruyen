@@ -116,14 +116,12 @@ public class CategoryManagerActivity extends AppCompatActivity {
         categoryAPI.save(new CategoryDTO(category)).enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                if (response.isSuccessful())
-                    Toast.makeText(getApplicationContext(), "Thêm thể loại mới thành công", Toast.LENGTH_SHORT).show();
-                renderListCategorys();
             }
 
             @Override
             public void onFailure(Call<Boolean> call, Throwable throwable) {
-
+                Toast.makeText(getApplicationContext(), "Thêm thể loại mới failed", Toast.LENGTH_SHORT).show();
+                renderListCategorys();
             }
         });
     }

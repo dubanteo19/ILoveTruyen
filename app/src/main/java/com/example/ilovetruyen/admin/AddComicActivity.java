@@ -111,6 +111,7 @@ public class AddComicActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.admin_categoies_rv);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         adapter = new CategoryCheckboxAdapter(this);
+        recyclerView.setItemViewCacheSize(50);
         categoryAPI.findAllCategories().enqueue(new Callback<List<Category>>() {
             @Override
             public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
@@ -144,6 +145,7 @@ public class AddComicActivity extends AppCompatActivity {
                 comicAdd = new ComicAdd(name, uri.toString(), description, adapter.getSelectedCategories());
                 progressDialog.dismiss();
                 saveComic(comicAdd);
+                showToast("Thêm truyện mới thành công");
             });
         });
         return comicAdd;
@@ -166,7 +168,7 @@ public class AddComicActivity extends AppCompatActivity {
 
     private void setAddComicEvent() {
         progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Tao truyen moi");
+        progressDialog.setTitle("Đang tạo truyện mới");
         add_comic.setOnClickListener(v -> {
             if (thumb != null) {
                 progressDialog.show();
