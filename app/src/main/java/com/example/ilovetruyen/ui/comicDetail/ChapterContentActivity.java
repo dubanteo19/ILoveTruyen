@@ -1,5 +1,6 @@
 package com.example.ilovetruyen.ui.comicDetail;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,27 +46,30 @@ public class ChapterContentActivity extends AppCompatActivity {
     List<ContentImg> contentImgList;
     private TextView titleBar;
     private ImageView backBtn;
-    private Button prevChapBut,nextChapBut;
+    private Button prevChapBut, nextChapBut;
     private List<Chapter> chapterList;
-    private int chapterTotal =0;
+    private int chapterTotal = 0;
+    private ProgressBar progressBar;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chapter_content);
         Intent intent = getIntent();
-        if(intent.hasExtra("extra_comicsId")){
-            comicId = intent.getIntExtra("extra_comicsId",1);
-        }else {
+        progressBar = findViewById(R.id.process_bar);
+        if (intent.hasExtra("extra_comicsId")) {
+            comicId = intent.getIntExtra("extra_comicsId", 1);
+        } else {
             comicId = getIntent().getIntExtra("comicId", 1);
         }
-        if(intent.hasExtra("extra_count")){
-            count = intent.getIntExtra("extra_count",1);
-        }else {
+        if (intent.hasExtra("extra_count")) {
+            count = intent.getIntExtra("extra_count", 1);
+        } else {
             count = getIntent().getIntExtra("count", 1);
         }
-        if(intent.hasExtra("chapterTotal")){
-            chapterTotal = intent.getIntExtra("chapterTotal",0);
+        if (intent.hasExtra("chapterTotal")) {
+            chapterTotal = intent.getIntExtra("chapterTotal", 0);
         }
         renderContentChapter();
         backBtn = findViewById(R.id.chapter_backBtn);
@@ -75,6 +80,7 @@ public class ChapterContentActivity extends AppCompatActivity {
     }
 
     private void renderContentChapter() {
+        progressBar.setVisibility(View.VISIBLE);
         retrofitService = new RetrofitService();
         comicDetailAPI = retrofitService.getRetrofit().create(ComicDetailAPI.class);
         recyclerView = findViewById(R.id.recycleChapterContent);
@@ -86,58 +92,61 @@ public class ChapterContentActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Chapter>> call, Response<List<Chapter>> response) {
                 if (response.isSuccessful() && response.body() != null) {
+                    progressBar.setVisibility(View.GONE);
                     System.out.println("số lượng chapter ******" + response.body());
                     recyclerView.setAdapter(recycleAdapter);
-                    recycleAdapter.setData(response.body().get(count-1).contentImgList());
+                    recycleAdapter.setData(response.body().get(count - 1).contentImgList());
                     titleBar = findViewById(R.id.title_bar);
-                    titleBar.setText("Chương "+response.body().get(count-1).count());
+                    titleBar.setText("Chương " + response.body().get(count - 1).count());
                 }
             }
+
             @Override
             public void onFailure(Call<List<Chapter>> call, Throwable throwable) {
 
             }
         });
         //set thực thi
-        if(count == chapterTotal){ //xem chap mới nhất
+        if (count == chapterTotal) { //xem chap mới nhất
             prevChapBut.setEnabled(true);
             nextChapBut.setEnabled(false);
         }
-        if(chapterTotal == 0){ //trường hợp lỗi không chặn nút
+        if (chapterTotal == 0) { //trường hợp lỗi không chặn nút
             prevChapBut.setEnabled(false);
             nextChapBut.setEnabled(false);
         }
-        if(count ==1){ // mới bắt đầu xem
+        if (count == 1) { // mới bắt đầu xem
             prevChapBut.setEnabled(false);
             nextChapBut.setEnabled(true);
         }
-        if(1<count && count < chapterTotal){ //trong khoảng 1 đến gần chap cuối
+        if (1 < count && count < chapterTotal) { //trong khoảng 1 đến gần chap cuối
             prevChapBut.setEnabled(true);
             nextChapBut.setEnabled(true);
         }
         nextChapBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Sau",Toast.LENGTH_SHORT).show();
-                recreateActivityWithNewData(comicId,count+1,chapterTotal);
+                Toast.makeText(getApplicationContext(), "Sau", Toast.LENGTH_SHORT).show();
+                recreateActivityWithNewData(comicId, count + 1, chapterTotal);
             }
         });
         prevChapBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Trước",Toast.LENGTH_SHORT).show();
-                recreateActivityWithNewData(comicId,count-1,chapterTotal);
+                Toast.makeText(getApplicationContext(), "Trước", Toast.LENGTH_SHORT).show();
+                recreateActivityWithNewData(comicId, count - 1, chapterTotal);
 
 
             }
         });
     }
+
     public void recreateActivityWithNewData(int newComicsId, int newCount, int chapterTotal) {
         // Tạo một Intent mới hoặc cập nhật Intent hiện tại
         Intent newIntent = new Intent(this, ChapterContentActivity.class);
         newIntent.putExtra("extra_comicsId", newComicsId);
         newIntent.putExtra("extra_count", newCount);
-        newIntent.putExtra("chapterTotal",chapterTotal);
+        newIntent.putExtra("chapterTotal", chapterTotal);
 
         // Thiết lập lại Intent cho Activity hiện tại
         setIntent(newIntent);

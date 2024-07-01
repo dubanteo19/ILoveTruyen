@@ -4,25 +4,19 @@ import static android.content.ContentValues.TAG;
 import static com.example.ilovetruyen.util.UserStateHelper.saveAdminStatus;
 import static com.example.ilovetruyen.util.UserStateHelper.saveLoginStatus;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
 import com.example.ilovetruyen.admin.ILoveTruyenManagerActivity;
 import com.example.ilovetruyen.api.UserAPI;
+import com.example.ilovetruyen.dto.GoogleUserDTO;
 import com.example.ilovetruyen.dto.UserRegister;
 import com.example.ilovetruyen.model.User;
 import com.example.ilovetruyen.retrofit.GoogleSignConfig;
@@ -58,6 +52,8 @@ public class LoginActivity extends AppCompatActivity {
         TextView forgot = findViewById(R.id.forgot_password);
         message = findViewById(R.id.message);
         EdgeToEdge.enable(this);
+        retrofitService = new RetrofitService();
+        userAPI = retrofitService.getRetrofit().create(UserAPI.class);
         mGoogleSignInClient = GoogleSignIn.getClient(this, GoogleSignConfig.createGoogleSignInOptions());
         MaterialButton loginGoogleBtn = findViewById(R.id.buttonLoginGoogle);
         loginGoogleBtn.setOnClickListener(v -> {
@@ -110,8 +106,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginUser(String email, String pass, String fullName) {
-        retrofitService = new RetrofitService();
-        userAPI = retrofitService.getRetrofit().create(UserAPI.class);
         UserRegister userRegister = new UserRegister(email, pass, "");
         message = findViewById(R.id.message);
         userAPI.login(userRegister).enqueue(new Callback<User>() {
@@ -120,9 +114,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     User user = response.body();
-                    saveLoginStatus(getApplicationContext(), true, user.fullName(), user.email(), user.id(), user.password());
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent);
+                    saveAndStartIntent(user);
                 } else {
                     message.setText("Sai email hoặc mật khẩu!");
                     message.setVisibility(View.VISIBLE);
@@ -136,6 +128,12 @@ public class LoginActivity extends AppCompatActivity {
 //                Toast.makeText(getApplicationContext(), "Sai email hoặc mật khẩu !", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void saveAndStartIntent(User user) {
+        saveLoginStatus(getApplicationContext(), true, user.fullName(), user.email(), user.id(), user.password());
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -152,23 +150,31 @@ public class LoginActivity extends AppCompatActivity {
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-
-            // Signed in successfully, show authenticated UI.
             updateUI(account);
         } catch (ApiException e) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
-            updateUI(null);
         }
     }
 
     private void updateUI(GoogleSignInAccount account) {
         String name = account.getGivenName();
         String email = account.getEmail();
-        saveLoginStatus(getApplicationContext(), true,name,email,19, "password");
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(intent);
+        GoogleUserDTO googleUserDTO = new GoogleUserDTO(name, email);
+        userAPI.loginGoogle(googleUserDTO).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+               if(response.isSuccessful()) {
+                  User user = response.body();
+                   System.out.println("user--------------"+user);
+                  saveAndStartIntent(user);
+               }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable throwable) {
+
+            }
+        });
     }
 
 

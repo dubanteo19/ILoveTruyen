@@ -1,5 +1,6 @@
 package com.example.ilovetruyen.api;
 
+import com.example.ilovetruyen.dto.GoogleUserDTO;
 import com.example.ilovetruyen.dto.UserRegister;
 import com.example.ilovetruyen.dto.UserUpdate;
 import com.example.ilovetruyen.model.User;
@@ -19,6 +20,9 @@ public interface UserAPI {
 
     @POST("/api/v1/users/login")
     Call<User> login(@Body UserRegister userRegister);
+
+    @POST("/api/v1/users/login-google")
+    Call<User> loginGoogle(@Body GoogleUserDTO googleUserDTO);
 
     @PUT("/api/v1/users/{id}")
     Call<User> update(@Path("id") int id, @Body UserUpdate userUpdate);

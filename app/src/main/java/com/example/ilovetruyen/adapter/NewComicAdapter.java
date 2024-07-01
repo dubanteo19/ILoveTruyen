@@ -45,7 +45,8 @@ public class NewComicAdapter extends RecyclerView.Adapter<NewComicAdapter.NewCom
         if(comic==null) return;
         holder.nameTv.setText(NameMaxSizeHelper.truncateName(comic.name(),25));
         Glide.with(holder.itemView).load(comic.thumbUrl()).into(holder.thumbIv);
-        holder.chapterTv.setText("Ch. "+comic.latestChapter());
+        String lastChapter = comic.latestChapter() == 0?"Chưa có chương":"Ch. "+String.valueOf(comic.latestChapter());
+        holder.chapterTv.setText(lastChapter);
         holder.createdDateTv.setText(TimeDifference.getTimeDifference(comic.createdDate()));
         holder.itemView.setOnClickListener(v->{
             Intent intent = new Intent(context, ComicDetailActivity.class);

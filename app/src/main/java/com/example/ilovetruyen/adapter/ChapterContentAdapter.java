@@ -36,7 +36,7 @@ public class ChapterContentAdapter extends RecyclerView.Adapter<ChapterContentAd
         var width= holder.itemView.getWidth();
         //load ảnh với glide ??
         Glide.with(mContext)
-                .load(image.url())
+                .load(image.url()).placeholder(R.drawable.image_place_holder)
                 .fitCenter()
                 .into(holder.imageView);
     }

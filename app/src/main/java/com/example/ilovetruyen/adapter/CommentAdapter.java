@@ -28,11 +28,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     private int userId;
 
     private Context context;
-private int comicId;
-    public CommentAdapter(Context context, int userId,int comicId) {
+    private int comicId;
+
+    public CommentAdapter(Context context, int userId, int comicId) {
         this.userId = userId;
         this.context = context;
-        this.comicId= comicId;
+        this.comicId = comicId;
     }
 
     public void setData(List<Comment> comments) {

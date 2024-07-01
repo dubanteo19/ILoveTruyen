@@ -49,7 +49,8 @@ public class HotComicsAdapter extends RecyclerView.Adapter<HotComicsAdapter.HotC
         if (comic ==null) return;
         Glide.with(holder.itemView).load(comic.thumbUrl()).into(holder.thumb);
         holder.comicNameTv.setText(comic.name());
-        holder.comicChapterTv.setText("Chương "+comic.latestChapter());
+        String lastChapter = comic.latestChapter() == 0?"Chưa có chương":"Chương "+String.valueOf(comic.latestChapter());
+        holder.comicChapterTv.setText(lastChapter);
         holder.comicCreatedDateTv.setText(TimeDifference.getTimeDifference(comic.createdDate()));
         holder.itemView.setOnClickListener(v->{
             Intent intent = new Intent(context, ComicDetailActivity.class);

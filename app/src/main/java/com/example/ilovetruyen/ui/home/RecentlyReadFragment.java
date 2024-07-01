@@ -3,6 +3,7 @@ package com.example.ilovetruyen.ui.home;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import com.example.ilovetruyen.model.Chapter;
 import com.example.ilovetruyen.model.Comic;
 import com.example.ilovetruyen.model.ComicDetail;
 import com.example.ilovetruyen.retrofit.RetrofitService;
+import com.example.ilovetruyen.ui.comicDetail.ComicDetailActivity;
 import com.example.ilovetruyen.util.NameMaxSizeHelper;
 
 import java.util.List;
@@ -56,6 +58,7 @@ public class RecentlyReadFragment extends Fragment {
     public RecentlyReadFragment() {
         // Required empty public constructor
     }
+
     public static RecentlyReadFragment newInstance() {
         RecentlyReadFragment fragment = new RecentlyReadFragment();
         return fragment;
@@ -86,10 +89,16 @@ public class RecentlyReadFragment extends Fragment {
         recent_read_thumb = view.findViewById(R.id.recent_read_thumb);
         sharedPreferences = getActivity().getSharedPreferences("user_prefs", MODE_PRIVATE);
         recentlyComicId = sharedPreferences.getInt("recentlyComicId", -1);
-        System.out.println(recentlyComicId + "=========================================");
         if (recentlyComicId != -1) {
             fetchComicDetail(recentlyComicId);
         }
+        view.setOnClickListener(v ->
+        {
+
+            Intent intent = new Intent(getContext(), ComicDetailActivity.class);
+            intent.putExtra("comicId", comic.id());
+            getContext().startActivity(intent);
+        });
         return view;
     }
 
@@ -103,7 +112,8 @@ public class RecentlyReadFragment extends Fragment {
                 if (response.isSuccessful() && response.body() != null) {
                     comic = response.body().comic();
                     comic_name.setText(NameMaxSizeHelper.truncateName(comic.name()));
-                    comic_count.setText("Chương "+String.valueOf(comic.latestChapter()));
+                    String lastChapter = comic.latestChapter() == 0?"Chưa có chương":"Chương "+String.valueOf(comic.latestChapter());
+                    comic_count.setText(lastChapter);
                     like.setText(String.valueOf(comic.likes()));
                     views.setText(String.valueOf(comic.views()));
                     Glide.with(getContext())
@@ -112,7 +122,7 @@ public class RecentlyReadFragment extends Fragment {
                                 @Override
                                 public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                                     resource.setAlpha(40);
-                                  layout.setBackground(resource);
+                                    layout.setBackground(resource);
                                 }
 
                                 @Override
