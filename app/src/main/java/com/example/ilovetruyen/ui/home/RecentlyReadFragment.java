@@ -88,13 +88,12 @@ public class RecentlyReadFragment extends Fragment {
         views = view.findViewById(R.id.view);
         recent_read_thumb = view.findViewById(R.id.recent_read_thumb);
         sharedPreferences = getActivity().getSharedPreferences("user_prefs", MODE_PRIVATE);
-        recentlyComicId = sharedPreferences.getInt("recentlyComicId", -1);
+        recentlyComicId = sharedPreferences.getInt("recentlyComicId", 1);
         if (recentlyComicId != -1) {
             fetchComicDetail(recentlyComicId);
         }
         view.setOnClickListener(v ->
         {
-
             Intent intent = new Intent(getContext(), ComicDetailActivity.class);
             intent.putExtra("comicId", comic.id());
             getContext().startActivity(intent);
